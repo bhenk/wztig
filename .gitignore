@@ -1,0 +1,12 @@
+.DS_Store
+.buildpath
+.project
+.settings
+notes/
+vendor/
+application/data
+application/logs
+application/public_html/img
+application/test-data
+application/test-dump
+composer.phar
