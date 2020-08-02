@@ -1,0 +1,102 @@
+
+.sidenav {
+	font-family: "Courier New", Courier, monospace;
+	overflow-x: hidden;
+}
+
+/* Style the sidenav links and the dropdown button */
+.sidenav a, .dropdown-btn {
+	padding: 8px;
+	margin-bottom: 7px;
+	background-color: white;
+	color: black;
+	font-family: "Courier New", Courier, monospace;
+	font-weight: bold;
+	font-size: larger;
+	/* styles the button */
+	border: none;
+	background: none;
+	width: 100%;
+	text-align: left;
+	cursor: pointer;
+	outline: none;
+}
+
+/* On mouse-over */
+.sidenav a:hover, .dropdown-btn:hover {
+	background-color: gray;
+	color: white;
+}
+
+/* Add an active class to the active dropdown button */
+.active {
+	background-color: gray;
+	color: white;
+}
+
+/* Dropdown container (hidden by default). */
+.dropdown-container {
+	display: none;
+	background-color: white;
+	padding-left: 8px;
+	padding-bottom: 6px;
+	font-size: 0;
+}
+
+.dropdown-container a {
+	display: inline;
+	word-break: break-all;
+	padding: 6px 0px 6px 1px;
+	color: gray;
+	font-size: 18px;
+}
+
+.dropdown-container a:hover {
+	background-color:  #aed6f1; /* #e6e600; */
+	color: #333300;
+}
+
+/* current location */
+.current-btn {
+	/* same as .dropdown-btn */
+	padding: 8px;
+	margin-bottom: 7px;
+	background-color: pink;
+	color: yellow;
+	font-family: "Courier New", Courier, monospace;
+	font-weight: bold;
+	font-size: larger;
+	/* styles the button */
+	border: none;
+	background: gray;
+	width: 100%;
+	text-align: left;
+	cursor: pointer;
+	outline: none;
+}
+
+.current-container {
+	background-color: white;
+	padding-left: 8px;
+	padding-bottom: 6px;
+	font-size: 0;
+}
+
+.current-container a {
+	display: inline;
+	word-break: break-all;
+	padding: 6px 0px 6px 1px;
+	color: gray;
+	font-size: 18px;
+}
+
+.current-container a:hover {
+	background-color:  #aed6f1; /* #e6e600; */
+	color: #333300;
+}
+
+.current-container a.current-link {
+	background-color: #e6e600;
+	color: #333300;
+}
+

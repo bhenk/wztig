@@ -1,0 +1,39 @@
+.login-wrapper {
+	background-color: #035e4b;
+	color: white;
+	font-size: larger;
+	padding: 10px 10px 30px 4vw;
+	max-width: 450px;
+}
+
+.error {
+	color: red;
+	font-weight: bold;
+}
+
+.form-group > label {
+	display: block;
+	float: left;
+	width: 100px;
+	margin: 3px 5px 3px 5px;
+}
+
+.form-group > input {
+	margin: 3px 5px 3px 5px;
+	font-size: smaller;
+	color: grey;
+}
+
+.form-group > span {
+	display: block;
+	margin: 5px 5px 5px 5px;
+}
+
+.btn {
+	background-color: #406c51;
+	color: white !important;
+	border-radius: 5px;
+	border: 2px solid white;
+	font-size: smaller;
+	padding: 5px 65px 5px 65px;
+}
