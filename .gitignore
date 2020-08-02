@@ -10,3 +10,4 @@ application/public_html/img
 application/test-data
 application/test-dump
 composer.phar
+**/rawtest.php

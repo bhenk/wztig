@@ -81,6 +81,15 @@ abstract class GZ {
      */
     const GITZWART = GZ_ROOT.DIRECTORY_SEPARATOR.'gitzw';
     
+    /**
+     * The templates directory.
+     *
+     * /domains/gitzw.art/gitzwart/templates <br/>
+     * eclipse/wztig/application/gitzwart/templates <br/>
+     * /var/www/wztig/templates
+     */
+    const SCRIPTS = self::GITZWART.DIRECTORY_SEPARATOR.'js';
+    
     
     /**
      * The templates directory.

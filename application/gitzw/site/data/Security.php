@@ -31,11 +31,15 @@ class Security extends JsonData {
         }
     }
     
-    public function canLogin() {
+    public function canLogin() : bool {
         if (!isset($this->canLogin)) {
             $this->canLogin = !empty($this->getUsersByIp());
         }
         return $this->canLogin;
+    }
+    
+    public function hasAccess() : bool {
+        return NULL !== $this->getSessionUser();
     }
     
     public function getUsersByIp(string $ip = NULL) : array {

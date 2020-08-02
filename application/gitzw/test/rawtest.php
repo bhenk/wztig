@@ -19,4 +19,4 @@ require_once __DIR__.'/../GZ.php';
 // $y2020->loadResources();
 // echo json_encode($y2020, JSON_PRETTY_PRINT);
 
-echo substr('.', -1) == '.';
+var_dump(NULL != NULL);

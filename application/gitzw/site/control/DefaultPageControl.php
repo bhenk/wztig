@@ -150,6 +150,14 @@ class DefaultPageControl implements iPageControl {
         }
     }
     
+    protected function getAdminLink() {
+        if (Security::get()->hasAccess()) {
+            return '&nbsp;&bull; &nbsp;<a href="/admin">admin</a>';
+        } else {
+            return '';
+        }
+    }
+    
     protected function renderScripts() {
         foreach(array_unique($this->scripts) as $script) {
             echo '<script>';

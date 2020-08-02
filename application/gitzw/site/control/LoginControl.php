@@ -47,7 +47,7 @@ class LoginControl extends DefaultPageControl {
                 return;
             }
             Security::get()->startSession($user);
-            Site::get()->redirect('');
+            Site::get()->redirect('/admin');
             return;
         }
         parent::renderPage();

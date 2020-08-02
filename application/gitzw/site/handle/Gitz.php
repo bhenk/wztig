@@ -6,20 +6,22 @@ use gitzw\site\control\HomePageControl;
 use gitzw\site\control\InternalErrorPageControl;
 use gitzw\site\control\LoginControl;
 use gitzw\site\control\NotFoundPageControl;
+use gitzw\site\data\Security;
 use gitzw\site\data\Site;
 use gitzw\site\ext\TinyHtmlMinifier;
 use gitzw\site\logging\Log;
 use gitzw\site\logging\Req;
 use gitzw\site\model\SiteResources;
 use Exception;
-use gitzw\site\data\Security;
+use gitzw\site\control\DefaultPageControl;
 
 
 
 class Gitz {
     
     public function handleRequestURI() {
-        $this->handleRequest(explode('/', urldecode($_SERVER['REQUEST_URI'])));
+        $path = strtolower(preg_replace('/[^0-9a-zA-Z\/.]/', '-', urldecode($_SERVER['REQUEST_URI'])));
+        $this->handleRequest(explode('/', $path));
     }
 
     public function handleRequest(array $path) {
@@ -84,9 +86,21 @@ class Gitz {
                         Site::get()->redirect('');
                         Log::log()->info('end request handling logout');
                         return;
+                }                
+            } 
+            
+            if (Security::get()->hasAccess()) {
+                switch ($path[1]) {
+                    case 'admin':
+                        (new AdminHandler($path))->handleRequest();
+                        Log::log()->info('end request handling '.AdminHandler::class);
+                        return;
+                    case 'show-site':
+                        (new DefaultPageControl(GZ::TEMPLATES.'/site.php'))->renderPage();
+                        Log::log()->info('end request handling show-site');
+                        return;
                 }
-                
-            }            
+            }
             
             (new NotFoundPageControl())->renderPage();
             Log::log()->info('end request handling '.NotFoundPageControl::class);
