@@ -10,6 +10,7 @@ class DefaultPageControl implements iPageControl {
     
     private $title = 'gitzw art';
     private $stylesheets = array();
+    private $scriptLinks = array();
     private $navigation = array();
     private $footer = TRUE;
     private $footerTemplate;
@@ -35,6 +36,10 @@ class DefaultPageControl implements iPageControl {
     
     public function addStylesheet($styleSheet) {
         $this->stylesheets[] = $styleSheet;
+    }
+    
+    public function addScriptLink(string $fileName) {
+        $this->scriptLinks[] = $fileName;
     }
     
     public function setCanonicalURI(string $cURI) {
@@ -70,6 +75,12 @@ class DefaultPageControl implements iPageControl {
     protected function renderStylesheets() {
         foreach (array_unique($this->stylesheets) as $value) {
             echo '<link rel="stylesheet" href="' . $value . '">';
+        }
+    }
+    
+    protected function renderScriptLinks() {
+        foreach(array_unique($this->scriptLinks) as $value) {
+            echo '<script type="text/javascript" src="'.$value.'"></script>';
         }
     }
     

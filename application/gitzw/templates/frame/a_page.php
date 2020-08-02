@@ -12,8 +12,8 @@ namespace gitzw\templates\frame;
 <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon/favicon-16x16.png">
 <link rel="stylesheet" href="/css/normalize.min.css">
 <link rel="stylesheet" href="/css/frame.min.css">
-<link rel="stylesheet" href="/css/nav-menu.min.css">
 <?php $this->renderStylesheets(); ?>
+<?php $this->renderScriptLinks(); ?>
 <?php $this->renderCanonicalURI(); ?>
 <!-- link rel="manifest" href="img/favicon/site.webmanifest" -->
 </head>
