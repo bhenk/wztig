@@ -129,6 +129,10 @@ class Resource implements iViewRender, JsonSerializable {
     public function setDate(string $date) {
         $this->date = $date;
     }
+    
+    public function getRepresentations() : array {
+    	return $this->representations;
+    }
 
     public function getPreferredRepresentation() : int {
         return $this->preferredRepresentation;

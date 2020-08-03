@@ -13,7 +13,7 @@ class AdminMenuManager extends MenuManager {
 					['resources', '/admin/resources']
 			],
 			'edit'=>[
-					['new images', '/admin/new-images']
+					['scan images', '/admin/scan-images']
 			]
 	];
 	

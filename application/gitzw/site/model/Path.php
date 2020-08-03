@@ -354,6 +354,17 @@ class Path extends JsonData implements iViewRender {
         }
     }
     
+    public function collectRepresentations(array &$stack) {
+    	foreach ($this->resources as $resource) {
+    		foreach($resource->getRepresentations() as $rep) {
+    			$stack[] = $rep;
+    		}
+    	}
+    	foreach ($this->children as $child) {
+    		$child->collectRepresentations($stack);
+    	}
+    }
+    
     public function echoResourcePaths() {
         $resourcePath = $this->getResourcePath();
         if ($resourcePath != '') {

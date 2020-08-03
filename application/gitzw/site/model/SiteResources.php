@@ -43,7 +43,7 @@ class SiteResources extends Path {
         return $path;
     }
     
-    public function getFirstSegment(array $path) {
+    public function getFirstSegment(array $path) : ?Path {
         if (is_null($this->firstSegment)) {
             $this->firstSegment = $this->getByPathSegment($path[1], 1);
             if (isset($this->firstSegment)) {
@@ -51,6 +51,19 @@ class SiteResources extends Path {
             }
         }
         return $this->firstSegment;   
+    }
+    
+    public function getResourceImages() : array {
+    	$arr = array();
+    	$vars = SiteResources::getSite()->getSegment(['var']);
+    	foreach ($vars->getChildren() as $var) {
+    		$var->loadChildren();
+    		$var->loadResources();
+    		$stack = array();
+    		$var->collectRepresentations($stack);
+    		$arr[$var->getName()] = $stack;
+    	}
+    	return $arr;
     }
     
     
