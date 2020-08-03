@@ -1,6 +1,7 @@
 <?php
 namespace gitzw\site\data;
 
+use gitzw\GZ;
 use gitzw\site\ext\ResizeImage;
 use Exception;
 
@@ -70,17 +71,26 @@ class ImageData {
         return ['width'=>$this->imgSize[0], 'height'=>$this->imgSize[1]];
     }
     
-    
+    /**
+     * Get the absolute path for the derived image.
+     * 
+     * @param string $postfix postfix will be attached to the basename of this root image
+     * @throws Exception if we cannot create directories
+     * @return string the absolute path for the derived image
+     */
     public function getFilename(string $postfix) : string {
-        $dirname = dirname($this->imgFile);
-        $storage = $dirname.DIRECTORY_SEPARATOR.self::STORAGE_DIR;
-        if (!file_exists($storage)) {
-            if (!mkdir($storage)) {
-                throw new Exception('Cannot create storage: '.$storage);
-            }
-        }
-        $parts = explode('.', basename($this->imgFile));
-        return $storage.DIRECTORY_SEPARATOR.$parts[0].$postfix.'.'.$parts[1];
+    	$derivedDir = Site::get()->documentRoot().'/img/derived';
+    	// GZ::DATA.'/images/hnq/2020/xyz/_DSC123.jpg'
+    	$path = substr(dirname($this->imgFile), strlen(GZ::DATA.'/images/'));
+    	$parts = explode('.', basename($this->imgFile));
+    	$newFile = $derivedDir.'/'.$path.'/'.$parts[0].$postfix.'.'.$parts[1];
+    	$newPath = dirname($newFile);
+    	if (!file_exists($newPath)) {
+    		if (!mkdir($newPath, 0777, TRUE)) {
+    			throw new Exception('Cannot create new path: '.$newPath);
+    		}
+    	}
+    	return $newFile;
     }
     
     public function getImgLocation(string $postfix) : string {

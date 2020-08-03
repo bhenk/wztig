@@ -13,8 +13,6 @@ use gitzw\site\logging\Log;
 use gitzw\site\logging\Req;
 use gitzw\site\model\SiteResources;
 use Exception;
-use gitzw\site\control\DefaultPageControl;
-
 
 
 class Gitz {
@@ -89,17 +87,9 @@ class Gitz {
                 }                
             } 
             
-            if (Security::get()->hasAccess()) {
-                switch ($path[1]) {
-                    case 'admin':
-                        (new AdminHandler($path))->handleRequest();
-                        Log::log()->info('end request handling '.AdminHandler::class);
-                        return;
-                    case 'show-site':
-                        (new DefaultPageControl(GZ::TEMPLATES.'/site.php'))->renderPage();
-                        Log::log()->info('end request handling show-site');
-                        return;
-                }
+            if (Security::get()->hasAccess() and $path[1] == 'admin') {
+            	(new AdminHandler($path))->handleRequest();
+                return;
             }
             
             (new NotFoundPageControl())->renderPage();

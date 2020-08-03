@@ -12,7 +12,7 @@ require_once __DIR__.'/../../GZ.php';
 
 class ImageDataTest extends TestCase {
     
-    const testImg = GZ::ROOT.DIRECTORY_SEPARATOR.'test-data/public_html/img/_DSC0504_00017.jpg';
+    const testImg = GZ::DATA.'/images/hnq/2020/_DSC0429_00006.jpg';
     
     private $id;
     
@@ -40,35 +40,36 @@ class ImageDataTest extends TestCase {
     }
     
     public function testGetFileName() {
-        $expected = GZ::ROOT.DIRECTORY_SEPARATOR.'test-data/public_html/img'.
-            DIRECTORY_SEPARATOR.ImageData::STORAGE_DIR.
-            DIRECTORY_SEPARATOR.'_DSC0504_00017_f.jpg';
+        $expected = GZ::ROOT.'/test-data/public_html/img/derived/hnq/2020/_DSC0429_00006_f.jpg';
+        //echo "\n".$expected;
+        //echo "\n".$this->id->getFileName('_f');
         assertEquals($expected, $this->id->getFilename('_f'));
     }
     
     public function testGetImgLocation() {
-        $expected = '/img/derived/_DSC0504_00017_f.jpg';
+        $expected = '/img/derived/hnq/2020/_DSC0429_00006_f.jpg';
         assertEquals($expected, $this->id->getImgLocation('_f'));
     }
     
     public function testResizeDefault() {
-        $expected = GZ::ROOT.DIRECTORY_SEPARATOR.'test-data/public_html/img/derived/_DSC0504_00017_1200_1000_d.jpg';
+        $expected = GZ::ROOT.DIRECTORY_SEPARATOR.
+        	'test-data/public_html/img/derived/hnq/2020/_DSC0429_00006_1200_1000_d.jpg';
         if (file_exists($expected)) {
             unlink($expected);
         }
         $data = $this->id->resize(1200, 1000);
       
         assertEquals($expected, $data['filename']);
-        assertEquals('/img/derived/_DSC0504_00017_1200_1000_d.jpg', $data['location']);
-        assertEquals(671, $data['size'][0]);
-        assertEquals(1000, $data['size'][1]);
-        assertEquals('width="671" height="1000"', $data['size'][3]);
+        assertEquals('/img/derived/hnq/2020/_DSC0429_00006_1200_1000_d.jpg', $data['location']);
+        assertEquals(1200, $data['size'][0]);
+        assertEquals(615, $data['size'][1]);
+        assertEquals('width="1200" height="615"', $data['size'][3]);
         assertEquals('image/jpeg', $data['size']['mime']);
     }
     
     public function testGetImgTag() {
         $tag = $this->id->getImgTag(1200, 1000, 'test');
-        $expected = '<img src="/img/derived/_DSC0504_00017_1200_1000_d.jpg" alt="test">';
+        $expected = '<img src="/img/derived/hnq/2020/_DSC0429_00006_1200_1000_d.jpg" alt="test">';
         assertEquals($expected, $tag);
     }
 }

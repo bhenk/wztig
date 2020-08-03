@@ -7,6 +7,7 @@ use gitzw\site\logging\Log;
 use gitzw\site\model\Path;
 use gitzw\site\data\ImageData;
 use gitzw\site\data\Site;
+use gitzw\site\control\menu\MenuManager;
 
 class FrontPageControl extends DefaultPageControl {
     
@@ -22,17 +23,24 @@ class FrontPageControl extends DefaultPageControl {
         $this->path = $path;
         $this->setTitle($this->segment->getFullName());
         $this->setContentFile(GZ::TEMPLATES.'/front.php');
-        $this->addStylesheet('/css/nav-menu.css');
         if (count($this->path) > 2) {
             $this->setCanonicalURI(Site::get()->
                 redirectLocation($this->segment->getFullNamePath()));
         }
+        $this->constructMenu();
         Log::log()->info(__METHOD__);
     }
     
-    protected function renderNavigation() {
-        (new MenuManager($this->segment, $this->path))->renderMenu();
-        $this->addScript(GZ::TEMPLATES . '/frame/nav-menu.min.js');
+    private function constructMenu() {
+    	$work = $this->segment->getChildByName('work');
+    	$manager = new MenuManager();
+    	foreach($work->getChildren() as $cat) {
+    		$item = $manager->addItem($cat->getName());
+    		foreach ($cat->getChildren() as $year) {
+    			$item->addSub($year->getFullName(), $year->getResourcePath());
+    		}
+    	}
+    	$this->setMenuManager($manager);
     }
     
     protected function renderImage() {
@@ -41,7 +49,7 @@ class FrontPageControl extends DefaultPageControl {
             return;
         }
         $image = $frontImages[rand(0, count($frontImages) -1)];
-        $imgFile = Site::get()->documentRoot().'/img/'.$this->segment->getName().'/'.$image;
+        $imgFile = GZ::DATA.'/images/'.$image;
         $id = new ImageData($imgFile);
         echo $id->getImgTag(self::IMG_WIDTH, self::IMG_HEIGHT, 'random image');
     }

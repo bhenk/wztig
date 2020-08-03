@@ -1,6 +1,6 @@
 
 /* hide and display blocks */
-var dropdown = document.getElementsByClassName("code-button");
+var dropdown = document.getElementsByClassName("collapse-button");
 var i;
 
 for (i = 0; i < dropdown.length; i++) {

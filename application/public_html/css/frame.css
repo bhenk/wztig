@@ -266,3 +266,12 @@ td {
   visibility: visible;
   opacity: 1;
 }
+
+/* for collapse.js */
+.collapse-button {
+	content: "";
+}
+
+.collapsable {
+	display: none;
+}

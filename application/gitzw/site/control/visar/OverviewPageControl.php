@@ -5,6 +5,7 @@ use gitzw\GZ;
 use gitzw\site\control\DefaultPageControl;
 use gitzw\site\logging\Log;
 use gitzw\site\model\Path;
+use gitzw\site\control\menu\MenuManager;
 
 class OverviewPageControl extends DefaultPageControl {
     
@@ -21,13 +22,22 @@ class OverviewPageControl extends DefaultPageControl {
         $this->setTitle($this->segment->getFullName().' '.$cat->getFullName().
             ' '.$year->getFullName());
         $this->setContentFile(GZ::TEMPLATES.'/overview.php');
-        $this->addStylesheet('/css/nav-menu.css');
+        $this->constructMenu($work);
         Log::log()->info(__METHOD__);
     }
     
-    protected function renderNavigation() {
-        (new MenuManager($this->segment, $this->path))->renderMenu();
-        $this->addScript(GZ::TEMPLATES . '/frame/nav-menu.min.js');
+    private function constructMenu(Path $work) {
+    	$manager = new MenuManager();
+    	foreach($work->getChildren() as $cat) {
+    		$catSelected = $cat->getFullNamePath() == $this->path[3];
+    		$item = $manager->addItem($cat->getName(), NULL, $catSelected);
+    		foreach ($cat->getChildren() as $year) {
+    			$selected = $year->getFullNamePath() == $this->path[4] and $catSelected;
+    			$item->addSub($year->getFullName(), $year->getResourcePath(), $selected);
+    		}
+    	}
+		$manager->addItem($this->segment->getName(), $this->segment->getResourcePath());
+    	$this->setMenuManager($manager);
     }
     
     protected function getCopyRight() : string {

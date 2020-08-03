@@ -1,5 +1,5 @@
 <?php
-namespace gitzw\templates;
+namespace gitzw\templates\admin;
 
 use gitzw\site\data\Site;
 use gitzw\GZ;
@@ -17,12 +17,14 @@ function logLevelForInt(int $i) : ?string {
 
 /** @var mixed $this */
 ?>
-<h1>Site</h1>
+<h1 class="collapse-button">Server</h1>
+<div class="collapsable">
 <?php echo '__FILE__ : '.__FILE__.'<br/>'?>
 <?php echo 'self::class : '.self::class.'<br/>'?>
+</div>
 
-<h2><?php echo 'class '.GZ::class ?></h2>
-<table>
+<h2 class="collapse-button"><?php echo 'class '.GZ::class ?></h2>
+<table class="collapsable">
 <tr><td>ROOT</td><td><?php echo GZ::ROOT ?></td></tr>
 <tr><td>DATA</td><td><?php echo GZ::DATA ?></td></tr>
 <tr><td>LOG_DIRECTORY</td><td><?php echo GZ::LOG_DIRECTORY ?></td></tr>
@@ -34,8 +36,8 @@ function logLevelForInt(int $i) : ?string {
 <tr><td>LOG_OUTPUT</td><td><?php echo GZ::LOG_OUTPUT ?></td></tr>
 </table>
 
-<h2><?php echo 'class '.Site::class ?></h2>
-<table>
+<h2 class="collapse-button"><?php echo 'class '.Site::class ?></h2>
+<table class="collapsable">
 <tr><td>document root</td><td><?php echo Site::get()->documentRoot() ?></td></tr>
 <tr><td>hostname</td><td><?php echo Site::get()->hostName() ?></td></tr>
 <tr><td>actual link</td><td><?php echo Site::get()->actualLink() ?></td></tr>
@@ -44,7 +46,7 @@ function logLevelForInt(int $i) : ?string {
 </table>
 
 
-<h2>$_SERVER</h2>
+<h2 class="collapse-button">$_SERVER</h2>
 <?php 
 $indicesServer = array('PHP_SELF',
     'argv',
@@ -87,7 +89,7 @@ $indicesServer = array('PHP_SELF',
     'PATH_INFO',
     'ORIG_PATH_INFO');
 
-echo '<table>';
+echo '<table class="collapsable">';
 foreach ($indicesServer as $arg) {
     if (isset($_SERVER[$arg])) {
         echo '<tr><td>'.$arg.'</td><td>' . $_SERVER[$arg] . '</td></tr>';
@@ -98,7 +100,8 @@ foreach ($indicesServer as $arg) {
 echo '</table>';
 ?>
 
-<h2>Environment</h2>
+<h2 class="collapse-button">Environment</h2>
+<div class="collapsable">
 getenv()<br/>&nbsp;<br/>
 <table>
 <?php 
@@ -107,31 +110,43 @@ foreach(getenv() as $key=>$value) {
 }
 ?>
 </table>
+</div>
 
-<h2>PHP ini file</h2>
+<h2 class="collapse-button">PHP ini file</h2>
+<div class="collapsable">
 <?php echo 'loaded file: '.php_ini_loaded_file() ?>
+</div>
 
-<h2>Interface between web server and PHP</h2>
+<h2 class="collapse-button">Interface between web server and PHP</h2>
+<div class="collapsable">
 <?php echo 'php sapi name: '.php_sapi_name() ?>
+</div>
 
-<h2>Operating system</h2>
+<h2 class="collapse-button">Operating system</h2>
+<div class="collapsable">
 <?php echo php_uname() ?>
+</div>
 
-<h2>Loaded extensions</h2>
+<h2 class="collapse-button">Loaded extensions</h2>
+<div class="collapsable">
 <?php 
 foreach (array_values(get_loaded_extensions()) as $value) {
     echo $value.', ';
 }
 ?>
+</div>
 
-<h2>Included files</h2>
+<h2 class="collapse-button">Included files</h2>
+<div class="collapsable">
 <?php 
 foreach (get_included_files() as $value) {
     echo $value.'<br/>';
 }
 ?>
+</div>
 
-<h2>Configuration options</h2>
+<h2 class="collapse-button">Configuration options</h2>
+<div class="collapsable">
 ini_get_all<br/>&nbsp;<br/>
 <table>
 <?php 
@@ -144,7 +159,11 @@ foreach(ini_get_all() as $key=>$value) {
 }
 ?>
 </table>
+</div>
 
+<script>
+<?php require_once GZ::SCRIPTS.'/collapse.js' ?>
+</script>
 
 <!-- h2>PHP info</h2 -->
 

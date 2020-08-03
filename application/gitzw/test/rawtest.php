@@ -4,19 +4,21 @@
 
 
 
+use gitzw\GZ;
+use gitzw\site\data\ImageData;
+use gitzw\site\data\Site;
+
 //use gitzwart\GZ;
 
 require_once __DIR__.'/../GZ.php';
 
-// $root = SiteResources::getSite();
-// $hnq = $root->getFirstSegment(['', 'hnq']);
-// echo json_encode($hnq, JSON_PRETTY_PRINT);
+Site::reset(new class() extends Site {
+	public function documentRoot() : string {
+		return GZ::ROOT.DIRECTORY_SEPARATOR.'test-data/public_html';
+	}
+});
 
-// $root = SiteResources::getSite();
-// $hnq = $root->getSegment(['var', 'hnq']);
-// $hnq->loadChildren();
-// $y2020 = $hnq->getSegment(['work', 'draw', '2020']);
-// $y2020->loadResources();
-// echo json_encode($y2020, JSON_PRETTY_PRINT);
+$imgFile = GZ::DATA.'/images/hnq/2020/_DSC0429_00006.jpg';
 
-var_dump(NULL != NULL);
+$id = new ImageData($imgFile);
+echo $id->getFilename('_f');

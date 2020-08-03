@@ -5,6 +5,7 @@ use gitzw\GZ;
 use gitzw\site\logging\Log;
 use gitzw\site\data\Security;
 use gitzw\site\data\Site;
+use gitzw\site\control\menu\MenuManager;
 
 class DefaultPageControl implements iPageControl {
     
@@ -17,6 +18,7 @@ class DefaultPageControl implements iPageControl {
     private $contentFile;
     private $scripts = array();
     private $canonicalURI;
+    private $menuManager;
     
     
     function __construct($contentFile = NULL) {
@@ -48,6 +50,12 @@ class DefaultPageControl implements iPageControl {
     
     public function addNavigation($link, $text, $selected = FALSE) {
         $this->navigation[$link] = [$text, $selected];
+    }
+    
+    public function setMenuManager(MenuManager $manager) {
+    	$this->addStylesheet($manager->getStylesheet());
+    	$this->addScript($manager->getScript());
+    	$this->menuManager = $manager;
     }
     
     public function addScript(string $script) {
@@ -97,16 +105,20 @@ class DefaultPageControl implements iPageControl {
     }
     
     protected function renderNavigation() {
-        echo '<ul>';
-        foreach ($this->navigation as $link => $params) {
-            if ($params[1]) {
-                $clazz = ' class="current"';
-            } else {
-                $clazz = '';
-            }
-            echo '<li' . $clazz . '><a href="' . $link . '">' . $params[0] . '</a></li>';
-        }
-        echo '</ul>';
+    	if (isset($this->menuManager)) {
+    		$this->menuManager->render();
+    	} else {
+	        echo '<ul>';
+	        foreach ($this->navigation as $link => $params) {
+	            if ($params[1]) {
+	                $clazz = ' class="current"';
+	            } else {
+	                $clazz = '';
+	            }
+	            echo '<li' . $clazz . '><a href="' . $link . '">' . $params[0] . '</a></li>';
+	        }
+	        echo '</ul>';
+    	}
     }
     
     protected function renderContent() {

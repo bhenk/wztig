@@ -67,8 +67,13 @@ class Security extends JsonData {
         return GZ::DATA.'/auth.json';
     }
     
+    public function getLastLogin() : ?string {
+    	return $_SESSION["last_login"];
+    }
+    
     public function startSession(User $user) {
         $this->sessionUser = $user;
+        $lastLogin = $this->sessionUser->getLastLogin();
         $this->sessionUser->setLastLogin(date('Y-m-d H:i:s'));
         $this->persist();
         session_start();
@@ -76,6 +81,7 @@ class Security extends JsonData {
         $_SESSION["username"] = $user->getName();
         $_SESSION["full_name"] = $user->getFullName();
         $_SESSION["client_ip"] = Site::get()->clientIp();
+        $_SESSION["last_login"] = $lastLogin;
     }
     
     public function endSession() {

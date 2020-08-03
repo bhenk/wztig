@@ -1,6 +1,15 @@
 <?php
 namespace gitzw\templates\admin;
 
+use gitzw\site\model\SiteResources;
+
+function renderSite() {
+	$site = SiteResources::getSite();
+	$site->loadChildren();
+	$site->loadResources();
+	return json_encode($site);
+}
+
 /** @var mixed $this */
 ?>
 <h1>Visual ARtists</h1>
@@ -14,7 +23,7 @@ namespace gitzw\templates\admin;
 <div id="json"></div>
 <script>
 
-var jsonObj = <?php echo $this->renderSite(); ?>;
+var jsonObj = <?php echo renderSite(); ?>;
 
 var jsonViewer = new JSONViewer();
 document.querySelector("#json").appendChild(jsonViewer.getContainer());
