@@ -8,6 +8,25 @@ use RecursiveIteratorIterator;
 
 class ImageInspector {
 	
+	/**
+	 * Get images per var that are not yet referenced by resources of the var.
+	 *
+	 * @return array
+	 */
+	public function imageDiff() : array {
+		$arr = array();
+		$resourceImages = SiteResources::getSite()->getResourceImages();
+		foreach ($this->scanImages() as $name=>$images) {
+			$arr[$name] = array_diff($images, $resourceImages[$name]);
+		}
+		return $arr;
+	}
+	
+	/**
+	 * Scan all data/images directories and list all relative paths of images per var.
+	 * 
+	 * @return array all images in data/images
+	 */
 	public function scanImages() : array {
 		$arr = array();
 		$imageDir = GZ::DATA.'/images/';
@@ -18,6 +37,13 @@ class ImageInspector {
 		return $arr;
 	}
 	
+	/**
+	 * Walks directories recursively in search for images.
+	 * 
+	 * @param string $dir where to start the search 
+	 * @param string $baseDir what part of the absolute path should be truncated to get relative pathes (default '')
+	 * @return array array with pathes
+	 */
 	public function getImages(string $dir, string $baseDir = '') : array {
 		$arr = array();
 		$front = strlen($baseDir);
@@ -36,19 +62,6 @@ class ImageInspector {
 		return $arr;
 	}
 	
-	/**
-	 * Get images per var that are not yet referenced by resources of the var.
-	 * 
-	 * @return array
-	 */
-	public function imageDiff() : array {
-		$arr = array();
-		$resourceImages = SiteResources::getSite()->getResourceImages();
-		foreach ($this->scanImages() as $name=>$images) {
-			$arr[$name] = array_diff($images, $resourceImages[$name]);
-		}
-		return $arr;
-	}
 	
 }
 

@@ -44,7 +44,7 @@
 
 .dropdown-container a {
 	display: block;
-	padding: 3px 0px 2px 1px;
+	padding: 3px 0px 2px 20px;
 	color: gray;
 	font-size: 18px;
 }
@@ -81,7 +81,7 @@
 
 .current-container a {
 	display: block;
-	padding: 3px 0px 2px 1px;
+	padding: 3px 0px 2px 20px;
 	color: gray;
 	font-size: 18px;
 }

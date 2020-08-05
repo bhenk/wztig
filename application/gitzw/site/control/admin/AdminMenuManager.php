@@ -7,14 +7,17 @@ use gitzw\site\control\menu\MenuManager;
 class AdminMenuManager extends MenuManager {
 	
 	private $structure = [
-			'overview pages'=>[
+			'overview'=>[
 					['admin', '/admin'],
 					['server', '/admin/server'],
 					['resources', '/admin/resources']
 			],
 			'edit'=>[
 					['scan images', '/admin/scan-images']
-			]
+			],
+			'misc'=>[
+					['raise exception', 'admin/raise-exception']
+			]			
 	];
 	
 	function __construct(string $current=NULL, $style=self::STYLE_VERTICAL) {
@@ -22,7 +25,7 @@ class AdminMenuManager extends MenuManager {
 		$this->constructMenu($current);
 	}
 	
-	private function constructMenu(string $current) {
+	private function constructMenu(string $current=NULL) {
 		foreach($this->structure as $heading=>$links) {
 			$item = $this->addItem($heading, NULL);
 			foreach($links as $link) {

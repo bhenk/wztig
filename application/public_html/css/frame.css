@@ -15,9 +15,22 @@ a {
 	text-decoration: none !important;
 }
 
+a.incognito {
+	color: inherit;
+}
+
 img {
 	max-width: 100%;
 	height: auto;
+}
+
+.gitzw {
+	background-color: gray;
+	color: white;
+	padding: 8px 8px 4px 8px;
+	margin-top: 0px;
+	word-break: break-all;
+	max-width: 700px;
 }
 
 .graph {
@@ -269,9 +282,87 @@ td {
 
 /* for collapse.js */
 .collapse-button {
-	content: "";
+	padding: 6px;
+	max-width: 500px;
+	cursor: pointer;
+}
+
+.collapse-button:hover {
+	background-color: gray;
+	color: white;
+}
+
+.collapse-button::before {
+	content: " \25BE   ";
+}
+
+.active::before {
+	content: " \25B4   ";
 }
 
 .collapsable {
 	display: none;
 }
+
+.collapsable.open {
+	display: block;
+}
+/* end collapse.js */
+
+.image-container {
+	margin-top: 15px;
+	margin-bottom: 0px;
+	display: block;
+}
+
+/* img and data container */
+.img-data-container {
+	width: 100%;
+	clear: both;
+}
+
+.img-container {
+	float: left;
+	padding: 5px;
+	border: 1px solid blue;
+	margin-right: 2em;
+	margin-bottom: 1em;
+}
+
+.img_data {
+	clear: none;
+	padding: 5px;
+	min-width: 200px;
+	border: 1px solid red;
+}
+
+/* prevent data block too small */
+.img_data:before {
+      content: "";
+      width: 20em;
+      display: block;
+      overflow: hidden;
+      border: 1px solid green;
+    }
+
+div.table-data {
+	min-width: 300px;
+    display: table;
+    color: #63686c;
+}
+
+div.table-data > div {
+    display: table-row;
+}
+
+div.table-data > div > div {
+    display: table-cell;
+    padding: 2px;
+}
+
+div.table-data > div > div:first-child {
+	color: #bcc0c3;
+}
+
+/* end img and data container */
+

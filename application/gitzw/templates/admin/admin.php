@@ -11,3 +11,6 @@ use gitzw\site\data\Security;
 <tr><td>email</td><td><?php echo Security::get()->getSessionUser()->getEmail(); ?></td></tr>
 <tr><td>last login</td><td><?php echo Security::get()->getLastLogin(); ?></td></tr>
 </table>
+
+<h1>Gitzw.art</h1>
+version: RC_0.0.1 &nbsp;&bull;&nbsp; date: 2020-08-04

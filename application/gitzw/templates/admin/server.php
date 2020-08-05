@@ -18,13 +18,13 @@ function logLevelForInt(int $i) : ?string {
 /** @var mixed $this */
 ?>
 <h1 class="collapse-button">Server</h1>
-<div class="collapsable">
+<div class="collapsable open">
 <?php echo '__FILE__ : '.__FILE__.'<br/>'?>
 <?php echo 'self::class : '.self::class.'<br/>'?>
 </div>
 
 <h2 class="collapse-button"><?php echo 'class '.GZ::class ?></h2>
-<table class="collapsable">
+<table class="collapsable open">
 <tr><td>ROOT</td><td><?php echo GZ::ROOT ?></td></tr>
 <tr><td>DATA</td><td><?php echo GZ::DATA ?></td></tr>
 <tr><td>LOG_DIRECTORY</td><td><?php echo GZ::LOG_DIRECTORY ?></td></tr>

@@ -1,6 +1,7 @@
 <?php
-namespace gitzw\site\control;
+namespace gitzw\site\control\admin;
 
+use gitzw\site\control\DefaultPageControl;
 use gitzw\site\logging\Log;
 use Exception;
 
@@ -12,7 +13,6 @@ class ForcedExceptionPage extends DefaultPageControl {
     
     
     protected function renderFooter() {
-        Log::log()->debug('Raising forced exception');
         Log::log()->error('Going to raise a forced Exception');
         throw new Exception('virtual exception');
     }

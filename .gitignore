@@ -6,7 +6,7 @@ notes/
 vendor/
 application/data
 application/logs
-application/public_html/img
+application/public_html/img/derived
 application/test-data
 application/test-dump
 composer.phar

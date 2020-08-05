@@ -18,7 +18,7 @@ use Exception;
 class Gitz {
     
     public function handleRequestURI() {
-        $path = strtolower(preg_replace('/[^0-9a-zA-Z\/.]/', '-', urldecode($_SERVER['REQUEST_URI'])));
+        $path = preg_replace('/[^0-9a-zA-Z\/._]/', '-', urldecode($_SERVER['REQUEST_URI']));
         $this->handleRequest(explode('/', $path));
     }
 

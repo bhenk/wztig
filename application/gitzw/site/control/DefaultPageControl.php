@@ -9,6 +9,7 @@ use gitzw\site\control\menu\MenuManager;
 
 class DefaultPageControl implements iPageControl {
     
+	private $path;
     private $title = 'gitzw art';
     private $stylesheets = array();
     private $scriptLinks = array();
@@ -26,6 +27,10 @@ class DefaultPageControl implements iPageControl {
             $this->contentFile = $contentFile;
         }
         Log::log()->info(__METHOD__);
+    }
+    
+    public function setPath(array $path) {
+    	$this->path = $path;
     }
     
     public function setContentFile(?string $contentFile) {
@@ -74,6 +79,10 @@ class DefaultPageControl implements iPageControl {
     public function renderPage() {
         Log::log()->debug(static::class.'->'.__METHOD__);
         require GZ::TEMPLATES . '/frame/a_page.php';
+    }
+    
+    protected function getPath() : ?array {
+    	return $this->path;
     }
     
     protected function renderTitle() {

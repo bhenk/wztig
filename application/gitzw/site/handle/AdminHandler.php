@@ -5,6 +5,7 @@ use gitzw\GZ;
 use gitzw\site\control\DefaultPageControl;
 use gitzw\site\control\NotFoundPageControl;
 use gitzw\site\control\admin\AdminMenuManager;
+use gitzw\site\control\admin\ForcedExceptionPage;
 use gitzw\site\logging\Log;
 
 class AdminHandler {
@@ -39,6 +40,23 @@ class AdminHandler {
     			$control->addScriptLink('/js/json-viewer.js');
     			$control->renderPage();
     			Log::log()->info('end request handling admin/resources');
+    			return;
+    		case 'scan-images':
+    			$control = new DefaultPageControl(GZ::TEMPLATES.'/admin/scan-images.php');
+    			$control->setMenuManager(new AdminMenuManager('/admin/scan-images'));
+    			$control->renderPage();
+    			Log::log()->info('end request handling admin/scan-images');
+    			return;
+    		case 'edit-image':
+    			$control = new DefaultPageControl(GZ::TEMPLATES.'/admin/edit-image.php');
+    			$control->setMenuManager(new AdminMenuManager());
+    			$control->setPath($this->path);
+    			$control->renderPage();
+    			Log::log()->info('end request handling admin/edit-image');
+    			return;
+    		case 'raise-exception':
+    			(new ForcedExceptionPage())->renderPage();
+    			Log::log()->info('end request handling admin/raise-exception');
     			return;
     	}
     	(new NotFoundPageControl())->renderPage();
