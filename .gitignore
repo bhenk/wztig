@@ -11,3 +11,4 @@ application/test-data
 application/test-dump
 composer.phar
 **/rawtest.php
+**/*.min.*
