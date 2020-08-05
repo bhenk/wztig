@@ -23,7 +23,7 @@ class NotFoundPageControl extends DefaultPageControl {
             $this->fileTrace = $backtrace[0]['file'] . ":" . $backtrace[0]['line'];
         }
         
-        $this->addStylesheet('/css/error.min.css');
+        $this->addStylesheet('/css/error.css');
         Log::log()->info(__METHOD__);
     }
     

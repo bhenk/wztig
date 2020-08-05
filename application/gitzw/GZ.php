@@ -75,18 +75,18 @@ abstract class GZ {
     /**
      * The source directory.
      * 
-     * /domains/gitzw.art/gitzwart <br/>
+     * /domains/gitzw.art/gitzw <br/>
      * eclipse/wztig/application/gitzw <br/>
-     * /var/www/gitzwart 
+     * /var/www/gitzw 
      */
     const GITZWART = GZ_ROOT.DIRECTORY_SEPARATOR.'gitzw';
     
     /**
      * The templates directory.
      *
-     * /domains/gitzw.art/gitzwart/templates <br/>
-     * eclipse/wztig/application/gitzwart/templates <br/>
-     * /var/www/wztig/templates
+     * /domains/gitzw.art/gitzw/templates <br/>
+     * eclipse/wztig/application/gitzw/templates <br/>
+     * /var/www/gitzw/templates
      */
     const SCRIPTS = self::GITZWART.DIRECTORY_SEPARATOR.'js';
     
@@ -94,9 +94,9 @@ abstract class GZ {
     /**
      * The templates directory.
      * 
-     * /domains/gitzw.art/gitzwart/templates <br/>
-     * eclipse/wztig/application/gitzwart/templates <br/>
-     * /var/www/wztig/templates 
+     * /domains/gitzw.art/gitzw/templates <br/>
+     * eclipse/wztig/application/gitzw/templates <br/>
+     * /var/www/gitzw/templates 
      */
     const TEMPLATES = self::GITZWART.DIRECTORY_SEPARATOR.'templates';
     

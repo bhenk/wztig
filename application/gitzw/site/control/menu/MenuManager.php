@@ -27,14 +27,14 @@ class MenuManager {
     
     public function getStylesheet() : string {
     	if ($this->style == self::STYLE_HORIZONTAL) {
-    		return '/css/menu/nav-menu-hor.min.css';
+    		return '/css/menu/nav-menu-hor.css';
     	} else {
-    		return '/css/menu/nav-menu-ver.min.css';
+    		return '/css/menu/nav-menu-ver.css';
     	}
     }
     
     public function getScript() : string {
-    	return GZ::TEMPLATES . '/frame/nav-menu.min.js';
+    	return GZ::TEMPLATES . '/frame/nav-menu.js';
     }
     
     public function render() {

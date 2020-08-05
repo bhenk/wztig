@@ -24,7 +24,7 @@ class InternalErrorPageControl extends DefaultPageControl {
             $this->actualLink = '';
         }
         
-        $this->addStylesheet('/css/error.min.css');
+        $this->addStylesheet('/css/error.css');
         Log::log()->info(__METHOD__);
     }
     
