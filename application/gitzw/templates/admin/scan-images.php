@@ -21,7 +21,7 @@ foreach ($ii->imageDiff() as $name=>$images) {
 		<?php 
 		foreach ($images as $image) {
 			?>
-			<a class="incognito" href="/admin/edit-image/<?php echo $image; ?>">
+			<a class="incognito" href="/admin/locate-image/<?php echo $image; ?>">
 			<span class="image-container">
 			<?php 
 			$imgFile = GZ::DATA.'/images/'.$image;

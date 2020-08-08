@@ -11,23 +11,6 @@ use gitzw\site\model\ImageInspector;
 
 require_once __DIR__.'/../GZ.php';
 
+$url='/admin/locate-image/hnq/2020/_DSC0533_00022.jpg?locate=new_resource&subject=work&year=2020';
 
-$ii = new ImageInspector();
-var_dump($ii->imageDiff());
-
-// $it = new RecursiveDirectoryIterator(dirname(__DIR__));
-// foreach (new RecursiveIteratorIterator($it) as $file) {
-// 	if ($file->getExtension() == 'php') {
-// 		echo substr($file.PHP_EOL, strlen('/Users/ecco/git2/wztig/application/'));
-// 	}
-// }
-
-// $arr = array();
-// $arr['foo'] = ['bar', 'baz'];
-// var_dump($arr);
-
-// var_dump(SiteResources::getSite()->getResourceImages());
-
-// $stack = ['a', 'b', 'c'];
-// array_push($stack, ['b', 'd']);
-// var_dump($stack);
+var_dump(parse_url($url, PHP_URL_PATH));

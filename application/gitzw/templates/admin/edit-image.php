@@ -7,7 +7,7 @@ use gitzw\site\data\ImageData;
 use gitzw\GZ;
 
 const IMG_WIDTH = 500;
-const IMG_HEIGHT = 600;
+const IMG_HEIGHT = 500;
 
 $path = $this->getPath();
 // $var = $path[3];
@@ -31,33 +31,52 @@ $technique = '';
 		echo $id->getImgTag(IMG_WIDTH, IMG_HEIGHT, $rep, 'maxheight');
 		?>
 	</div>
+	<!-- pseude element .img_data:before -->
 	<div class="img_data">
-		bla bla bla bl a lbla bla bla bla bla bla bla bla bla bla bl a lbla bla bla bla bla bla bla 
-		<form action="<?php echo $action; ?>" method="post">
-			<div class="table-data">
-				<div>
-					<div><label for="title_nl">title (nl)</label></div>
-					<div><input type="text" id="title_nl" name="title_nl" class="form-control" value="<?php echo $title_nl; ?>"></div>
-				</div>
-				<div>
-					<div><label for="title_en">title (en)</label></div>
-					<div><input size="60" type="text" id="title_en" name="title_en" class="form-control" value="<?php echo $title_en; ?>"></div>
-				</div>
-				<div>
-					<div><label for="preferred_title">preferred title</label></div>
-					<div>
-						<select id="preferred_title" name="preferred_title" class="form-control">
-						  <option value="nl" <?php echo $preferred_title == 'nl' ? 'selected' : ''; ?>>nl</option>
-						  <option value="en" <?php echo $preferred_title == 'en' ? 'selected' : ''; ?>>en</option>
-						</select>
-					</div>
-				</div>
-				<div>
-					<div><label for="technique">technique</label></div>
-					<div><input type="text" id="technique" name="technique" class="form-control" value="<?php echo $technique ?>"></div>
-				</div>
-			</div>
-		</form>
-		<?php echo $action; ?>
+		<div class="container">
+		  <form action="/action_page.php">
+		  	
+		    <div class="formrw">
+		      <div class="form-25">
+		        <label for="fname">First Name</label>
+		      </div>
+		      <div class="form-75">
+		        <input type="text" id="fname" name="firstname" placeholder="Your name..">
+		      </div>		      
+		    </div>
+		    
+		    <div class="formrw">
+		      <div class="form-25">
+		        <label for="lname">Last Name</label>
+		      </div>
+		      <div class="form-75">
+		        <input type="text" id="lname" name="lastname" placeholder="Your last name..">
+		      </div>
+		    </div>
+		    <div class="formrw">
+		      <div class="form-25">
+		        <label for="country">Country</label>
+		      </div>
+		      <div class="form-75">
+		        <select id="country" name="country">
+		          <option value="australia">Australia</option>
+		          <option value="canada">Canada</option>
+		          <option value="usa">USA</option>
+		        </select>
+		      </div>
+		    </div>
+		    <div class="formrw">
+		      <div class="form-25">
+		        <label for="subject">Subject</label>
+		      </div>
+		      <div class="form-75">
+		        <textarea id="subject" name="subject" placeholder="Write something.." style="height:200px"></textarea>
+		      </div>
+		    </div>
+		    <div class="formrw">
+		      <input type="submit" value="Submit">
+		    </div>
+		  </form>
+		</div>
 	</div>
 </div>

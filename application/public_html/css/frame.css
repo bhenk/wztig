@@ -24,13 +24,17 @@ img {
 	height: auto;
 }
 
+fieldset {
+	border: 0;
+}
+
 .gitzw {
-	background-color: gray;
+	background-color: #d4d4d4;
 	color: white;
 	padding: 8px 8px 4px 8px;
 	margin-top: 0px;
 	word-break: break-all;
-	max-width: 700px;
+	/* max-width: 700px; */
 }
 
 .graph {
@@ -44,6 +48,7 @@ img {
 	display: table;
 }
 
+/* !! Affects every class with col- in its name !! */
 [class*="col-"] {
 	float: left;
 	padding: 15px;
@@ -166,8 +171,6 @@ img {
 	font-family: "Courier New", Courier, monospace;
 	font-weight: bold;
 	font-size: larger;
-	/* box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); */
-	/* width: 50%; */
 }
 
 .menu li:hover {
@@ -323,27 +326,27 @@ td {
 
 .img-container {
 	float: left;
-	padding: 5px;
-	border: 1px solid blue;
-	margin-right: 2em;
+	padding: 0px;
+	/* border: 1px solid blue; */
+	margin-right: 1em;
 	margin-bottom: 1em;
 }
 
 .img_data {
 	clear: none;
-	padding: 5px;
+	padding: 0px;
 	min-width: 200px;
-	border: 1px solid red;
+	/* border: 1px solid red; */
 }
 
 /* prevent data block too small */
 .img_data:before {
-      content: "";
-      width: 20em;
-      display: block;
-      overflow: hidden;
-      border: 1px solid green;
-    }
+    content: "";
+    width: 20em;
+    display: block;
+    overflow: hidden;
+    /* border: 1px solid green; */
+}
 
 div.table-data {
 	min-width: 300px;
