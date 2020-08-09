@@ -31,7 +31,7 @@ Abstract class JsonData implements \JsonSerializable {
      */
     public function persist() : ?int {
         return file_put_contents(static::getFile(), 
-            json_encode($this->jsonSerialize(), JSON_PRETTY_PRINT), LOCK_EX);
+        		json_encode($this->jsonSerialize(), JSON_PRETTY_PRINT+JSON_UNESCAPED_SLASHES), LOCK_EX);
     }
     
 }

@@ -28,7 +28,7 @@ use JsonSerializable;
  */
 class Resource implements iViewRender, JsonSerializable {
     
-    const KEY_TITLE = 'title';
+    const KEY_TITLES = 'titles';
     const KEY_PREFERRED_TITLE = 'preferred_title';
     const KEY_TECHNIQUE = "technique";
     const KEY_WIDTH = 'width';
@@ -40,7 +40,7 @@ class Resource implements iViewRender, JsonSerializable {
     
     private $id;
     private $parent;
-    private $title = array();
+    private $titles = array();
     private $preferred_title;
     private $technique;
     private $width;
@@ -53,19 +53,19 @@ class Resource implements iViewRender, JsonSerializable {
     function __construct(string $id, array $data, Path $parent=NULL) {
         $this->id = $id;
         $this->parent = $parent;
-        $this->title = $data[self::KEY_TITLE] ?? array();
+        $this->titles = $data[self::KEY_TITLES] ?? array();
         $this->preferred_title = $data[self::KEY_PREFERRED_TITLE] ?? 'en';
-        $this->technique = $data[self::KEY_TECHNIQUE] ?? NULL;
-        $this->width = $data[self::KEY_WIDTH] ?? 0;
-        $this->height = $data[self::KEY_HEIGHT] ?? 0;
-        $this->depth = $data[self::KEY_DEPTH] ?? 0;
+        $this->technique = $data[self::KEY_TECHNIQUE] ?? '';
+        $this->width = $data[self::KEY_WIDTH] ?? -1;
+        $this->height = $data[self::KEY_HEIGHT] ?? -1;
+        $this->depth = $data[self::KEY_DEPTH] ?? -1;
         $this->date = $data[self::KEY_DATE] ?? '';
         $this->representations = $data[self::KEY_REPRESENTATIONS] ?? array();
         $this->preferredRepresentation = $data[self::KEY_PREFERRED_REPRESENTATION] ?? 0;
     }
     
     public function jsonSerialize() {
-        return [self::KEY_TITLE=>$this->title,
+        return [self::KEY_TITLES=>$this->titles,
             self::KEY_PREFERRED_TITLE=>$this->preferred_title,
             self::KEY_TECHNIQUE=>$this->technique,
             self::KEY_WIDTH=>$this->width,
@@ -79,6 +79,10 @@ class Resource implements iViewRender, JsonSerializable {
     
     public function getLongId() : string {
         return $this->parent->getIdPath().'.'.$this->id;
+    }
+    
+    public function getTitles() : array {
+    	return $this->titles;
     }
 
     
@@ -98,24 +102,24 @@ class Resource implements iViewRender, JsonSerializable {
         $this->technique = $technique;
     }
 
-    public function getWidth() : float {
-        return $this->width;
+    public function getWidth() : ?float {
+    	return $this->width < 0 ? NULL : $this->width;
     }
 
     public function setWidth(float $width) {
         $this->width = $width;
     }
 
-    public function getHeight() : float {
-        return $this->height;
+    public function getHeight() : ?float {
+    	return $this->height < 0 ? NULL : $this->height;
     }
 
     public function setHeight(float $height) {
         $this->height = $height;
     }
 
-    public function getDepth() : float {
-        return $this->depth;
+    public function getDepth() : ?float {
+    	return $this->depth < 0 ? NULL : $this->depth;
     }
 
     public function setDepth(float $depth) {
@@ -133,6 +137,11 @@ class Resource implements iViewRender, JsonSerializable {
     public function getRepresentations() : array {
     	return $this->representations;
     }
+    
+    public function addRepresentation(string $representation) {
+    	$this->representations[] = $representation;
+    	$this->parent->persist();
+    }
 
     public function getPreferredRepresentation() : int {
         return $this->preferredRepresentation;
@@ -141,12 +150,20 @@ class Resource implements iViewRender, JsonSerializable {
     public function setPreferredRepresentation(int $preferredRepresentation) {
         $this->preferredRepresentation = $preferredRepresentation;
     }
+    
+    public function getRepresentation() : ?string {
+    	if (count($this->representations) <= $this->preferredRepresentation) {
+    		return $this->representations[0];
+    	} else {
+    		return $this->representations[$this->preferredRepresentation];
+    	}
+    }
 
     public function getId() : string {
         return $this->id;
     }
 
-    public function getParent() : Path{
+    public function getParent() : ?Path {
         return $this->parent;
     }
 

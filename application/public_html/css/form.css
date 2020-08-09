@@ -1,5 +1,5 @@
 .smallinput {
-	width: 9em;
+	width: 9em !important;
 }
 
 input[type=text], select, textarea {
@@ -57,7 +57,6 @@ input[type=submit]:hover {
   margin-top: 3px;
 }
 
-
 /* Clear floats after the columns */
 .formrw:after {
   content: "";
@@ -77,5 +76,9 @@ input[type=submit]:hover {
   .container, .form-25, .form-75, input[type=submit] {
     width: 100%;
     margin-top: 0;
+  }
+  
+  .formrw {
+  	margin-top: 5px;
   }
 }

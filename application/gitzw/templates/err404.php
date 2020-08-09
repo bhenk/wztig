@@ -13,5 +13,9 @@ Unknown resource indicated by the url
 </div>
 
 <div class="file-info">
+	<?php $this->getMessage(); ?>
+</div>
+
+<div class="file-info">
  <?php $this->renderFileTrace() ?>
 </div>

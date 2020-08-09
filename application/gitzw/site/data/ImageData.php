@@ -33,11 +33,28 @@ class ImageData {
     
     /**
      * Construct new ImageData for the given filename.
+     * If $imgFile is NULL will look at $dataFile.
      * 
-     * @param string $imgFile file name of the original image
+     * @param string $imgFile absolute path of the original image file, maybe null
+     * @param string $dataFile relative path in data/images
      */
-    function __construct(string $imgFile) {
-        $this->imgFile =$imgFile;
+    function __construct(?string $imgFile, string $dataFile = NULL) {
+    	if (is_null($imgFile)) {
+    		if (empty($dataFile)) {
+    			$this->imgFile = GZ::DATA.'/images/no_image/Broken-image-01.jpg';
+    		} else {
+    			$this->imgFile = GZ::DATA.'/images/'.$dataFile;
+    		}
+    	} else {
+        	$this->imgFile =$imgFile;
+    	}
+        if (!file_exists($this->imgFile)) {
+        	$this->imgFile = GZ::DATA.'/images/no_image/Broken-image-01.jpg';
+        }
+    }
+    
+    public function getImgFile() {
+    	return $this->imgFile;
     }
     
     /**

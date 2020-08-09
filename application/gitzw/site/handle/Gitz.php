@@ -13,6 +13,7 @@ use gitzw\site\logging\Log;
 use gitzw\site\logging\Req;
 use gitzw\site\model\SiteResources;
 use Exception;
+use gitzw\site\model\NotFoundException;
 
 
 class Gitz {
@@ -96,6 +97,9 @@ class Gitz {
             (new NotFoundPageControl())->renderPage();
             Log::log()->info('end request handling '.NotFoundPageControl::class);
             
+        } catch (NotFoundException $e) {
+        	(new NotFoundPageControl($e))->renderPage();
+            return;
         } catch (Exception $e) {
             self::handleException($e);
         }

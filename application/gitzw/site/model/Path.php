@@ -59,6 +59,8 @@ class Path extends JsonData implements iViewRender {
     private $requestHandler;
     private $props = array();
     private $resources = array();
+    private $childrenLoaded = FALSE;
+    private $resourcesLoaded = FALSE;
     
     /**
      * Construct a path. Recursively walks the directory structure. The depth of the structure that
@@ -91,27 +93,45 @@ class Path extends JsonData implements iViewRender {
         }
     }
     
+    /**
+     * Load all of the children of this path segment and propagate this command along the line of its descendants.
+     */
     public function loadChildren() {
-        $arr = $this->load();
-        if (array_key_exists(self::KEY_CHILDREN, $arr)) {
-            foreach ($arr[self::KEY_CHILDREN] as $childName) {
-                $this->children[$childName] = new Path($childName, 512, $this);
-            }
-        }
+    	if (!$this->childrenLoaded) {
+	        $arr = $this->load();
+	        if (array_key_exists(self::KEY_CHILDREN, $arr)) {
+	            foreach ($arr[self::KEY_CHILDREN] as $childName) {
+	                $this->children[$childName] = new Path($childName, 512, $this);
+	            }
+	        }
+	        $this->childrenLoaded = TRUE;
+    	}
     }
     
+	/**
+	 * Load all of the resources of this path segment and propagate this command along the line of its descendants.
+	 * 
+	 */
     public function loadResources() {
-        $arr = $this->load();
-        if (array_key_exists(self::KEY_RESOURCES, $arr)) {
-            foreach ($arr[self::KEY_RESOURCES] as $id=>$data) {
-                $this->resources[$id] = new Resource($id, $data, $this);
-            }
-        }
-        foreach (array_values($this->children) as $child) {
-            $child->loadResources();
-        }
+    	if (!$this->resourcesLoaded) {
+	        $arr = $this->load();
+	        if (array_key_exists(self::KEY_RESOURCES, $arr)) {
+	            foreach ($arr[self::KEY_RESOURCES] as $id=>$data) {
+	                $this->resources[$id] = new Resource($id, $data, $this);
+	            }
+	        }
+	        foreach (array_values($this->children) as $child) {
+	            $child->loadResources();
+	        }
+	        $this->resourcesLoaded = TRUE;
+    	}
     }
     
+    /**
+     * Get the nature of this path segment.
+     * 
+     * @return string|NULL
+     */
     public function getNature() : ?string {
         return $this->nature;
     }
@@ -122,6 +142,37 @@ class Path extends JsonData implements iViewRender {
     
     public function getResources() : array {
         return $this->resources;
+    }
+    
+    public function addResource() : Resource {
+    	$resourceId = $this->getNextResourceId();
+    	$resource = new Resource($resourceId, [], $this);
+    	$this->resources[$resourceId] = $resource;
+    	$this->persist();
+    	return $resource;
+    }
+    
+    public function getNextResourceId() : string {
+    	$this->loadResources();
+    	$rid = -1;
+    	foreach (array_keys($this->resources) as $key) {
+    		$rid = max($rid, intval($key));
+    	}
+    	return sprintf("%'.04d", $rid + 1);
+    }
+    
+    public function getIdPath() : string {
+    	if (is_null($this->parent)) {
+    		return '';
+    	} elseif (!$this->pathSegment) {
+    		return $this->parent->getIdPath();
+    	}
+    	$parentId = $this->parent->getIdPath();
+    	if ($parentId == '') {
+    		return $this->name;
+    	} else {
+    		return $parentId.'.'.$this->name;
+    	}
     }
     
     /**
@@ -149,11 +200,12 @@ class Path extends JsonData implements iViewRender {
     }
     
     /**
-     * Get an array(childname=>Child) (string=>Path) of the children of this Path.
+     * Get an array(childname=>Child) of the children of this Path.
      * 
      * @return array
      */
     public function getChildren() : array {
+    	$this->loadChildren();
         return $this->children;
     }
     
@@ -212,21 +264,9 @@ class Path extends JsonData implements iViewRender {
         }
     }
     
-    public function getIdPath() : string {
-        if (is_null($this->parent)) {
-            return '';
-        } elseif (!$this->pathSegment) {
-            return $this->parent->getIdPath();
-        }
-        $parentId = $this->parent->getIdPath();
-        if ($parentId == '') {
-            return $this->name;
-        } else {
-            return $parentId.'.'.$this->name;
-        }
-    }
     
     public function getSegment(array $names) {
+    	$this->loadChildren();
         $name = array_shift($names);
         if (is_null($name)) {
             return $this;
@@ -257,6 +297,7 @@ class Path extends JsonData implements iViewRender {
     
     
     public function getMaxOrdinal() : int {
+    	$this->loadChildren();
         $max = $this->getOrdinal();
         foreach ($this->children as $child) {
             $max = max($child->getMaxOrdinal(), $max);
@@ -271,6 +312,7 @@ class Path extends JsonData implements iViewRender {
      * @return Path|NULL
      */
     public function getChildByName(string $name) : ?Path {
+    	$this->loadChildren();
         return $this->children[$name];
     }
     
@@ -281,6 +323,7 @@ class Path extends JsonData implements iViewRender {
      * @return Path|NULL
      */
     public function getChildByFullNamePath(string $fullNamePath) : ?Path {
+    	$this->loadChildren();
         foreach ($this->children as $child) {
             if ($child->getFullNamePath() == $fullNamePath) {
                 return $child;
@@ -296,7 +339,48 @@ class Path extends JsonData implements iViewRender {
      * @return Path|NULL
      */
     public function getChildByPosition(int $pos=0) : ?Path {
+    	$this->loadChildren();
         return array_values($this->children)[$pos];
+    }
+    
+    /**
+     * Get this path segment or a descendant of this path segment allong the line of $segmentNames.
+     * Will return null if descendant is not in line.
+     * Will return $this if $segmentNames is an empty array.
+     * 
+     * @param array $segmentNames
+     * @return Path|NULL
+     */
+    public function getDescendant(array $segmentNames) : ?Path {
+    	$this->loadChildren();
+    	$this->loadResources();
+    	if (count($segmentNames) == 0) {
+    		return $this;
+    	}
+    	$next = array_shift($segmentNames);
+    	$child = $this->getChildByName($next);
+    	if (isset($child)) {
+    		return $child->getDescendant($segmentNames);
+    	} else {
+    		return NULL;
+    	}
+    }
+    
+    public function getResource(string $resourceId) : ?Resource {
+    	$rex = explode('.', $resourceId);
+    	$segmentNames = array_slice($rex, 0, -1);
+    	$rid = array_slice($rex, -1, 1)[0];
+    	$path = $this->getDescendant($segmentNames);
+    	if (isset($path)) {
+    		return $path->getResourceByShortId($rid);
+    	} else {
+    		return NULL;
+    	}
+    }
+    
+    public function getResourceByShortId(string $rid) {
+    	$this->loadResources();
+    	return $this->resources[$rid];
     }
     
     /**
@@ -325,6 +409,7 @@ class Path extends JsonData implements iViewRender {
      * @return Path|NULL
      */
     public function getByPathSegment(string $segment, int $ordinal) : ?Path {
+    	$this->loadChildren();
         foreach ($this->children as $child) {
             if ($child->getOrdinal() == $ordinal and $child->isNickName($segment)) {
                 return $child;
@@ -354,7 +439,14 @@ class Path extends JsonData implements iViewRender {
         }
     }
     
+    /**
+     * Collect all representations of all resources of this path segment and its descendants.
+     * 
+     * @param array $stack 
+     */
     public function collectRepresentations(array &$stack) {
+    	$this->loadChildren();
+    	$this->loadResources();
     	foreach ($this->resources as $resource) {
     		foreach($resource->getRepresentations() as $rep) {
     			$stack[] = $rep;

@@ -7,6 +7,9 @@ use gitzw\site\control\DefaultPageControl;
 use gitzw\site\data\Site;
 use gitzw\site\model\SiteResources;
 
+/**
+ * 
+ */
 class LocateImagePageControl extends DefaultPageControl {
 	
 	private $path = array();
@@ -42,7 +45,7 @@ class LocateImagePageControl extends DefaultPageControl {
 		$this->addStylesheet('/css/form.css');
 		
 		$this->var = SiteResources::getSite()->getChildByName('var')->getChildByName($path[3]);
-		$this->var->loadChildren();
+		//$this->var->loadChildren();
 		$this->representation = implode('/', array_slice($path, 3));
 		$this->imgFile = GZ::DATA.'/images/'.$this->representation;
 		$this->action = '/'.implode('/', array_slice($path, 1));
@@ -196,7 +199,12 @@ class LocateImagePageControl extends DefaultPageControl {
 			return TRUE;
 		} else {
 			echo '@Todo assign resource id and redirect to edit resource page';
-			return TRUE;
+			$yea = $this->var->getDescendant([$this->subject, $this->category, $this->year]);
+			$resource = $yea->addResource();
+			$resource->addRepresentation($this->representation);
+			$resourceId = $resource->getLongId();
+			Site::get()->redirect('/admin/edit-resource/'.$resourceId);
+			return FALSE;
 		}
 	}
 }

@@ -8,6 +8,7 @@ use gitzw\site\control\admin\AdminMenuManager;
 use gitzw\site\control\admin\ForcedExceptionPage;
 use gitzw\site\logging\Log;
 use gitzw\site\control\admin\LocateImagePageControl;
+use gitzw\site\control\admin\EditResourcePageControl;
 
 class AdminHandler {
     
@@ -52,13 +53,9 @@ class AdminHandler {
     			(new LocateImagePageControl($this->path))->renderPage();
     			Log::log()->info('end request handling admin/locate-image');
     			return;
-    		case 'edit-image':
-    			$control = new DefaultPageControl(GZ::TEMPLATES.'/admin/edit-image.php');
-    			$control->setMenuManager(new AdminMenuManager());
-    			$control->addStylesheet('/css/form.css');
-    			$control->setPath($this->path);
-    			$control->renderPage();
-    			Log::log()->info('end request handling admin/edit-image');
+    		case 'edit-resource':
+    			(new EditResourcePageControl($this->path))->renderPage();
+    			Log::log()->info('end request handling admin/edit-resource');
     			return;
     		case 'raise-exception':
     			(new ForcedExceptionPage())->renderPage();
