@@ -5,8 +5,8 @@ namespace gitzw\templates\admin;
 
 use gitzw\site\data\ImageData;
 
-const SMALL_IMG_WIDTH = 180;
-const SMALL_IMG_HEIGHT = 180;
+const SMALL_IMG_WIDTH = 200;
+const SMALL_IMG_HEIGHT = 200;
 
 ?>
 <hr/>
@@ -18,7 +18,8 @@ const SMALL_IMG_HEIGHT = 180;
 		</div>
 		<div class="img_data2">
 			
-			<div class="smallformrow"><?php echo $this->getLocation(); ?></div>
+			<div class="smallformrow">
+			<?php echo $this->isFrontPage() ? '&#9635 ' : ''; echo $this->getLocation(); ?></div>
 			<div class="smallformrow">type: <?php echo $ida->getMediaType(); ?></div>
 			<div class="smallformrow">size: <?php echo $ida->getSize()['width']; ?> x <?php echo $ida->getSize()['height']; ?> px.</div>
 			
@@ -49,7 +50,6 @@ const SMALL_IMG_HEIGHT = 180;
 			<div class="smallformrow">
 				<div class="twrap">
 				<textarea id="<?php echo $this->getName().'3'?>"
-					rows="3" 
 					name="<?php echo $this->getName().'+desc'?>"
 					><?php echo $this->getDescription(); ?></textarea>
 				</div>
@@ -59,7 +59,8 @@ const SMALL_IMG_HEIGHT = 180;
 				<input type="checkbox" id="<?php echo $this->getName().'42'; ?>" 
 					name="<?php echo $this->getName().'+remove'; ?>" value="remove">
 	  			<label for="<?php echo $this->getName().'42'; ?>">Remove</label>
-	  		</div>		
+	  		</div>
+	  		
 	  		
 		</div>
 	</div>

@@ -10,13 +10,9 @@
 
 require_once __DIR__.'/../GZ.php';
 
-$a = ['a'=>'z/b/c', 'b'=>'b/d/x', 'c'=>'c/p/o'];
-$b = array_values($a);
+$a = ['z/b/c', 'b/d/x', 'c/p/o'];
 
-usort($b, function($x, $y) {
-	echo $x.PHP_EOL;
-	return $x <=> $y;
-});
+$a[] = 'z/b/c';
 
 var_dump($a);
-var_dump($b);
+

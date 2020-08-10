@@ -383,6 +383,16 @@ class Path extends JsonData implements iViewRender {
     	return $this->resources[$rid];
     }
     
+    public function getParentByNature(string $nature) : ?Path {
+    	if ($this->nature == $nature) {
+    		return $this;
+    	} elseif (!is_null($this->parent)) {
+    		return $this->parent->getParentByNature($nature);
+    	} else {
+    		return NULL;
+    	}
+    }
+    
     /**
      * Is the given $segment a nickname for this path segment.
      * 
@@ -477,6 +487,18 @@ class Path extends JsonData implements iViewRender {
             self::KEY_PROPS=>$this->props,
             self::KEY_RESOURCES=>$this->resources
         ];       
+    }
+    
+    public function jsonSerializeFlat() : array {
+    	return [self::KEY_NAME=>$this->name,
+    			self::KEY_FULL_NAME=>$this->fullName,
+    			self::KEY_NATURE=>$this->nature,
+    			self::KEY_CHILDREN=>array_keys($this->children),
+    			self::KEY_PATH_SEGMENT=>$this->pathSegment,
+    			self::KEY_REQUESTHANDLER=>$this->requestHandler,
+    			self::KEY_PROPS=>$this->props,
+    			self::KEY_RESOURCES=>$this->resources
+    	];
     }
     
     public function render($template) {

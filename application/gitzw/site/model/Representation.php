@@ -82,6 +82,14 @@ class Representation implements JsonSerializable, iViewRender {
 	public function getName() {
 		return str_replace('.', ';', $this->location);
 	}
+	
+	public function isFrontPage() {
+		$var = $this->getParent()->getParent()->getParentByNature('var');
+		if (!is_null($var)) {
+			return in_array($this->location, $var->getProps()['img_front']);
+		}
+		return FALSE;
+	}
 
 	
 }

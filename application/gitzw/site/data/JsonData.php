@@ -10,6 +10,11 @@ Abstract class JsonData implements \JsonSerializable {
      */
     public abstract function getFile() : string;
     
+    
+    public function jsonSerializeFlat() : array {
+    	return [];
+    }
+    
     /**
      * Read data from file. For an empty or non existent file, will return an empty array.
      * 
@@ -32,6 +37,11 @@ Abstract class JsonData implements \JsonSerializable {
     public function persist() : ?int {
         return file_put_contents(static::getFile(), 
         		json_encode($this->jsonSerialize(), JSON_PRETTY_PRINT+JSON_UNESCAPED_SLASHES), LOCK_EX);
+    }
+    
+    public function persistFlat() : int {
+    	return file_put_contents(static::getFile(),
+    			json_encode($this->jsonSerializeFlat(), JSON_PRETTY_PRINT+JSON_UNESCAPED_SLASHES), LOCK_EX);
     }
     
 }
