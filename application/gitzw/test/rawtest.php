@@ -10,6 +10,13 @@
 
 require_once __DIR__.'/../GZ.php';
 
-$a = ['a/b/c', 'b/d/x', 'c/p/o'];
+$a = ['a'=>'z/b/c', 'b'=>'b/d/x', 'c'=>'c/p/o'];
+$b = array_values($a);
 
-echo json_encode($a, JSON_PRETTY_PRINT+JSON_UNESCAPED_SLASHES);
+usort($b, function($x, $y) {
+	echo $x.PHP_EOL;
+	return $x <=> $y;
+});
+
+var_dump($a);
+var_dump($b);

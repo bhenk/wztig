@@ -449,7 +449,7 @@ class Path extends JsonData implements iViewRender {
     	$this->loadResources();
     	foreach ($this->resources as $resource) {
     		foreach($resource->getRepresentations() as $rep) {
-    			$stack[] = $rep;
+    			$stack[] = $rep->getLocation();
     		}
     	}
     	foreach ($this->children as $child) {

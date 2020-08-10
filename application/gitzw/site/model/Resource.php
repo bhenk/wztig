@@ -17,11 +17,7 @@ use JsonSerializable;
  *		"height" : 33,
  *		"depth" : 0,
  *		"date" : "2020-02",
- *		"representations" : [
- *			"/img/hnq/2020/_DSC123.jpg",
- *			"http://somewhere.com/pics/abc372"
- *		],
- *      "preferred_representation" : 0
+ *		"representations" : {}
  *	}
  * </pre>
  *
@@ -29,51 +25,50 @@ use JsonSerializable;
 class Resource implements iViewRender, JsonSerializable {
     
     const KEY_TITLES = 'titles';
-    const KEY_PREFERRED_TITLE = 'preferred_title';
+    const KEY_PREFERRED_LANGUAGE = 'preferred_language';
     const KEY_TECHNIQUE = "technique";
     const KEY_WIDTH = 'width';
     const KEY_HEIGHT = 'height';
     const KEY_DEPTH = 'depth';
     const KEY_DATE = 'date';
     const KEY_REPRESENTATIONS = 'representations';
-    const KEY_PREFERRED_REPRESENTATION = 'preferred representation';
     
     private $id;
     private $parent;
     private $titles = array();
-    private $preferred_title;
+    private $preferredLanguage;
     private $technique;
     private $width;
     private $height;
     private $depth;
     private $date;
     private $representations = array();
-    private $preferredRepresentation;
-    
-    function __construct(string $id, array $data, Path $parent=NULL) {
+
+	function __construct(string $id, array $data, Path $parent=NULL) {
         $this->id = $id;
         $this->parent = $parent;
         $this->titles = $data[self::KEY_TITLES] ?? array();
-        $this->preferred_title = $data[self::KEY_PREFERRED_TITLE] ?? 'en';
+        $this->preferredLanguage = $data[self::KEY_PREFERRED_LANGUAGE] ?? 'en';
         $this->technique = $data[self::KEY_TECHNIQUE] ?? '';
         $this->width = $data[self::KEY_WIDTH] ?? -1;
         $this->height = $data[self::KEY_HEIGHT] ?? -1;
         $this->depth = $data[self::KEY_DEPTH] ?? -1;
         $this->date = $data[self::KEY_DATE] ?? '';
-        $this->representations = $data[self::KEY_REPRESENTATIONS] ?? array();
-        $this->preferredRepresentation = $data[self::KEY_PREFERRED_REPRESENTATION] ?? 0;
+        $reparr = $data[self::KEY_REPRESENTATIONS] ?? array();
+        foreach ($reparr as $key=>$data) {
+        	$this->representations[$key] = new Representation($this, $key, $data);
+        }
     }
     
     public function jsonSerialize() {
         return [self::KEY_TITLES=>$this->titles,
-            self::KEY_PREFERRED_TITLE=>$this->preferred_title,
+            self::KEY_PREFERRED_LANGUAGE=>$this->preferredLanguage,
             self::KEY_TECHNIQUE=>$this->technique,
             self::KEY_WIDTH=>$this->width,
             self::KEY_HEIGHT=>$this->height,
             self::KEY_DEPTH=>$this->depth,
             self::KEY_DATE=>$this->date,
             self::KEY_REPRESENTATIONS=>$this->representations,
-            self::KEY_PREFERRED_REPRESENTATION=>$this->preferredRepresentation
         ];
     }
     
@@ -84,14 +79,17 @@ class Resource implements iViewRender, JsonSerializable {
     public function getTitles() : array {
     	return $this->titles;
     }
-
     
-    public function getPreferred_language() : string {
-        return $this->preferred_title;
+    public function setTitle(string $value, string $language) {
+    	$this->titles[$language] = $value;
     }
-
-    public function setPreferred_language(string $preferred_language) {
-        $this->preferred_title = $preferred_language;
+    
+    public function getPreferredLanguage() : string {
+    	return $this->preferredLanguage;
+    }
+    
+    public function setPreferredLanguage(string $preferredLanguage) {
+    	$this->preferredLanguage = $preferredLanguage;
     }
 
     public function getTechnique() : string {
@@ -134,29 +132,34 @@ class Resource implements iViewRender, JsonSerializable {
         $this->date = $date;
     }
     
-    public function getRepresentations() : array {
-    	return $this->representations;
+    public function getRepresentations(string $orderBy=NULL) : array {
+    	if (is_null($orderBy)) {
+    		return $this->representations;
+    	} else if ($orderBy == 'ordinal') {
+    		$vals = array_values($this->representations);
+    		usort($vals, function($a, $b) {
+    			return $a->getOrdinal() <=> $b->getOrdinal();
+    		});
+    		return $vals;
+    	}
     }
     
-    public function addRepresentation(string $representation) {
-    	$this->representations[] = $representation;
+    public function addRepresentation(string $location) {
+    	$this->representations[$location] = new Representation($this, $location);
     	$this->parent->persist();
     }
-
-    public function getPreferredRepresentation() : int {
-        return $this->preferredRepresentation;
-    }
-
-    public function setPreferredRepresentation(int $preferredRepresentation) {
-        $this->preferredRepresentation = $preferredRepresentation;
+    
+    public function removeRepresentation(string $location) {
+    	unset($this->representations[$location]);
     }
     
-    public function getRepresentation() : ?string {
-    	if (count($this->representations) <= $this->preferredRepresentation) {
-    		return $this->representations[0];
-    	} else {
-    		return $this->representations[$this->preferredRepresentation];
+    public function getRepresentation() : ?Representation {
+    	foreach (array_values($this->representations) as $representation) {
+    		if ($representation->getPreferred() == TRUE) {
+    			return $representation;
+    		}
     	}
+    	return array_values($this->representations)[0];
     }
 
     public function getId() : string {

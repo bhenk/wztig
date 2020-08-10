@@ -2,6 +2,22 @@
 	width: 9em !important;
 }
 
+.mediuminput {
+	width: 18em !important;
+}
+
+.smallformrow {
+	margin-bottom: 3px;
+}
+
+.twrap {
+	overflow: hidden;
+}
+
+.twrap textarea {
+	width: 100%;
+}
+
 input[type=text], select, textarea {
   width: 100%;
   padding: 2px;
