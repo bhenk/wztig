@@ -10,5 +10,5 @@ application/public_html/img/derived
 application/test-data
 application/test-dump
 composer.phar
-**/rawtest.php
+**/*/rawtest.php
 **/*.min.*
