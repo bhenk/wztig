@@ -83,12 +83,28 @@ class Representation implements JsonSerializable, iViewRender {
 		return str_replace('.', ';', $this->location);
 	}
 	
+	public function getLocationAsPath() {
+		return str_replace('/', '+', $this->location);
+	}
+	
+	public function getVar() : Visart {
+		return $this->getParent()->getParent()->getParentByNature('var');
+	}
+	
 	public function isFrontPage() {
-		$var = $this->getParent()->getParent()->getParentByNature('var');
+		$var = $this->getVar();
 		if (!is_null($var)) {
-			return in_array($this->location, $var->getProps()['img_front']);
+			return $var->hasFrontpageImage($this->location);
 		}
 		return FALSE;
+	}
+	
+	public function setfrontPage(bool $frontPage) {
+		if ($this->isFrontPage() and !$frontPage) {
+			$this->getVar()->removeFrontPageImage($this->getLocation());
+		} elseif (!$this->isFrontPage() and $frontPage) {
+			$this->getVar()->addFrontPageImage($this->location);
+		}
 	}
 
 	

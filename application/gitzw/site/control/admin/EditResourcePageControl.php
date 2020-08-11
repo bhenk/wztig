@@ -61,11 +61,13 @@ class EditResourcePageControl extends DefaultPageControl {
 		foreach (array_values($this->getResource()->getRepresentations()) as $rep) {
 			$rep->setPreferred($_POST['preferred_representation'] == $rep->getLocation());
 			$rep->setOrdinal($_POST[$rep->getName().'+ordinal'] ?? 0);
+			$rep->setFrontPage($_POST[$rep->getName().'+frontpage'] == 'frontpage');
 			$rep->setHidden($_POST[$rep->getName().'+hidden'] == 'hidden');
 			$rep->setDescription($_POST[$rep->getName().'+desc']);
 			if ($_POST[$rep->getName().'+remove'] == 'remove') {
 				$this->getResource()->removeRepresentation($rep->getLocation());
 			}
+			
 		}
 		$addRepr = $_POST['add_repr'] ?? '';
 		

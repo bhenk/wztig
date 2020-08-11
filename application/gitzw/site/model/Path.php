@@ -25,21 +25,21 @@ class Path extends JsonData implements iViewRender {
      */
     private static $PATHS = array();
     
-    /**
-     * Get a root path by name.
-     * 
-     * @param string $name the name of a root segment.
-     * 
-     * @return Path the root path of the given name and all its children. An empty structure if name
-     *  is not a root path.
-     */
-    public static function get(?string $name) : Path {
-        if (!array_key_exists($name, self::$PATHS)) {
-            $path = new Path($name);
-            self::$PATHS[$name] = $path;
-        }
-        return self::$PATHS[$name];
-    }
+//     /**
+//      * Get a root path by name.
+//      * 
+//      * @param string $name the name of a root segment.
+//      * 
+//      * @return Path the root path of the given name and all its children. An empty structure if name
+//      *  is not a root path.
+//      */
+//     public static function get(?string $name) : Path {
+//         if (!array_key_exists($name, self::$PATHS)) {
+//             $path = new Path($name);
+//             self::$PATHS[$name] = $path;
+//         }
+//         return self::$PATHS[$name];
+//     }
     
     const KEY_NAME = 'name';
     const KEY_FULL_NAME = 'full_name'; 
@@ -57,7 +57,7 @@ class Path extends JsonData implements iViewRender {
     private $children = array();
     private $pathSegment = TRUE;
     private $requestHandler;
-    private $props = array();
+    protected $props = array();
     private $resources = array();
     private $childrenLoaded = FALSE;
     private $resourcesLoaded = FALSE;
@@ -70,10 +70,12 @@ class Path extends JsonData implements iViewRender {
      * @param int $depth how many children must be loaded
      * @param Path $parent the parent of this path segment
      */
-    function __construct(string $name, int $depth=512, Path $parent=NULL) {
+    function __construct(string $name, int $depth=512, Path $parent=NULL, array $arr=NULL) {
         $this->name = $name;
         $this->parent = $parent;
-        $arr = $this->load();
+        if (is_null($arr)) {
+        	$arr = $this->load();
+        }
         if ($this->name != $arr[self::KEY_NAME]) {
             $msg = 'name inconsistency: my name="'.$this->name.
             '" name in file="'.$arr[self::KEY_NAME].
@@ -88,9 +90,14 @@ class Path extends JsonData implements iViewRender {
         $this->props = $arr[self::KEY_PROPS] ?? array();
         if ($depth > 0 and array_key_exists(self::KEY_CHILDREN, $arr)) {
             foreach ($arr[self::KEY_CHILDREN] as $childName) {
-                $this->children[$childName] = new Path($childName, --$depth, $this);
+                $this->children[$childName] = PathFactory::create($childName, --$depth, $this);
             }
+            $this->childrenLoaded = TRUE;
         }
+    }
+    
+    function __toString() {
+    	return static::class;
     }
     
     /**
@@ -101,7 +108,7 @@ class Path extends JsonData implements iViewRender {
 	        $arr = $this->load();
 	        if (array_key_exists(self::KEY_CHILDREN, $arr)) {
 	            foreach ($arr[self::KEY_CHILDREN] as $childName) {
-	                $this->children[$childName] = new Path($childName, 512, $this);
+	                $this->children[$childName] = PathFactory::create($childName, 512, $this);
 	            }
 	        }
 	        $this->childrenLoaded = TRUE;
@@ -114,6 +121,7 @@ class Path extends JsonData implements iViewRender {
 	 */
     public function loadResources() {
     	if (!$this->resourcesLoaded) {
+    		$this->loadChildren();
 	        $arr = $this->load();
 	        if (array_key_exists(self::KEY_RESOURCES, $arr)) {
 	            foreach ($arr[self::KEY_RESOURCES] as $id=>$data) {
@@ -419,7 +427,7 @@ class Path extends JsonData implements iViewRender {
      * @return Path|NULL
      */
     public function getByPathSegment(string $segment, int $ordinal) : ?Path {
-    	$this->loadChildren();
+    	//$this->loadChildren();
         foreach ($this->children as $child) {
             if ($child->getOrdinal() == $ordinal and $child->isNickName($segment)) {
                 return $child;

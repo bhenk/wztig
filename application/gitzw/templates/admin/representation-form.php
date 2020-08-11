@@ -13,13 +13,18 @@ const SMALL_IMG_HEIGHT = 200;
 <div class="formrw">
 	<div class="img-data-container">
 		<div class="img-container">
+			<a href="/admin/front-page/<?php echo $this->getVar()->getName().'/'.$this->getLocationAsPath();?>" target="_blank">
 	    	<?php $ida = new ImageData(NULL, $this->getLocation());
 	    	echo $ida->getImgTag(SMALL_IMG_WIDTH, SMALL_IMG_HEIGHT, $this->getLocation(), 'maxheight');?>
+	    	</a>
 		</div>
 		<div class="img_data2">
 			
 			<div class="smallformrow">
-			<?php echo $this->isFrontPage() ? '&#9635 ' : ''; echo $this->getLocation(); ?></div>
+			<a class="incognito" href="/admin/exif-data/<?php echo $this->getLocation(); ?>" target="_blank">
+			<?php echo $this->isFrontPage() ? '&#9635 ' : ''; echo $this->getLocation(); ?>
+			</a>
+			</div>
 			<div class="smallformrow">type: <?php echo $ida->getMediaType(); ?></div>
 			<div class="smallformrow">size: <?php echo $ida->getSize()['width']; ?> x <?php echo $ida->getSize()['height']; ?> px.</div>
 			
@@ -29,8 +34,15 @@ const SMALL_IMG_HEIGHT = 200;
 					<?php echo $this->getPreferred() ? 'checked="checked"' : ''; ?>>
 				<label for="<?php echo $this->getName().'1'; ?>">Preferred</label>
 			</div>
-			
-			<div class="smallformrow">
+	  		
+	  		<div class="smallformrow">
+				<input type="checkbox" id="<?php echo $this->getName().'4'; ?>" 
+					name="<?php echo $this->getName().'+frontpage'; ?>" value="frontpage" 
+					<?php echo $this->isFrontPage() ? ' checked' : ''; ?>>
+	  			<label for="<?php echo $this->getName().'4'; ?>">Front page</label>
+	  		</div>
+	  		
+	  		<div class="smallformrow">
 				<input type="checkbox" id="<?php echo $this->getName().'2'; ?>" 
 					name="<?php echo $this->getName().'+hidden'; ?>" value="hidden" 
 					<?php echo $this->getHidden() ? ' checked' : ''; ?>>

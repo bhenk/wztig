@@ -2,26 +2,27 @@
 namespace gitzw\site\control\visar;
 
 use gitzw\GZ;
-use gitzw\site\control\DefaultPageControl;
+use gitzw\site\control\menu\MenuManager;
 use gitzw\site\logging\Log;
 use gitzw\site\model\Path;
-use gitzw\site\control\menu\MenuManager;
+use gitzw\site\model\Visart;
 
-class OverviewPageControl extends DefaultPageControl {
+class OverviewPageControl extends VisartPageControl {
     
-    private Path $segment;
-    private array $path;    
+    private array $path; 
+    protected int $start;
     
-    function __construct(Path $segment, array $path) {
-        // /var/work/cat/year
-        $this->segment = $segment;
+    function __construct(Visart $visart, array $path) {
+    	parent::__construct($visart);
         $this->path = $path;
-        $work = $this->segment->getChildByFullNamePath($path[2]);
+        $work = $this->visart->getChildByFullNamePath($path[2]);
         $cat = $work->getChildByFullNamePath($path[3]);
         $year = $cat->getChildByFullNamePath($path[4]);
-        $this->setTitle($this->segment->getFullName().' '.$cat->getFullName().
+        // path[5] = 'overview'
+        $this->start = intval($path[6]);
+        $this->setTitle($this->visart->getFullName().' '.$cat->getFullName().
             ' '.$year->getFullName());
-        $this->setContentFile(GZ::TEMPLATES.'/overview.php');
+        $this->setContentFile(GZ::TEMPLATES.'/visar/overview.php');
         $this->constructMenu($work);
         Log::log()->info(__METHOD__);
     }
@@ -33,20 +34,14 @@ class OverviewPageControl extends DefaultPageControl {
     		$item = $manager->addItem($cat->getName(), NULL, $catSelected);
     		foreach ($cat->getChildren() as $year) {
     			$selected = $year->getFullNamePath() == $this->path[4] and $catSelected;
-    			$item->addSub($year->getFullName(), $year->getResourcePath(), $selected);
+    			$item->addSub($year->getFullName(), $year->getResourcePath().'/overview', $selected);
     		}
     	}
-		$manager->addItem($this->segment->getName(), $this->segment->getResourcePath());
+		$manager->addItem($this->visart->getName(), $this->visart->getResourcePath());
     	$this->setMenuManager($manager);
     }
     
-    protected function getCopyRight() : string {
-        $copyRightStart = $this->segment->getProps()['copyright_start'];
-        if (isset($copyRightStart)) {
-            $copyRightStart .= '&nbsp;-&nbsp;'.date('Y');
-        }
-        return '&#169;'.$copyRightStart.'&nbsp;'.
-            str_replace(' ', '&nbsp;', $this->segment->getFullName()).' &nbsp;&bull;';
-    }
+    
+    
 }
 

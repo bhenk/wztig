@@ -105,7 +105,7 @@ abstract class GZ {
      * 
      * TRUE on production!
      */
-    const MINIFY_HTML = TRUE;
+    const MINIFY_HTML = FALSE;
     
     /**
      * Show stack traces.

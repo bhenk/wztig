@@ -1,18 +1,19 @@
 <?php namespace gitzw\test;
 
-
-
-
-
-
-
-//use gitzwart\GZ;
-
 require_once __DIR__.'/../GZ.php';
 
-$a = ['z/b/c', 'b/d/x', 'c/p/o'];
+use gitzw\GZ;
 
-$a[] = 'z/b/c';
+//$a = ['a', 'b', 'c'];
 
-var_dump($a);
+// $file = GZ::DATA.'/images//hnq/2020/_DSC0514_00019.jpg';
 
+// $exif = exif_read_data($file, 0, TRUE);
+// foreach ($exif as $key => $section) {
+// 	foreach ($section as $name => $val) {
+// 		echo "$key.$name: $val\n";
+// 	}
+// }
+   
+
+echo intval('6p');

@@ -20,13 +20,13 @@ class Gitz {
     
     public function handleRequestURI() {
     	$path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-        $path = preg_replace('/[^0-9a-zA-Z\/._]/', '-', urldecode($path));
+        $path = preg_replace('/[^0-9a-zA-Z\/._ ]/', '-', urldecode($path));
         $this->handleRequest(explode('/', $path));
     }
 
     public function handleRequest(array $path) {
         Req::log()->info('');
-        Log::log()->info('start request handling', $path);
+        Log::log()->info('======================== start request handling ==========================', $path);
         if (GZ::MINIFY_HTML) {
             ob_start("self::minifyHtml");
         } else {
@@ -55,7 +55,7 @@ class Gitz {
             
             /////// redirect? //////
             $site = SiteResources::getSite();
-            $cannonicalPath = $site->getCannonicalPath($path);
+            $cannonicalPath = $site->getCannonicalPath($path, TRUE);
             if (count(array_diff_assoc($path, $cannonicalPath)) > 0) {
                 $location = Site::get()->redirect($cannonicalPath);
                 Log::log()->info('redirecting to '.$location);

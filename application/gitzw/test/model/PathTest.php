@@ -46,22 +46,6 @@ class PathTest extends TestCase {
         return $root;
     }
     
-    /**
-     * Tests Path::get()
-     */
-    public function testGetPathThatDoesNotExist() {
-        $this->expectWarning();
-        Path::get('doesnotexist');
-    }
-    
-    /**
-     * Tests Path::get()
-     */
-    public function testGetPathThatDoesExist() {
-        $path = Path::get('resources');
-        $this->assertInstanceOf(Path::class, $path);
-    }
-    
     public function testConstructor() {
         $p = $this->path();
         assertEquals('resources', $p->getName());

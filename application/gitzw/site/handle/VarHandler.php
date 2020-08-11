@@ -47,8 +47,17 @@ class VarHandler {
             (new FrontPageControl($this->firstSegment, $this->path))->renderPage();
             return;
         }
-        // /var/work/cat/year
-        (new OverviewPageControl($this->firstSegment, $this->path))->renderPage();
+        if (empty($this->path[5])) {
+        	// var/work/cat/year
+        	(new FrontPageControl($this->firstSegment, $this->path))->renderPage();
+        	return;
+        }
+        if ($this->path[5] == 'overview') {
+	        // /var/work/cat/year
+	        (new OverviewPageControl($this->firstSegment, $this->path))->renderPage();
+	        return;
+        }
+        echo implode('->', $this->path);
     }
     
     public function handleBlogs() {

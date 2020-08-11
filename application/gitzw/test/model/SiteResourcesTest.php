@@ -16,16 +16,6 @@ require_once __DIR__.'/../../GZ.php';
 class SiteResourcesTest extends TestCase {
 
    
-    /**
-     * Tests SiteResources::get()
-     */
-    public function testGetSite() {
-        SiteResources::reset();
-        $site = SiteResources::getSite();
-        assertInstanceOf(SiteResources::class, $site);
-        assertEquals('resources', $site->getName());
-        assertEquals(1, $site->getMaxOrdinal());
-    }
     
     
     public function testGetCannonicalPath() {

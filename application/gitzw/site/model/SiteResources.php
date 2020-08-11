@@ -22,6 +22,7 @@ class SiteResources extends Path {
     
     private $firstSegment;
     
+    
     public function getCannonicalPath(array $path, $keepRest=FALSE) : array {
         $current = $this->getFirstSegment($path);
         if (isset($current)) {
