@@ -2,9 +2,9 @@
 
 require_once __DIR__.'/../GZ.php';
 
-use gitzw\GZ;
+// use gitzw\GZ;
 
-//$a = ['a', 'b', 'c'];
+$a = ['a', 'b', 'c'];
 
 // $file = GZ::DATA.'/images//hnq/2020/_DSC0514_00019.jpg';
 
@@ -15,5 +15,5 @@ use gitzw\GZ;
 // 	}
 // }
    
-
-echo intval('6p');
+$b = array_slice($a, 2, 100);
+var_dump($b);

@@ -21,7 +21,7 @@ const SMALL_IMG_HEIGHT = 200;
 		<div class="img_data2">
 			
 			<div class="smallformrow">
-			<a class="incognito" href="/admin/exif-data/<?php echo $this->getLocation(); ?>" target="_blank">
+			<a class="incognito" href="/admin/exif-data/<?php echo $this->getLocationAsPath(); ?>" target="_blank">
 			<?php echo $this->isFrontPage() ? '&#9635 ' : ''; echo $this->getLocation(); ?>
 			</a>
 			</div>

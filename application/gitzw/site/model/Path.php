@@ -149,6 +149,7 @@ class Path extends JsonData implements iViewRender {
     }
     
     public function getResources() : array {
+    	$this->loadResources();
         return $this->resources;
     }
     
