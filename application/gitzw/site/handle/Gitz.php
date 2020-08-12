@@ -45,7 +45,7 @@ class Gitz {
                     Log::log()->info('end request handling '.HomePageControl::class);
                     return;
                 case 'favicon.ico':
-                    Site::get()->redirect('/img/favicon/favicon-32x32.png');
+                    Site::get()->redirect('/img/favicon/favicon.ico');
                     return;
                 case 'gendan':
                     echo Site::get()->clientIp();

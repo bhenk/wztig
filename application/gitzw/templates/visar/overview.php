@@ -2,19 +2,27 @@
 namespace gitzw\templates\visar;
 
 /** @var mixed $this */
+use gitzw\GZ;
 
-echo $this->start;
-
-$pr = $this->getPageResources();
-echo "<br/>";
-
-//var_dump($pr);
 ?>
-<h1>foo bar</h1>
+
+<div class="left-right-arrows">
+<a class="left-arrow"<?php echo $this->getLeftArrowStyle(); ?> href="<?php echo $this->getLeftArrowLink(); ?>">&nbsp;&#9664;&nbsp;</a>
+<!-- ?php echo $this->getHeading(); ? -->
+<a class="right-arrow"<?php echo $this->getRightArrowStyle(); ?> href="<?php echo $this->getRightArrowLink(); ?>">&nbsp;&#9654;&nbsp;</a>
+</div>
 
 <?php 
+$pr = $this->getPageResources();
 if ($pr) {
-	foreach ($pr as $resource) { ?>
-		<div><?php echo $resource->getLongId(); ?></div>
-	<?php } 
+	foreach ($pr as $resource) {
+		$resource->render(GZ::TEMPLATES.'/visar/resource-heap.php');
+	 } 
 } ?>
+
+
+<div class="left-right-arrows">
+<a class="left-arrow"<?php echo $this->getLeftArrowStyle(); ?> href="<?php echo $this->getLeftArrowLink(); ?>">&nbsp;&#9664;&nbsp;</a>
+<!-- ?php echo $this->getHeading(); ? -->
+<a class="right-arrow"<?php echo $this->getRightArrowStyle(); ?> href="<?php echo $this->getRightArrowLink(); ?>">&nbsp;&#9654;&nbsp;</a>
+</div>

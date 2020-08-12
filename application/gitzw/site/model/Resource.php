@@ -80,6 +80,22 @@ class Resource implements iViewRender, JsonSerializable {
     	return $this->titles;
     }
     
+    public function getDisplayTitle() {
+    	return $this->createDisplayTitle($this->preferredLanguage);
+    }
+    
+    private function createDisplayTitle($lang) : string {
+    	$others = $this->titles;
+    	unset($others[$lang]);
+    	$displayTitle = '<span lang="'.$lang.'">'.$this->titles[$lang].'</span>';
+    	foreach($others as $lan=>$title) {
+    		if (!empty($title)) {
+    			$displayTitle .= ' (<span lang="'.$lan.'">'.$title.'</span>) ';
+    		}
+    	}
+    	return $displayTitle;
+    }
+    
     public function setTitle(string $value, string $language) {
     	$this->titles[$language] = $value;
     }
@@ -122,6 +138,17 @@ class Resource implements iViewRender, JsonSerializable {
 
     public function setDepth(float $depth) {
         $this->depth = $depth;
+    }
+    
+    public function getDimensions() {
+    	if ($this->height == 0 or $this->width == 0) {
+    		return '';
+    	}
+    	$hc = $this->height;
+    	$wc = $this->width;
+    	$hi = $hc/2.54;
+    	$wi = $wc/2.54;
+    	return $wc . ' x ' . $hc . ' cm. [w x h] ' . number_format($wi, 1) . ' x ' .number_format($hi, 1) . ' in.';
     }
 
     public function getDate() : string {

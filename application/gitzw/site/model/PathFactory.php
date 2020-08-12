@@ -18,12 +18,12 @@ class PathFactory {
 		if (is_null($nature)) {
 			return new Path($name, $depth, $parent, $arr);
 		}
-		//if ($nature == 'year') {
-		//	echo ' loaded '.$nature.' '.$name;
-		//}
 		switch ($nature) {
 		    case 'var':
 		    	return new Visart($name, $depth, $parent, $arr);
+		    	break;
+		    case 'year':
+		    	return new ResourceContainer($name, $depth, $parent, $arr);
 		    	break;
 		    default :
 		    	return new Path($name, $depth, $parent, $arr);

@@ -6,14 +6,15 @@ use gitzw\site\control\menu\MenuManager;
 use gitzw\site\logging\Log;
 use gitzw\site\model\Path;
 use gitzw\site\model\Visart;
+use gitzw\site\model\ResourceContainer;
 
 class OverviewPageControl extends VisartPageControl {
 	
-	const ITEMS_PER_PAGE = 2;
+	const ITEMS_PER_PAGE = 40;
     
     private array $path;
-    private Path $year;
-    protected int $start;
+    private ResourceContainer $year;
+    private int $start;
     
     function __construct(Visart $visart, array $path) {
     	parent::__construct($visart);
@@ -22,10 +23,10 @@ class OverviewPageControl extends VisartPageControl {
         $cat = $work->getChildByFullNamePath($path[3]);
         $this->year = $cat->getChildByFullNamePath($path[4]);
         // path[5] = 'overview'
-        $this->start = intval($path[6]);
+        $this->start = max(0, intval($path[6]));
         $this->setTitle($this->visart->getFullName().' '.$cat->getFullName().
             ' '.$this->year->getFullName());
-        $this->setContentFile(GZ::TEMPLATES.'/visar/overview.php');
+        $this->setContentFile(GZ::TEMPLATES.'/visar/overview2.php');
         $this->constructMenu($work);
         Log::log()->info(__METHOD__);
     }
@@ -44,12 +45,42 @@ class OverviewPageControl extends VisartPageControl {
     	$this->setMenuManager($manager);
     }
     
+    protected function getLeftArrowLink() {
+    	$page = max(0, $this->start - self::ITEMS_PER_PAGE);
+    	return $this->year->getResourcePath().'/overview/'.$page;
+    }
+    
+    protected function getLeftArrowStyle() {
+    	if ($this->start <= 0) {
+    		return ' style="visibility: hidden;"';
+    	} else {
+    		return '';
+    	}
+    }
+    
+    protected function getRightArrowLink() {
+    	$page = $this->start + self::ITEMS_PER_PAGE;
+    	return $this->year->getResourcePath().'/overview/'.$page;
+    }
+    
+    protected function getRightArrowStyle() {
+    	if (($this->start + self::ITEMS_PER_PAGE) >= $this->year->getPublicResourceCount()) {
+    		return ' style="visibility: hidden;"';
+    	} else {
+    		return '';
+    	}
+    }
+    
+    protected function getHeading() {
+    	return $this->year->getIdPath();
+    }
+    
     
     protected function getPageResources() {
-    	if ($this->start >= count($this->year->getResources())) {
+    	if ($this->start >= $this->year->getPublicResourceCount()) {
     		return FALSE;
     	} else {
-    		return array_slice($this->year->getResources(), $this->start, self::ITEMS_PER_PAGE);
+    		return array_slice($this->year->getPublicResourcesShuffled(), $this->start, self::ITEMS_PER_PAGE);
     	}
     }
     
