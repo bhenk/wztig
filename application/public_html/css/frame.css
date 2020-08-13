@@ -386,30 +386,31 @@ div.table-data > div > div:first-child {
 /* end img and data container */
 
 /* paging */
-.left-right-arrows {
+.paging {
 	display: block;
 	clear: both;
 	width: 100%;
-	height: 35px;
+	/* height: 35px; */
 	/* background-color: #d4d4d4; */
+	padding: 3px 0px;
 	color: #d4d4d4;
 	text-align: center;
-	font-size: calc(12px + 1vw);
-	font-weight: bold;
-	/* border: 1px solid blue; */
-}
-.left-arrow {
-	float: left;
-	background: gray;
-	color: white;
+	/* font-size: calc(18px + 0.6vw); */
 	font-size: 20px;
-	padding: 8px 8px 4px 8px;
+	font-weight: bold;
+	/* border: 1px solid gray; */
 }
 
-.right-arrow {
-	float: right;
-	background: gray;
-	color: white;
-	font-size: 20px;
-	padding: 8px 8px 4px 8px;
+.paging a {
+	color: inherit;
 }
+
+.paging a.selected {
+	color: gray;
+}
+
+/* .left-arrow, .right-arrow {
+	border: 1px solid blue;
+} */
+
+

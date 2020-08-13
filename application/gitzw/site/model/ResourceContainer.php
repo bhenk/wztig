@@ -2,12 +2,14 @@
 
 namespace gitzw\site\model;
 
+use gitzw\site\ext\Shuffler;
+
 class ResourceContainer extends Path {
 	
 	const KEY_RESOURCES = 'resources';
 	
 	private $resources = array();
-	private int $publicResourceCount = -1;
+	private $publicResourceCount = -1;
 	
 	public function loadResources() {
 		if (!$this->resourcesLoaded) {
@@ -72,6 +74,10 @@ class ResourceContainer extends Path {
 		$prs = $this->getPublicResources();
 		shuffle($prs);
 		return $prs;
+	}
+	
+	public function getPubResourcesRandomized(string $seedString = NULL) : array {
+		return Shuffler::fisherYatesShuffle($this->getPublicResources(), $seedString);
 	}
 	
 	public function getPublicResourceCount() : int {

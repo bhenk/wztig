@@ -14,42 +14,63 @@ require_once __DIR__.'/../../GZ.php';
  * SiteResources test case.
  */
 class SiteResourcesTest extends TestCase {
+	
+	protected $site;
 
-   
+	protected function setUp() : void {
+		SiteResources::reset();
+		$this->site = SiteResources::getSite();
+	}
     
     
-    public function testGetCannonicalPath() {
-        SiteResources::reset();
-        $site = SiteResources::getSite();
+    public function testGetCannonicalPath1() {
         assertEquals(['', ''], 
-            $site->getCannonicalPath(['', '']), "1");
+        	$this->site->getCannonicalPath(['', '']), "1");
+    }
         
+    public function testGetCannonicalPath2() {
         assertEquals(['', 'foo'],
-            $site->getCannonicalPath(['', 'foo']), "2");
-        
+        	$this->site->getCannonicalPath(['', 'foo']), "2");
+    }
+    
+    public function testGetCannonicalPath3() {
         assertEquals(['', 'henk-van-den-berg'], 
-            $site->getCannonicalPath(['', 'hnq']), "3");
-        
+        	$this->site->getCannonicalPath(['', 'hnq']), "3");
+	}
+   
+	public function testGetCannonicalPath4() {
         assertEquals(['', 'henk-van-den-berg'], 
-            $site->getCannonicalPath(['', 'Henk&van^den#Berg']), "4");
-        
+        	$this->site->getCannonicalPath(['', 'Henk&van^den#Berg']), "4");
+	}
+    
+	public function testGetCannonicalPath5() {
         assertEquals(['', 'henk-van-den-berg'], 
-            $site->getCannonicalPath(['', 'hnq', 'foo']), "5");
-        
+        	$this->site->getCannonicalPath(['', 'hnq', 'ding']), "5");
+	}
+    
+	public function testGetCannonicalPath6() {
         assertEquals(['', 'henk-van-den-berg', 'work'],
-            $site->getCannonicalPath(['', 'hnq', 'Work']), "6");
-        
+        	$this->site->getCannonicalPath(['', 'hnq', 'Work']), "6");
+	}
+    
+	public function testGetCannonicalPath7() {
         assertEquals(['', 'henk-van-den-berg', 'work'],
-            $site->getCannonicalPath(['', 'hnq', 'WORK', 'foo']), "7");
-        
+        	$this->site->getCannonicalPath(['', 'hnq', 'WORK', 'foo']), "7");
+	}
+    
+	public function testGetCannonicalPath8() {
         assertEquals(['', 'henk-van-den-berg', 'work', 'drawing'],
-            $site->getCannonicalPath(['', 'hnq', 'WORK', 'draw']), "8");
-        
+        	$this->site->getCannonicalPath(['', 'hnq', 'WORK', 'draw']), "8");
+	}
+    
+	public function testGetCannonicalPath9() {
         assertEquals(['', 'henk-van-den-berg', 'work', 'drawing'],
-            $site->getCannonicalPath(['', 'hnq', 'WORK', 'draw', 'bar']), "9");
-        
+        	$this->site->getCannonicalPath(['', 'hnq', 'WORK', 'draw', 'bar']), "9");
+	}
+    
+	public function testGetCannonicalPath10() {
         assertEquals(['', 'henk-van-den-berg', 'work', 'drawing'],
-            $site->getCannonicalPath(['', 'hnq', 'WORK', 'draw', 'foo', 'BAR', 'baZ']), "10");
+        	$this->site->getCannonicalPath(['', 'hnq', 'WORK', 'draw', 'foo', 'BAR', 'baZ']), "10");
     }
 
 }

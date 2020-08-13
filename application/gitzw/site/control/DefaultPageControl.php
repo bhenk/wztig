@@ -103,7 +103,7 @@ class DefaultPageControl implements iPageControl {
     
     protected function renderCanonicalURI() {
         if (isset($this->canonicalURI)) {
-            echo '<link rel="canonical" href="'.$this->canonicalURI.'" />';
+            echo '<link rel="canonical" href="'.$this->canonicalURI.'">';
         } else {
             echo '';
         }
