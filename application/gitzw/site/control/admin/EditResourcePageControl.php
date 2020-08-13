@@ -58,6 +58,7 @@ class EditResourcePageControl extends DefaultPageControl {
 		$d = floatval($_POST['depth']);
 		$this->getResource()->setDepth($d <= 0 ? -1 : $d);
 		$this->getResource()->setDate($_POST['date']);
+		$this->getResource()->setHidden($_POST['rhidden'] == 'rhidden');
 		foreach (array_values($this->getResource()->getRepresentations()) as $rep) {
 			$rep->setPreferred($_POST['preferred_representation'] == $rep->getLocation());
 			$rep->setOrdinal($_POST[$rep->getName().'+ordinal'] ?? 0);

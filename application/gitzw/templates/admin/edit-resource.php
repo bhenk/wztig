@@ -104,6 +104,13 @@ const IMG_HEIGHT = 500;
 		    </div>
 		    
 		    <div class="formrw">
+		    	<input type="checkbox" id="rhidden" 
+					name="rhidden" value="rhidden" 
+					<?php echo $this->resource->getHidden() ? ' checked' : ''; ?>>
+		    	<label for="hidden">Hide resource</label>
+		    </div>
+		    
+		    <div class="formrw">
 		      <div class="form-25">
 		        <label><b>Representations</b></label>
 		      </div>

@@ -17,6 +17,7 @@ use JsonSerializable;
  *		"height" : 33,
  *		"depth" : 0,
  *		"date" : "2020-02",
+ *		"hidden" : false,
  *		"representations" : {}
  *	}
  * </pre>
@@ -31,6 +32,7 @@ class Resource implements iViewRender, JsonSerializable {
     const KEY_HEIGHT = 'height';
     const KEY_DEPTH = 'depth';
     const KEY_DATE = 'date';
+    const KEY_HIDDEN = 'hidden';
     const KEY_REPRESENTATIONS = 'representations';
     
     private $id;
@@ -42,6 +44,7 @@ class Resource implements iViewRender, JsonSerializable {
     private $height;
     private $depth;
     private $date;
+    private $hidden = FALSE;
     private $representations = array();
 
 	function __construct(string $id, array $data, Path $parent=NULL) {
@@ -54,6 +57,7 @@ class Resource implements iViewRender, JsonSerializable {
         $this->height = $data[self::KEY_HEIGHT] ?? -1;
         $this->depth = $data[self::KEY_DEPTH] ?? -1;
         $this->date = $data[self::KEY_DATE] ?? '';
+        $this->hidden = $data[self::KEY_HIDDEN] ?? FALSE;
         $reparr = $data[self::KEY_REPRESENTATIONS] ?? array();
         foreach ($reparr as $key=>$data) {
         	$this->representations[$key] = new Representation($this, $key, $data);
@@ -68,6 +72,7 @@ class Resource implements iViewRender, JsonSerializable {
             self::KEY_HEIGHT=>$this->height,
             self::KEY_DEPTH=>$this->depth,
             self::KEY_DATE=>$this->date,
+        	self::KEY_HIDDEN=>$this->hidden,
             self::KEY_REPRESENTATIONS=>$this->representations,
         ];
     }
@@ -157,6 +162,14 @@ class Resource implements iViewRender, JsonSerializable {
 
     public function setDate(string $date) {
         $this->date = $date;
+    }
+    
+    public function getHidden() : bool {
+    	return $this->hidden;
+    }
+    
+    public function setHidden(bool $hidden) {
+    	$this->hidden = $hidden;
     }
     
     public function getRepresentations(string $orderBy=NULL) : array {

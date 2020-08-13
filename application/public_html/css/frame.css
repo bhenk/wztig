@@ -348,11 +348,29 @@ td {
 	/* border: 1px solid green; */
 }
 
+/* prevent data block too small */
+.img_data:before {
+    content: "";
+    width: 20em;
+    display: block;
+    overflow: hidden;
+    /* border: 1px solid green; */
+}
+
 .img_data2 {
 	clear: none;
 	padding: 0px;
 	min-width: 50px;
 	/* border: 1px solid red; */
+}
+
+/* prevent data block too small */
+.img_data2:before {
+    content: "";
+    width: 15em;
+    display: block;
+    overflow: hidden;
+    /* border: 1px solid green; */
 }
 
 /* prevent data block too small */

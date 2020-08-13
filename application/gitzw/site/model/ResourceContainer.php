@@ -62,7 +62,11 @@ class ResourceContainer extends Path {
 	public function getPublicResources() : array {
 		$this->loadResources();
 		$pr = $this->resources;
-		// filter
+		foreach ($pr as $id=>$resource) {
+			if ($resource->getHidden()) {
+				unset($pr[$id]);
+			}
+		}
 		return $pr;
 	}
 	
