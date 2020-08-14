@@ -427,8 +427,9 @@ div.table-data > div > div:first-child {
 	color: gray;
 }
 
-/* .left-arrow, .right-arrow {
-	border: 1px solid blue;
-} */
+.paging a.chrono {
+	float: right;
+	font-size: larger;
+}
 
 

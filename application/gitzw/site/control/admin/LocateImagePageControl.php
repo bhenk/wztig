@@ -44,8 +44,7 @@ class LocateImagePageControl extends DefaultPageControl {
 		$this->setMenuManager(new AdminMenuManager());
 		$this->addStylesheet('/css/form.css');
 		
-		$this->var = SiteResources::getSite()->getChildByName('var')->getChildByName($path[3]);
-		//$this->var->loadChildren();
+		$this->var = SiteResources::get()->getChildByName('var')->getChildByName($path[3]);
 		$this->representation = implode('/', array_slice($path, 3));
 		$this->imgFile = GZ::DATA.'/images/'.$this->representation;
 		$this->action = '/'.implode('/', array_slice($path, 1));

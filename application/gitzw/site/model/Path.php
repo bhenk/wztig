@@ -26,7 +26,6 @@ class Path extends JsonData implements iViewRender {
     const KEY_PATH_SEGMENT = 'path_segment';
     const KEY_REQUESTHANDLER = 'request_handler';
     const KEY_PROPS = 'props';
-    //const KEY_RESOURCES = 'resources';
     
     private $parent;
     private $name;
@@ -36,7 +35,6 @@ class Path extends JsonData implements iViewRender {
     private $pathSegment = TRUE;
     private $requestHandler;
     protected $props = array();
-    //private $resources = array();
     private $childrenLoaded = FALSE;
     protected $resourcesLoaded = FALSE;
     
@@ -100,17 +98,15 @@ class Path extends JsonData implements iViewRender {
     public function loadResources() {
     	if (!$this->resourcesLoaded) {
     		$this->loadChildren();
-// 	        $arr = $this->load();
-// 	        if (array_key_exists(self::KEY_RESOURCES, $arr)) {
-// 	            foreach ($arr[self::KEY_RESOURCES] as $id=>$data) {
-// 	                $this->resources[$id] = new Resource($id, $data, $this);
-// 	            }
-// 	        }
 	        foreach (array_values($this->children) as $child) {
 	            $child->loadResources();
 	        }
 	        $this->resourcesLoaded = TRUE;
     	}
+    }
+    
+    public function getParent() : ?Path {
+    	return $this->parent;
     }
     
     /**
@@ -125,28 +121,6 @@ class Path extends JsonData implements iViewRender {
     public function getProps() : array {
         return $this->props;
     }
-    
-//     public function getResources() : array {
-//     	$this->loadResources();
-//         return $this->resources;
-//     }
-    
-//     public function addResource() : Resource {
-//     	$resourceId = $this->getNextResourceId();
-//     	$resource = new Resource($resourceId, [], $this);
-//     	$this->resources[$resourceId] = $resource;
-//     	$this->persist();
-//     	return $resource;
-//     }
-    
-//     public function getNextResourceId() : string {
-//     	$this->loadResources();
-//     	$rid = -1;
-//     	foreach (array_keys($this->resources) as $key) {
-//     		$rid = max($rid, intval($key));
-//     	}
-//     	return sprintf("%'.04d", $rid + 1);
-//     }
     
     public function getIdPath() : string {
     	if (is_null($this->parent)) {
@@ -365,11 +339,6 @@ class Path extends JsonData implements iViewRender {
     	}
     }
     
-//     public function getResourceByShortId(string $rid) {
-//     	$this->loadResources();
-//     	return $this->resources[$rid];
-//     }
-    
     public function getParentByNature(string $nature) : ?Path {
     	if ($this->nature == $nature) {
     		return $this;
@@ -444,11 +413,6 @@ class Path extends JsonData implements iViewRender {
     public function collectRepresentations(array &$stack) {
     	$this->loadChildren();
     	$this->loadResources();
-//     	foreach ($this->resources as $resource) {
-//     		foreach($resource->getRepresentations() as $rep) {
-//     			$stack[] = $rep->getLocation();
-//     		}
-//     	}
     	foreach ($this->children as $child) {
     		$child->collectRepresentations($stack);
     	}
@@ -472,8 +436,7 @@ class Path extends JsonData implements iViewRender {
             self::KEY_CHILDREN=>$this->children,
             self::KEY_PATH_SEGMENT=>$this->pathSegment,
             self::KEY_REQUESTHANDLER=>$this->requestHandler,
-            self::KEY_PROPS=>$this->props //,
-            //self::KEY_RESOURCES=>$this->resources
+            self::KEY_PROPS=>$this->props
         ];       
     }
     
@@ -489,8 +452,7 @@ class Path extends JsonData implements iViewRender {
     			self::KEY_CHILDREN=>array_keys($this->children),
     			self::KEY_PATH_SEGMENT=>$this->pathSegment,
     			self::KEY_REQUESTHANDLER=>$this->requestHandler,
-    			self::KEY_PROPS=>$this->props //,
-    			//self::KEY_RESOURCES=>$this->resources
+    			self::KEY_PROPS=>$this->props
     	];
     }
     

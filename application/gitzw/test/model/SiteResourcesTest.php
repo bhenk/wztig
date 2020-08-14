@@ -19,7 +19,7 @@ class SiteResourcesTest extends TestCase {
 
 	protected function setUp() : void {
 		SiteResources::reset();
-		$this->site = SiteResources::getSite();
+		$this->site = SiteResources::get();
 	}
     
     

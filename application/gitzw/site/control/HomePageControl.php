@@ -22,13 +22,12 @@ class HomePageControl extends DefaultPageControl
     public function __construct()
     {
         $this->setContentFile(GZ::TEMPLATES.'/home.php');
-        // $this->setFooterTemplate(GZ::TEMPLATES.'/frame/footer_0.php');
         Log::log()->info(__METHOD__);
     }
     
     protected function renderHomeContent() {
         $template = GZ::TEMPLATES . '/views/simpel_domain_view.php';
-        $initial = SiteResources::getSite()->getChildByName(self::DEFAULT_CATEGORY);
+        $initial = SiteResources::get()->getChildByName(self::DEFAULT_CATEGORY);
         foreach ($initial->getChildren() as $child) {
             $child->render($template);
         }

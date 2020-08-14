@@ -1,20 +1,31 @@
 <?php
 namespace gitzw\site\model;
 
-
+/**
+ * A model of the site that corresponds to RESTful path segments.
+ */
 class SiteResources extends Path {
     
     const RESOURCES_NAME = 'resources';
     
     private static $instance;
     
-    public static function getSite() : SiteResources {
-        if (is_null(self::$instance)) {
-            self::$instance = new SiteResources(self::RESOURCES_NAME, 2);
-        }
-        return self::$instance;
+    /**
+     * Get the singleton instance of SiteRecources.
+     * Path segments will be loaded up to a depth of 2 (i.e. Visarts).
+     * 
+     * @return SiteResources
+     */
+    public static function get() : SiteResources {
+    	if (is_null(self::$instance)) {
+    		self::$instance = new SiteResources(self::RESOURCES_NAME, 2);
+    	}
+    	return self::$instance;
     }
     
+    /**
+     * Reset the singleton instance of SiteResources and force reloading upon next get().
+     */
     public static function reset() {
         self::$instance = NULL;
     }
@@ -22,7 +33,13 @@ class SiteResources extends Path {
     
     private $firstSegment;
     
-    
+    /**
+     * Get the cannonical path (if any) that points to a site resource corresponding to the given $path.
+     * 
+     * @param array $path url path to inspect
+     * @param boolean $keepRest keep segments of $path that are beyond the cannonical part (default False)
+     * @return array cannonical path + [rest] or original path
+     */
     public function getCannonicalPath(array $path, $keepRest=FALSE) : array {
         $current = $this->getFirstSegment($path);
         if (isset($current)) {
@@ -44,6 +61,12 @@ class SiteResources extends Path {
         return $path;
     }
     
+    /**
+     * Get the path segment (visart) that corresponds to the string in $path[1] or null.
+     * 
+     * @param array $path the url path
+     * @return Path|NULL
+     */
     public function getFirstSegment(array $path) : ?Path {
         if (is_null($this->firstSegment)) {
             $this->firstSegment = $this->getByPathSegment($path[1], 1);
@@ -54,9 +77,14 @@ class SiteResources extends Path {
         return $this->firstSegment;   
     }
     
+    /**
+     * Get all representations of all resources arranged by visart.
+     * 
+     * @return array [visart.name=>[representations]]
+     */
     public function getResourceImages() : array {
     	$arr = array();
-    	$vars = SiteResources::getSite()->getSegment(['var']);
+    	$vars = $this->getSegment(['var']);
     	foreach ($vars->getChildren() as $var) {
     		$var->loadChildren();
     		$var->loadResources();
@@ -65,6 +93,50 @@ class SiteResources extends Path {
     		$arr[$var->getName()] = $stack;
     	}
     	return $arr;
+    }
+    
+    public function getVisartNames() : array {
+    	$names = array();
+    	foreach($this->getChildByName('var')->getChildren() as $visart) {
+    		$names[] = $visart->getName();
+    	}
+    	return array_unique($names, SORT_STRING);
+    }
+    
+    public function getSubjectNames() : array {
+    	$names = array();
+    	foreach($this->getChildByName('var')->getChildren() as $visart) {
+    		foreach ($visart->getChildren() as $subject) {
+    			$names[] = $subject->getName();
+    		}
+    	}
+    	return array_unique($names, SORT_STRING);
+    }
+    
+    public function getCategoryNames() {
+    	$names = array();
+    	foreach($this->getChildByName('var')->getChildren() as $visart) {
+    		foreach ($visart->getChildren() as $subject) {
+    			foreach ($subject->getChildren() as $cat) {
+    				$names[] = $cat->getName();
+    			}
+    		}
+    	}
+    	return array_unique($names, SORT_STRING);
+    }
+    
+    public function getYearNames() {
+    	$names = array();
+    	foreach($this->getChildByName('var')->getChildren() as $visart) {
+    		foreach ($visart->getChildren() as $subject) {
+    			foreach ($subject->getChildren() as $cat) {
+    				foreach ($cat->getChildren() as $year) {
+    					$names[] = $year->getName();
+    				}
+    			}
+    		}
+    	}
+    	return array_unique($names, SORT_NUMERIC);
     }
     
     

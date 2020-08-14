@@ -14,7 +14,7 @@ require_once __DIR__.'/../../GZ.php';
 class VarHandlerTest extends TestCase {
 
     private function getHandler(array $path) : VarHandler {
-        $site = SiteResources::getSite();
+        $site = SiteResources::get();
         $segment1 = urldecode($path[1]);
         $resourcePath = $site->getByPathSegment($segment1, 1);
         return new VarHandler($path, $resourcePath);

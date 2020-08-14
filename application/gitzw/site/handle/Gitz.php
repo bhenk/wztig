@@ -54,7 +54,7 @@ class Gitz {
             }
             
             /////// redirect? //////
-            $site = SiteResources::getSite();
+            $site = SiteResources::get();
             $cannonicalPath = $site->getCannonicalPath($path, TRUE);
             if (count(array_diff_assoc($path, $cannonicalPath)) > 0) {
                 $location = Site::get()->redirect($cannonicalPath);

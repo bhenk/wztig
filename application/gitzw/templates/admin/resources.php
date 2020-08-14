@@ -4,7 +4,7 @@ namespace gitzw\templates\admin;
 use gitzw\site\model\SiteResources;
 
 function renderSite() {
-	$site = SiteResources::getSite();
+	$site = SiteResources::get();
 	$site->loadChildren();
 	$site->loadResources();
 	return json_encode($site);
@@ -12,7 +12,7 @@ function renderSite() {
 
 /** @var mixed $this */
 ?>
-<h1>Visual ARtists</h1>
+<h1>Site resources</h1>
 
 <div>
 	<button type="button" class="collapse">Collapse to level 4</button>

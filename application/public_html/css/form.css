@@ -61,6 +61,10 @@ input[type=submit]:hover {
   font-size: smaller;
 }
 
+.larger {
+	width: 100%;
+}
+
 .form-25 {
   float: left;
   width: 25%;

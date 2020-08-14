@@ -25,7 +25,7 @@ class EditResourcePageControl extends DefaultPageControl {
 		$this->setMenuManager(new AdminMenuManager());
 		$this->addStylesheet('/css/form.css');
 		
-		$group = SiteResources::getSite()->getChildByName('var');
+		$group = SiteResources::get()->getChildByName('var');
 		$this->resource = $group->getResource($resourceId);
 		if (is_null($this->resource)) {
 			throw new NotFoundException('Unknown resource id: '.$resourceId);

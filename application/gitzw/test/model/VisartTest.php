@@ -13,7 +13,7 @@ use function PHPUnit\Framework\assertFalse;
 class VisartTest extends TestCase {
 	
 	public function testAddRemoveFrontPageImage() {
-		$hnq = SiteResources::getSite()->getDescendant(['var', 'hnq']);
+		$hnq = SiteResources::get()->getDescendant(['var', 'hnq']);
 		$hnq->addFrontPageImage('foo');
 		assertTrue(in_array('foo', $hnq->getProps()[Visart::PROP_KEY_IMAGE_FRONT]));
 		$hnq->removeFrontPageImage('foo');

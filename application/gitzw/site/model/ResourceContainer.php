@@ -74,12 +74,6 @@ class ResourceContainer extends Path {
 		return array_reverse($this->getPublicResources());
 	}
 	
-	public function getPublicResourcesShuffled() : array {
-		$prs = $this->getPublicResources();
-		shuffle($prs);
-		return $prs;
-	}
-	
 	public function getPubResourcesRandomized(string $seedString = NULL) : array {
 		return Shuffler::fisherYatesShuffle($this->getPublicResources(), $seedString);
 	}

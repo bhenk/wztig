@@ -15,7 +15,7 @@ class ImageInspector {
 	 */
 	public function imageDiff() : array {
 		$arr = array();
-		$resourceImages = SiteResources::getSite()->getResourceImages();
+		$resourceImages = SiteResources::get()->getResourceImages();
 		foreach ($this->scanImages() as $name=>$images) {
 			$arr[$name] = array_diff($images, $resourceImages[$name]);
 		}
@@ -30,7 +30,7 @@ class ImageInspector {
 	public function scanImages() : array {
 		$arr = array();
 		$imageDir = GZ::DATA.'/images/';
-		$vars = SiteResources::getSite()->getSegment(['var']);
+		$vars = SiteResources::get()->getSegment(['var']);
 		foreach ($vars->getChildren() as $var) {
 			$arr[$var->getName()] = $this->getImages($imageDir.$var->getName(), $imageDir);
 		}

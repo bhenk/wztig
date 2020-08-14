@@ -13,7 +13,8 @@ class AdminMenuManager extends MenuManager {
 					['resources', '/admin/resources']
 			],
 			'edit'=>[
-					['scan images', '/admin/scan-images']
+					['scan images', '/admin/scan-images'],
+					['list resources', '/admin/list-resources']
 			],
 			'misc'=>[
 					['raise exception', 'admin/raise-exception']

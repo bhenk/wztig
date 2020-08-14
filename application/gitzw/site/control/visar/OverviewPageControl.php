@@ -3,6 +3,7 @@ namespace gitzw\site\control\visar;
 
 use gitzw\GZ;
 use gitzw\site\control\menu\MenuManager;
+use gitzw\site\control\menu\Pager;
 use gitzw\site\data\Site;
 use gitzw\site\logging\Log;
 use gitzw\site\model\Path;
@@ -17,7 +18,9 @@ class OverviewPageControl extends VisartPageControl {
     private ResourceContainer $year;
     private int $start;
     private ?string $seedString;
-    private array $randomizedResources;
+    private int $itemsPerPage;
+    private array $resources;
+    private Pager $pager;
     
     function __construct(Visart $visart, array $path) {
     	parent::__construct($visart);
@@ -28,19 +31,27 @@ class OverviewPageControl extends VisartPageControl {
         // path[5] = 'overview'
         $this->seedString = $path[6];
         $this->start = max(0, intval($path[7]));
+        $this->itemsPerPage = max(1, intval($path[8] ?? self::ITEMS_PER_PAGE));
+
+        if ($this->seedString == 'chrono') {
+        	$this->resources = $this->year->getPublicResources();
+        } else {
+	        $pak = $this->year->getPubResourcesRandomized($this->seedString);
+	        $this->seedString = $pak[0];
+	        $this->resources = $pak[1];
+        }
         
-        $pak = $this->year->getPubResourcesRandomized($this->seedString);
-        $this->seedString = $pak[0];
-        $this->randomizedResources = $pak[1];
+        $canStart = floor($this->start / self::ITEMS_PER_PAGE) * self::ITEMS_PER_PAGE;
+        if ($this->seedString != 'chrono' or $this->start != $canStart) {
+        	$this->setCanonicalURI(Site::get()->
+        			redirectLocation($this->year->getResourcePath().'/overview/chrono/'.$canStart));
+        }
         
         $this->setTitle($this->visart->getFullName().' '.$cat->getFullName().
             ' '.$this->year->getFullName());
-        if (isset($path[6])) {
-        	$this->setCanonicalURI(Site::get()->
-        			redirectLocation($this->year->getResourcePath().'/overview'));
-        }
         $this->setContentFile(GZ::TEMPLATES.'/visar/overview2.php');
         $this->constructMenu($work);
+        $this->pager = new Pager($this->start, $this->itemsPerPage, $this->getItemCount(), $this->getLink(), $this->seedString);
         Log::log()->info(__METHOD__);
     }
     
@@ -58,34 +69,16 @@ class OverviewPageControl extends VisartPageControl {
     	$this->setMenuManager($manager);
     }
     
-    private function getLink($startItem) {
-    	return $this->year->getResourcePath().'/overview/'.$this->seedString.'/'.$startItem;
+    private function getLink() : string {
+    	return $this->year->getResourcePath().'/overview';
     }
     
-    protected function getLeftArrowLink() {
-    	$startItem = max(0, $this->start - self::ITEMS_PER_PAGE);
-    	return $this->getLink($startItem);
+    private function getItemCount() {
+    	return $this->year->getPublicResourceCount();
     }
     
-    protected function getLeftArrowStyle() {
-    	if ($this->start <= 0) {
-    		return ' style="visibility: hidden;"';
-    	} else {
-    		return '';
-    	}
-    }
-    
-    protected function getRightArrowLink() {
-    	$startItem = $this->start + self::ITEMS_PER_PAGE;
-    	return $this->getLink($startItem);
-    }
-    
-    protected function getRightArrowStyle() {
-    	if (($this->start + self::ITEMS_PER_PAGE) >= $this->year->getPublicResourceCount()) {
-    		return ' style="visibility: hidden;"';
-    	} else {
-    		return '';
-    	}
+    protected function getPager() {
+    	return $this->pager;
     }
     
     protected function getHeading() {
@@ -94,64 +87,12 @@ class OverviewPageControl extends VisartPageControl {
     
     
     protected function getPageResources() {
-    	if ($this->start >= $this->year->getPublicResourceCount()) {
+    	if ($this->start >= $this->getItemCount()) {
     		return FALSE;
     	} else {
-    		return array_slice($this->randomizedResources, $this->start, self::ITEMS_PER_PAGE);
+    		return array_slice($this->resources, $this->start, $this->itemsPerPage);
     	}
-    }
-    
-    protected function getPagelinks() : array {
-    	if ($this->year->getPublicResourceCount() <= self::ITEMS_PER_PAGE) {
-    		return [];
-    	}
-    	
-    	$links = array();
-    	$pageCount = ceil($this->year->getPublicResourceCount() / self::ITEMS_PER_PAGE);
-    	
-    	$startItem = 0;
-    	$link = [1,
-    			$this->getLink($startItem),
-    			$this->start == $startItem
-    	];
-    	$links[] = $link;
-    	
-    	if ($pageCount == 1) {
-    		return $links;
-    	}
-    	
-    	$page = ceil($this->start / self::ITEMS_PER_PAGE) + 1;
-    	
-    	$begin = max(2, $page - 2);
-    	$end = min($pageCount, $page + 3);
-    	
-    	if ($begin > 2) {
-    		$links[] = ['...', '#', FALSE];
-    	}
-    	
-    	for ($i = $begin; $i < $end; $i++) {
-    		$startItem = ($i - 1) * self::ITEMS_PER_PAGE;
-    		$link = [$i,
-    				$this->getLink($startItem),
-    				$this->start == $startItem
-    		];
-    		$links[] = $link;
-    	}
-    	
-    	if ($end < $pageCount) {
-    		$links[] = ['...', '#', FALSE];
-    	}
-    	
-    	$startItem = ($pageCount - 1) * self::ITEMS_PER_PAGE;
-    	$link = [$pageCount,
-    			$this->getLink($startItem),
-    			$this->start == $startItem
-    	];
-    	$links[] = $link;
-    	
-    	return $links;
-    }
-    
+    }    
     
 }
 
