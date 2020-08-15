@@ -419,17 +419,24 @@ div.table-data > div > div:first-child {
 	/* border: 1px solid gray; */
 }
 
-.paging a {
+.paging a, span.paging-link {
 	color: inherit;
+	padding: 6px 3px 0px 3px;
+	cursor: pointer;
+	border: 1px solid white;
 }
 
-.paging a.selected {
+.paging a.selected, span.selected {
 	color: gray;
 }
 
 .paging a.chrono {
 	float: right;
 	font-size: larger;
+}
+
+.paging a:hover, span.paging-link:hover {
+	border: 1px solid #d4d4d4;
 }
 
 

@@ -5,13 +5,13 @@ use gitzw\GZ;
 use gitzw\site\control\DefaultPageControl;
 use gitzw\site\control\NotFoundPageControl;
 use gitzw\site\control\admin\AdminMenuManager;
-use gitzw\site\control\admin\ForcedExceptionPage;
-use gitzw\site\logging\Log;
-use gitzw\site\control\admin\LocateImagePageControl;
 use gitzw\site\control\admin\EditResourcePageControl;
-use gitzw\site\model\SiteResources;
+use gitzw\site\control\admin\ForcedExceptionPage;
+use gitzw\site\control\admin\LocateImagePageControl;
+use gitzw\site\control\admin\ResourceListPageControl;
 use gitzw\site\control\visar\FrontPageControl;
-use gitzw\site\control\admin\ResourceFilterPageControl;
+use gitzw\site\logging\Log;
+use gitzw\site\model\SiteResources;
 
 class AdminHandler {
     
@@ -61,7 +61,7 @@ class AdminHandler {
     			Log::log()->info('end request handling admin/edit-resource');
     			return;
     		case 'list-resources':
-    			(new ResourceFilterPageControl($this->path))->renderPage();
+    			(new ResourceListPageControl($this->path))->renderPage();
     			Log::log()->info('end request handling admin/list-resources');
     			return;
     		case 'front-page':

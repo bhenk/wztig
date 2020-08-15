@@ -31,16 +31,6 @@ class Shuffler {
 		return [$seedString, $items];
 	}
 	
-// 	public static function permutations(int $n) : string {
-// 		$n = min(170, $n);
-// 		$x = strval($n);
-// 		while ($n > 1) {
-// 			--$n;
-// 			$x = bcmul($x, strval($n));
-// 		}
-// 		return $x;
-// 	}
-	
 	public static function permutations(int $n) : string {
 		$n = min(170, $n);
 		$x = $n;

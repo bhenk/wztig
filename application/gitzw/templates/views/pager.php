@@ -5,7 +5,7 @@ namespace gitzw\templates\views;
 ?>
 
 <div class="paging">
-	<a class="chrono"<?php echo $this->getChronoStyle(); ?>
+	<a title="chronological order" class="chrono"<?php echo $this->getChronoStyle(); ?>
 		href="<?php echo $this->getChronoLink(); ?>">---</a>
 	<a class="left-arrow"<?php echo $this->getLeftArrowStyle(); ?> 
 		href="<?php echo $this->getLeftArrowLink(); ?>">&nbsp;&#9664;&nbsp;</a>

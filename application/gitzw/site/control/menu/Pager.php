@@ -3,9 +3,8 @@
 namespace gitzw\site\control\menu;
 
 use gitzw\GZ;
-use gitzw\site\model\iViewRender;
 
-class Pager implements iViewRender {
+class Pager {
 	
 	const DEFAULT_TEMPLATE = GZ::TEMPLATES.'/views/pager.php';
 	
@@ -15,7 +14,7 @@ class Pager implements iViewRender {
 	private int $pagesInview;
 	private string $baseurl;
 	private string $seed;
-	private string $template;
+	private $template;
 	
 	function __construct(int $start, int $itemsPerPage, int $itemCount, string $baseurl, string $seed, int $pagesInView=2) {
 		$this->start = $start;
@@ -26,11 +25,19 @@ class Pager implements iViewRender {
 		$this->pagesInview = $pagesInView;
 	}
 	
-	public function render($template=NULL) {
-		if (is_null($template)) {
-			$template = self::DEFAULT_TEMPLATE;
+	public function setTemplate(string $template) {
+		$this->template = $template;
+	}
+	
+	public function render() {
+		if (is_null($this->template)) {
+			$this->template = self::DEFAULT_TEMPLATE;
 		}
-		require $template;
+		require $this->template;
+	}
+	
+	protected function getBaseUrl() : string {
+		return $this->baseurl;
 	}
 	
 	private function getLink($startItem) {
@@ -49,8 +56,12 @@ class Pager implements iViewRender {
 		}
 	}
 	
+	protected function getLeftArrowOnClick() {
+		return max(0, $this->start - $this->itemsPerPage);
+	}
+	
 	protected function getLeftArrowLink() {
-		$startItem = max(0, $this->start - $this->itemsPerPage);
+		$startItem = $this->getLeftArrowOnClick();
 		return $this->getLink($startItem);
 	}
 	
@@ -62,8 +73,12 @@ class Pager implements iViewRender {
 		}
 	}
 	
+	protected function getRightArrowOnClick() {
+		return $this->start + $this->itemsPerPage;
+	}
+	
 	protected function getRightArrowLink() {
-		$startItem = $this->start + $this->itemsPerPage;
+		$startItem = $this->getRightArrowOnClick();
 		return $this->getLink($startItem);
 	}
 	
@@ -86,7 +101,8 @@ class Pager implements iViewRender {
 		$startItem = 0;
 		$link = [1,
 				$this->getLink($startItem),
-				$this->start == $startItem
+				$this->start == $startItem,
+				$startItem
 		];
 		$links[] = $link;
 		
@@ -100,26 +116,28 @@ class Pager implements iViewRender {
 		$end = min($pageCount, $page + ($this->pagesInview + 1));
 		
 		if ($begin > 2) {
-			$links[] = ['...', '#', FALSE];
+			$links[] = ['...', '#', FALSE, -1];
 		}
 		
 		for ($i = $begin; $i < $end; $i++) {
 			$startItem = ($i - 1) * $this->itemsPerPage;
 			$link = [$i,
 					$this->getLink($startItem),
-					$this->start == $startItem
+					$this->start == $startItem,
+					$startItem
 			];
 			$links[] = $link;
 		}
 		
 		if ($end < $pageCount) {
-			$links[] = ['...', '#', FALSE];
+			$links[] = ['...', '#', FALSE, -1];
 		}
 		
 		$startItem = ($pageCount - 1) * $this->itemsPerPage;
 		$link = [$pageCount,
 				$this->getLink($startItem),
-				$this->start == $startItem
+				$this->start == $startItem,
+				$startItem
 		];
 		$links[] = $link;
 		
