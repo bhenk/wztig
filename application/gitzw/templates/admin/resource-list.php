@@ -5,19 +5,18 @@ namespace gitzw\templates\admin;
 /** @var mixed $this */
 ?>
 
-<h1 class="gitzw">List resources</h1>
+<h1 class="gitzw">List resources <small>  &bull; found: <?php echo $this->itemCount; ?> resources</small></h1>
 
-<button onclick="sendRequest()">Continue</button>
-
-<div style="height: 400px"> </div>
+<?php foreach ($this->getPageResources() as $resource) { ?>
+	<div><?php echo $resource->getLongId(); ?></div>
+<?php } ?>
 
 <?php $this->pager->render(); ?>
-
 <script>
-function getPayload() {
+function getPagingPayload() {
 	return {
 		visart: "<?php echo $this->visart; ?>",
-		subject: "<?php echo $this->subject; ?>",
+		activity: "<?php echo $this->activity; ?>",
 		category: "<?php echo $this->category; ?>",
 		year: "<?php echo $this->year; ?>"
 	};

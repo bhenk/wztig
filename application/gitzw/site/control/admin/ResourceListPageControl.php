@@ -6,20 +6,22 @@ use gitzw\GZ;
 use gitzw\site\control\DefaultPageControl;
 use gitzw\site\control\menu\Pager;
 use gitzw\site\data\Site;
+use gitzw\site\model\SiteResources;
 
 class ResourceListPageControl extends DefaultPageControl {
 	
 	protected string $action;
 	protected $visart = 'all';
-	protected $subject = 'all';
+	protected $activity = 'all';
 	protected $category = 'all';
 	protected $year = 'all';
 	
+	protected $resources = array();
+	
 	protected $pager;
+	protected $itemCount;
 	private int $start = 0;
 	private $itemsPerPage = 4;
-	private $itemCount = 106;
-	private $seedString = 'nothing';
 	
 	function __construct(array $path) {
 		$this->setMenuManager(new AdminMenuManager('/admin/list-resources'));
@@ -47,25 +49,27 @@ class ResourceListPageControl extends DefaultPageControl {
 			$data = $_POST;
 		}
 		$this->visart = $data['visart'];
-		$this->subject = $data['subject'];
+		$this->activity = $data['activity'];
 		$this->category = $data['category'];
 		$this->year = $data['year'];
 		
+		$query = ['', $this->visart, $this->activity, $this->category, $this->year];
+		$this->resources = SiteResources::get()->listResources($query);
+		$this->itemCount = count($this->resources);
 		
-		$this->pager = new Pager($this->start, $this->itemsPerPage, $this->itemCount, $this->action, $this->seedString);
-		$this->pager->setTemplate(GZ::TEMPLATES.'/views/pager-ajax.php');
+		$this->pager = new Pager($this->start, $this->itemsPerPage, $this->itemCount, $this->action);
+		$this->pager->setTemplate(Pager::AJAX_TEMPLATE);
 		
 		parent::renderPage();
 	}
 	
-	protected function renderFooter() {
-		echo 'time='.time().'<br/>';
-		echo 'visart='.$this->visart.'<br/>';
-		echo 'year='.$this->year.'<br/>';
-		echo 'start='.$this->start.'<br/>';
-		print_r(file_get_contents('php://input'));
-	}
-	
+	protected function getPageResources() {
+		if ($this->start >= $this->itemCount) {
+			return [];
+		} else {
+			return array_slice($this->resources, $this->start, $this->itemsPerPage);
+		}
+	}    
 	
 }
 

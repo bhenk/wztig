@@ -103,17 +103,17 @@ class SiteResources extends Path {
     	return array_unique($names, SORT_STRING);
     }
     
-    public function getSubjectNames() : array {
+    public function getActivitytNames() : array {
     	$names = array();
     	foreach($this->getChildByName('var')->getChildren() as $visart) {
-    		foreach ($visart->getChildren() as $subject) {
-    			$names[] = $subject->getName();
+    		foreach ($visart->getChildren() as $activity) {
+    			$names[] = $activity->getName();
     		}
     	}
     	return array_unique($names, SORT_STRING);
     }
     
-    public function getCategoryNames() {
+    public function getCategoryNames() : array {
     	$names = array();
     	foreach($this->getChildByName('var')->getChildren() as $visart) {
     		foreach ($visart->getChildren() as $subject) {
@@ -125,7 +125,7 @@ class SiteResources extends Path {
     	return array_unique($names, SORT_STRING);
     }
     
-    public function getYearNames() {
+    public function getYearNames() : array {
     	$names = array();
     	foreach($this->getChildByName('var')->getChildren() as $visart) {
     		foreach ($visart->getChildren() as $subject) {
@@ -137,6 +137,14 @@ class SiteResources extends Path {
     		}
     	}
     	return array_unique($names, SORT_NUMERIC);
+    }
+    
+    public function listResources(array $query) {
+    	$stack = array();
+    	foreach ($this->getChildByName('var')->getChildren() as $child) {
+    		$child->collectResources($stack, $query);
+    	}
+    	return $stack;
     }
     
     

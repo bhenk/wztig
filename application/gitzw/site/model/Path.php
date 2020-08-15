@@ -27,15 +27,15 @@ class Path extends JsonData implements iViewRender {
     const KEY_REQUESTHANDLER = 'request_handler';
     const KEY_PROPS = 'props';
     
-    private $parent;
-    private $name;
-    private $fullName;
-    private $nature;
-    private $children = array();
-    private $pathSegment = TRUE;
-    private $requestHandler;
+    protected $parent;
+    protected $name;
+    protected $fullName;
+    protected $nature;
+    protected $children = array();
+    protected $pathSegment = TRUE;
+    protected $requestHandler;
     protected $props = array();
-    private $childrenLoaded = FALSE;
+    protected $childrenLoaded = FALSE;
     protected $resourcesLoaded = FALSE;
     
     /**
@@ -415,6 +415,17 @@ class Path extends JsonData implements iViewRender {
     	$this->loadResources();
     	foreach ($this->children as $child) {
     		$child->collectRepresentations($stack);
+    	}
+    }
+    
+    public function collectResources(array &$stack, array $query) {
+    	$o = $this->getOrdinal();
+    	if ($query[$o] == 'all' or $query[$o] == $this->name) {
+    		$this->loadChildren();
+    		$this->loadResources();
+    		foreach($this->children as $child) {
+    			$child->collectResources($stack, $query);
+    		}
     	}
     }
     

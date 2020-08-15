@@ -31,14 +31,14 @@ $site = SiteResources::get();
 		
 		<div class="formrw">
 			<div class="form-25">
-				<label for="subject">Subject</label>
+				<label for="subject">Activity</label>
 			</div>
 			<div class="form-75">
-				<select class="smallinput" id="subject" name="subject">
-					<option value="all"<?php echo $this->subject == 'all' ? ' selected' : ''; ?>>all</option>
-		         	<?php foreach ($site->getSubjectNames() as $name) { ?>
+				<select class="smallinput" id="activity" name="activity">
+					<option value="all"<?php echo $this->activity == 'all' ? ' selected' : ''; ?>>all</option>
+		         	<?php foreach ($site->getActivitytNames() as $name) { ?>
 		         		<option value="<?php echo $name; ?>"
-		         		<?php echo $this->subject == $name ? ' selected' : ''; ?>
+		         		<?php echo $this->activity == $name ? ' selected' : ''; ?>
 		         		><?php echo $name; ?></option>
 					<?php } ?>
 		        </select>

@@ -7,16 +7,17 @@ use gitzw\GZ;
 class Pager {
 	
 	const DEFAULT_TEMPLATE = GZ::TEMPLATES.'/views/pager.php';
+	const AJAX_TEMPLATE = GZ::TEMPLATES.'/views/pager-ajax.php';
 	
 	private int $start;
 	private int $itemsPerPage;
 	private int $itemCount;
 	private int $pagesInview;
 	private string $baseurl;
-	private string $seed;
+	private $seed;
 	private $template;
 	
-	function __construct(int $start, int $itemsPerPage, int $itemCount, string $baseurl, string $seed, int $pagesInView=2) {
+	function __construct(int $start, int $itemsPerPage, int $itemCount, string $baseurl, string $seed=NULL, int $pagesInView=2) {
 		$this->start = $start;
 		$this->itemsPerPage = $itemsPerPage;
 		$this->itemCount = $itemCount;

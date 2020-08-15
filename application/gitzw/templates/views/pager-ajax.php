@@ -6,7 +6,7 @@ namespace gitzw\templates\views;
 
 <div class="paging">
 	<span class="paging-link"<?php echo $this->getLeftArrowStyle(); ?> 
-		onclick="sendRequest(<?php echo $this->getLeftArrowOnClick(); ?>)">&nbsp;&#9664;&nbsp;</span>
+		onclick="sendPagingRequest(<?php echo $this->getLeftArrowOnClick(); ?>)">&nbsp;&#9664;&nbsp;</span>
 	
 	<?php foreach($this->getPagelinks() as $link) { 
 		if ($link[3] < 0) {
@@ -15,19 +15,16 @@ namespace gitzw\templates\views;
 		<?php } else {
 		?>
 		<span class="paging-link<?php echo $link[2] ? ' selected' : ''; ?>" 
-			onclick="sendRequest(<?php echo $link[3]; ?>)"><?php echo $link[0]; ?></span>	
+			onclick="sendPagingRequest(<?php echo $link[3]; ?>)"><?php echo $link[0]; ?></span>	
 	<?php } 
 	} ?>
 	
 	<span class="paging-link"<?php echo $this->getRightArrowStyle(); ?> 
-		onclick="sendRequest(<?php echo $this->getRightArrowOnClick(); ?>)">&nbsp;&#9654;&nbsp;</span>
+		onclick="sendPagingRequest(<?php echo $this->getRightArrowOnClick(); ?>)">&nbsp;&#9654;&nbsp;</span>
 </div>
 
 <script>
-function sendRequest(startitem) {
-	if (startitem < 0) {
-		return;
-	}
+function sendPagingRequest(startitem) {
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
@@ -42,7 +39,7 @@ function sendRequest(startitem) {
 		paging : {
 			start : startitem
 		},
-		payload : getPayload()
+		payload : getPagingPayload()
 		});
 	xhttp.send(data);
 }
