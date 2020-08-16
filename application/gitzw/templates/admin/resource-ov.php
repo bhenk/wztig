@@ -39,6 +39,12 @@ const SMALL_IMG_HEIGHT = 150;
 			<div>
 				<div>t</div><div><?php echo $this->getDate(); ?></div>
 			</div>
+			<div>
+				<div>h</div><div><?php echo $this->getHidden() ? 'hidden' : ''; ?></div>
+			</div>
+			<div>
+				<div>p</div><div><?php echo $this->hasPreferredRepresentation() ? 'preferred' : ''; ?></div>
+			</div>
 		</div>
 	</div>
 </div>

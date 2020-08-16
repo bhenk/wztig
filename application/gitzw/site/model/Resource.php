@@ -201,6 +201,15 @@ class Resource implements iViewRender, JsonSerializable {
     	}
     	return array_values($this->representations)[0];
     }
+    
+    public function hasPreferredRepresentation() : bool {
+    	foreach (array_values($this->representations) as $representation) {
+    		if ($representation->getPreferred() == TRUE) {
+    			return TRUE;
+    		}
+    	}
+    	return False;
+    }
 
     public function getId() : string {
         return $this->id;
