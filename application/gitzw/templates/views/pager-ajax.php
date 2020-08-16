@@ -31,6 +31,7 @@ function sendPagingRequest(startitem) {
 			document.open();
 			document.write(this.responseText);
 			document.close();
+			window.scrollTo(0, 0); 
 		}
 	};
 	xhttp.open("POST", "<?php echo $this->getBaseUrl(); ?>", true);

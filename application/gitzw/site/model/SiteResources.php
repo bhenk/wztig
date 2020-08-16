@@ -139,10 +139,10 @@ class SiteResources extends Path {
     	return array_unique($names, SORT_NUMERIC);
     }
     
-    public function listResources(array $query) {
+    public function listResources(array $query, $callback=NULL) {
     	$stack = array();
     	foreach ($this->getChildByName('var')->getChildren() as $child) {
-    		$child->collectResources($stack, $query);
+    		$child->collectResources($stack, $query, $callback);
     	}
     	return $stack;
     }

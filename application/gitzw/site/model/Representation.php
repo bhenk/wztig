@@ -75,7 +75,7 @@ class Representation implements JsonSerializable, iViewRender {
 	public function setPreferred(bool $preferred) {
 		$this->preferred = $preferred;
 	}
-	public function render(string $template) {
+	public function render(string $template, array $args=NULL) {
 		require $template;
 	}
 

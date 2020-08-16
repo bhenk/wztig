@@ -39,6 +39,18 @@ fieldset {
 	margin-top: 0px;
 	word-break: break-all;
 	/* max-width: 700px; */
+	/* border: 1px solid red; */
+}
+
+button {
+  background-color: gray;
+  color: white;
+  padding: 7px 15px 6px 15px;
+  margin-top: 3px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  float: right;
 }
 
 .graph {
@@ -290,7 +302,7 @@ td {
 /* for collapse.js */
 .collapse-button {
 	padding: 6px;
-	max-width: 500px;
+	/* max-width: 500px; */
 	cursor: pointer;
 }
 
@@ -326,6 +338,57 @@ td {
 	display: block;
 }
 
+/* search results */
+.search-dashboard {
+	background-color: #e8e9ec;
+	/* border: 1px solid green; */
+	overflow: hidden;
+	margin-bottom: 5px;
+}
+
+.searchquery {
+	background-color: #e8e9ec;
+	font-size: smaller;
+	padding: 5px;
+	float: left;
+}
+
+.searchquery span {
+	padding-left: 20px;
+	
+}
+
+.searchbutton {
+	float: right;
+	font-size: 24px;
+	padding: 10px;
+	background-color: #e8e9ec;
+	border: 1px solid #e8e9ec; 
+	cursor: pointer;
+}
+
+.searchbutton:hover {
+	border: 1px solid gray;
+}
+
+/* end search dashboard */
+
+.indicator-wrapper {
+	clear: both;
+	border: 1px solid #e8e9ec;
+	margin-bottom: 1px;
+}
+
+.relevance-indicator {
+	height:18px;
+	background-color: #e8e9ec;
+	padding-left: 5px;
+	padding-top: 2px;
+	font-size: smaller;
+}
+
+/* end search results */
+
 /* img and data container */
 .img-data-container {
 	width: 100%;
@@ -338,6 +401,7 @@ td {
 	padding: 0px;
 	margin-right: 1em;
 	margin-bottom: 1em;
+	/* min-width: 20%; */
 	/* border: 1px solid red; */
 }
 

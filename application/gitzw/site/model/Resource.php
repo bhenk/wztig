@@ -210,7 +210,7 @@ class Resource implements iViewRender, JsonSerializable {
         return $this->parent;
     }
 
-    public function render($template) {
+    public function render($template, array $args=NULL) {
         require($template);
     }
     

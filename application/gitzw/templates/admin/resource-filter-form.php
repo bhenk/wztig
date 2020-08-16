@@ -78,6 +78,51 @@ $site = SiteResources::get();
 		</div>
 		
 		<div class="formrw">
+			<div class="form-25">
+				<label for="title_en">Title en</label>
+			</div>
+			<div class="form-75">
+				<input type="text" id="title_en" name="title_en" value="<?php echo $this->title_en; ?>">
+			</div>
+		</div>
+		
+		<div class="formrw">
+			<div class="form-25">
+				<label for="title_nl">Title nl</label>
+			</div>
+			<div class="form-75">
+				<input type="text" id="title_nl" name="title_nl" value="<?php echo $this->title_nl; ?>">
+			</div>
+		</div>
+		
+		<div class="formrw">
+			<div class="form-25">
+				<label for="technique">Technique</label>
+			</div>
+			<div class="form-75">
+				<input type="text" id="technique" name="technique" value="<?php echo $this->technique; ?>">
+			</div>
+		</div>
+		
+		<div class="formrw">
+			<div class="form-25">
+				<label for="width">Width</label>
+			</div>
+			<div class="form-75">
+				<input class="smallinput" type="text" id="width" name="width" value="<?php echo $this->width; ?>">
+			</div>
+		</div>
+		
+		<div class="formrw">
+			<div class="form-25">
+				<label for="height">Height</label>
+			</div>
+			<div class="form-75">
+				<input class="smallinput" type="text" id="height" name="height" value="<?php echo $this->height; ?>">
+			</div>
+		</div>
+		
+		<div class="formrw">
  	      <input type="submit" value="Search">	
 	    </div>
 	    

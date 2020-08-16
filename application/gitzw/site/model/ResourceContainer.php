@@ -32,12 +32,17 @@ class ResourceContainer extends Path {
 		}
 	}
 	
-	public function collectResources(array &$stack, array $query) {
+	public function collectResources(array &$stack, array $query, $callback=NULL) {
 		$o = $this->getOrdinal();
 		if ($query[$o] == 'all' or $query[$o] == $this->name) {
 			$this->loadResources();
 			foreach ($this->resources as $resource) {
-				$stack[] = $resource;
+				if (!is_null($callback)) {
+					$relevance = call_user_func($callback, $resource);
+					$stack[] = [$relevance, $resource];
+				} else {
+					$stack[] = [1.1, $resource];
+				}
 			}
 		}
 	}

@@ -60,9 +60,9 @@ class AdminHandler {
     			(new EditResourcePageControl($this->path))->renderPage();
     			Log::log()->info('end request handling admin/edit-resource');
     			return;
-    		case 'list-resources':
+    		case 'find-resources':
     			(new ResourceListPageControl($this->path))->renderPage();
-    			Log::log()->info('end request handling admin/list-resources');
+    			Log::log()->info('end request handling admin/find-resources');
     			return;
     		case 'front-page':
     			$var = SiteResources::get()->getChildByName('var')->getChildByName($this->path[3]);

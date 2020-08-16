@@ -418,13 +418,13 @@ class Path extends JsonData implements iViewRender {
     	}
     }
     
-    public function collectResources(array &$stack, array $query) {
+    public function collectResources(array &$stack, array $query, $callback=NULL) {
     	$o = $this->getOrdinal();
     	if ($query[$o] == 'all' or $query[$o] == $this->name) {
     		$this->loadChildren();
     		$this->loadResources();
     		foreach($this->children as $child) {
-    			$child->collectResources($stack, $query);
+    			$child->collectResources($stack, $query, $callback);
     		}
     	}
     }
@@ -467,7 +467,7 @@ class Path extends JsonData implements iViewRender {
     	];
     }
     
-    public function render($template) {
+    public function render($template, array $args=NULL) {
         require($template);
     }
 }

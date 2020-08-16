@@ -1,5 +1,5 @@
 <?php
-namespace gitzw\templates\visar;
+namespace gitzw\templates\admin;
 
 /** @var mixed $this */
 
@@ -11,6 +11,7 @@ const SMALL_IMG_HEIGHT = 150;
 ?>
 <div class="img-data-container">
 	<div class="img-container">
+		<a href="/admin/edit-resource/<?php echo $this->getLongId(); ?>">
     	<?php 
     	$representation = $this->getRepresentation();
     	if (isset($representation)) {
@@ -21,8 +22,10 @@ const SMALL_IMG_HEIGHT = 150;
     	$ida = new ImageData(NULL, $location);
     	echo $ida->getImgTag(SMALL_IMG_WIDTH, SMALL_IMG_HEIGHT, $this->getLongId(), 'maxheight');
 	    ?>
+	    </a>
 	</div>
 	<div class="img_data">
+		
 		<div class="table-data">
 			<div>
 				<div>&nbsp;</div><div><?php echo $this->getDisplayTitle(); ?></div>
