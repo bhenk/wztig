@@ -12,7 +12,7 @@ use JsonSerializable;
  *			"nl" : "geen titel"
  *		},
  *		"preferred_title" : "nl",
- *		"technique" : "pencil, charcoal and acrylic on paper",
+ *		"media" : "pencil, charcoal and acrylic on paper",
  *		"width" : 20.5,
  *		"height" : 33,
  *		"depth" : 0,
@@ -27,7 +27,7 @@ class Resource implements iViewRender, JsonSerializable {
     
     const KEY_TITLES = 'titles';
     const KEY_PREFERRED_LANGUAGE = 'preferred_language';
-    const KEY_TECHNIQUE = "technique";
+    const KEY_MEDIA = "media";
     const KEY_WIDTH = 'width';
     const KEY_HEIGHT = 'height';
     const KEY_DEPTH = 'depth';
@@ -39,7 +39,7 @@ class Resource implements iViewRender, JsonSerializable {
     private $parent;
     private $titles = array();
     private $preferredLanguage;
-    private $technique;
+    private $media;
     private $width;
     private $height;
     private $depth;
@@ -52,7 +52,7 @@ class Resource implements iViewRender, JsonSerializable {
         $this->parent = $parent;
         $this->titles = $data[self::KEY_TITLES] ?? array();
         $this->preferredLanguage = $data[self::KEY_PREFERRED_LANGUAGE] ?? 'en';
-        $this->technique = $data[self::KEY_TECHNIQUE] ?? '';
+        $this->media = $data[self::KEY_MEDIA] ?? '';
         $this->width = $data[self::KEY_WIDTH] ?? -1;
         $this->height = $data[self::KEY_HEIGHT] ?? -1;
         $this->depth = $data[self::KEY_DEPTH] ?? -1;
@@ -67,7 +67,7 @@ class Resource implements iViewRender, JsonSerializable {
     public function jsonSerialize() {
         return [self::KEY_TITLES=>$this->titles,
             self::KEY_PREFERRED_LANGUAGE=>$this->preferredLanguage,
-            self::KEY_TECHNIQUE=>$this->technique,
+        	self::KEY_MEDIA=>$this->media,
             self::KEY_WIDTH=>$this->width,
             self::KEY_HEIGHT=>$this->height,
             self::KEY_DEPTH=>$this->depth,
@@ -113,12 +113,12 @@ class Resource implements iViewRender, JsonSerializable {
     	$this->preferredLanguage = $preferredLanguage;
     }
 
-    public function getTechnique() : string {
-        return $this->technique;
+    public function getMedia() : string {
+        return $this->media;
     }
 
-    public function setTechnique(string $technique) {
-        $this->technique = $technique;
+    public function setMedia(string $media) {
+    	$this->media = $media;
     }
 
     public function getWidth() : ?float {
@@ -195,7 +195,7 @@ class Resource implements iViewRender, JsonSerializable {
     
     public function getRepresentation() : ?Representation {
     	foreach (array_values($this->representations) as $representation) {
-    		if ($representation->getPreferred() == TRUE) {
+    		if ($representation->getPreferred()) {
     			return $representation;
     		}
     	}
@@ -204,11 +204,20 @@ class Resource implements iViewRender, JsonSerializable {
     
     public function hasPreferredRepresentation() : bool {
     	foreach (array_values($this->representations) as $representation) {
-    		if ($representation->getPreferred() == TRUE) {
+    		if ($representation->getPreferred()) {
     			return TRUE;
     		}
     	}
-    	return False;
+    	return FALSE;
+    }
+    
+    public function hasFrontPage() : bool {
+    	foreach (array_values($this->representations) as $representation) {
+    		if ($representation->isFrontPage()) {
+    			return TRUE;
+    		}
+    	}
+    	return FALSE;
     }
 
     public function getId() : string {

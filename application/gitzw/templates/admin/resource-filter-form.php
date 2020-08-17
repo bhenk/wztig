@@ -10,12 +10,12 @@ $site = SiteResources::get();
 
 <h1 class="gitzw">Search resources</h1>
 
-<div class="container larger">
+<div class="container large">
 	<form action="<?php echo $this->action; ?>" method="post">
 		
 		<div class="formrw">
 			<div class="form-25">
-				<label for="visart">Visart</label>
+				<label for="visart">Visual artist</label>
 			</div>
 			<div class="form-75">
 				<select class="smallinput" id="visart" name="visart">
@@ -97,10 +97,10 @@ $site = SiteResources::get();
 		
 		<div class="formrw">
 			<div class="form-25">
-				<label for="technique">Technique</label>
+				<label for="media">Media</label>
 			</div>
 			<div class="form-75">
-				<input type="text" id="technique" name="technique" value="<?php echo $this->technique; ?>">
+				<input type="text" id="media" name="media" value="<?php echo $this->media; ?>">
 			</div>
 		</div>
 		
@@ -110,6 +110,7 @@ $site = SiteResources::get();
 			</div>
 			<div class="form-75">
 				<input class="smallinput" type="text" id="width" name="width" value="<?php echo $this->width; ?>">
+				[&lt;] [&gt;] [d | d.d]
 			</div>
 		</div>
 		
@@ -119,6 +120,66 @@ $site = SiteResources::get();
 			</div>
 			<div class="form-75">
 				<input class="smallinput" type="text" id="height" name="height" value="<?php echo $this->height; ?>">
+				[&lt;] [&gt;] [d | d.d]
+			</div>
+		</div>
+		
+		<div class="formrw">
+			<div class="form-25">
+				<label for="date">Date</label>
+			</div>
+			<div class="form-75">
+				<input class="smallinput" type="text" id="date" name="date" value="<?php echo $this->date; ?>">
+				[&lt;] [&gt;] [yyyy | yyyy-mm | yyyy-mm-dd] (/==-)
+			</div>
+		</div>
+		
+		<div class="formrw">
+			<div class="form-25">
+				<label>Hidden state</label>
+			</div>
+			<div class="form-75">
+				<div>		
+					<input type="checkbox" id="rishidden" 
+						name="rishidden" value="rishidden" 
+						<?php echo $this->rIsHidden ? ' checked' : ''; ?>>
+		  			<label for="rishidden">Hidden</label>
+	  			</div>
+	  			<div>
+		  			<input type="checkbox" id="risnothidden" 
+						name="risnothidden" value="risnothidden" 
+						<?php echo $this->rIsNotHidden ? ' checked' : ''; ?>>
+		  			<label for="risnothidden">Not hidden</label> 
+		  		</div> 			
+	  		</div>
+	  	</div>
+	  	
+	  	<div class="formrw">
+			<div class="form-25">
+				<label>Front page state</label>
+			</div>
+			<div class="form-75">
+				<div>
+		  			<input type="checkbox" id="risfrontpage" 
+						name="risfrontpage" value="risfrontpage" 
+						<?php echo $this->rIsFrontPage ? ' checked' : ''; ?>>
+		  			<label for="risfrontpage">Front page</label>
+		  		</div>
+	  			<div>
+		  			<input type="checkbox" id="risnotfrontpage" 
+						name="risnotfrontpage" value="risnotfrontpage" 
+						<?php echo $this->rIsNotFrontPage ? ' checked' : ''; ?>>
+		  			<label for="risnotfrontpage">Not front page</label>
+		  		</div>	
+	  		</div>
+		</div>
+		
+		<div class="formrw">
+			<div class="form-25">
+				<label for="longid">Id</label>
+			</div>
+			<div class="form-75">
+				<input type="text" id="longid" name="longid" value="<?php echo $this->longId; ?>">
 			</div>
 		</div>
 		

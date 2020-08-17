@@ -55,11 +55,11 @@ const IMG_HEIGHT = 500;
 		    
 		    <div class="formrw">
 		      <div class="form-25">
-		        <label for="technique">Technique</label>
+		        <label for="media">Media</label>
 		      </div>
 		      <div class="form-75">
-		        <input type="text" id="technique" name="technique" 
-		        	value="<?php echo $this->resource->getTechnique(); ?>" placeholder="Technique..">
+		        <input type="text" id="media" name="media" 
+		        	value="<?php echo $this->resource->getMedia(); ?>" placeholder="Media..">
 		      </div>
 		    </div>
 		    

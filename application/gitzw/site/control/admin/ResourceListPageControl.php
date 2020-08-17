@@ -18,9 +18,15 @@ class ResourceListPageControl extends DefaultPageControl {
 	protected $year = 'all';
 	protected $title_en;
 	protected $title_nl;
-	protected $technique;
+	protected $media;
 	protected $width;
 	protected $height;
+	protected $date;
+	protected $rIsHidden = false;
+	protected $rIsNotHidden = false;
+	protected $rIsFrontPage = false;
+	protected $rIsNotFrontPage = false;
+	protected $longId;
 	
 	protected $results = array();
 	
@@ -50,14 +56,14 @@ class ResourceListPageControl extends DefaultPageControl {
 		$showForm = FALSE;
 		if (empty($_POST)) {
 			$input = json_decode(file_get_contents('php://input'), true);
-			$data = $input['payload'];
-			$paging = $input['paging'];
+			$data = Search::cleanInput($input['payload']);
+			$paging = Search::cleanInput($input['paging']);
 			$this->start = max(0, intval($paging['start']));
 			if ($paging['start'] === 'form') {
 				$showForm = TRUE;
 			}
 		} else {
-			$data = $_POST;
+			$data = Search::cleanInput($_POST);
 		}
 		$this->visart = $data['visart'];
 		$this->activity = $data['activity'];
@@ -65,9 +71,15 @@ class ResourceListPageControl extends DefaultPageControl {
 		$this->year = $data['year'];
 		$this->title_en = $data['title_en'];
 		$this->title_nl = $data['title_nl'];
-		$this->technique = $data['technique'];
+		$this->media = $data['media'];
 		$this->width = $data['width'];
 		$this->height = $data['height'];
+		$this->date = $data['date'];
+		$this->rIsHidden = $data['rishidden'] == 'rishidden';
+		$this->rIsNotHidden = $data['risnothidden'] == 'risnothidden';
+		$this->rIsFrontPage = $data['risfrontpage'] == 'risfrontpage';
+		$this->rIsNotFrontPage = $data['risnotfrontpage'] == 'risnotfrontpage';
+		$this->longId = $data['longid'];
 		
 		if ($showForm == TRUE) {
 			$this->setContentFile(GZ::TEMPLATES.'/admin/resource-filter-form.php');
@@ -87,7 +99,7 @@ class ResourceListPageControl extends DefaultPageControl {
 		$maxResult = 0;
 		$this->results = array_filter($this->results, function($a) use (&$maxResult) {
 			$maxResult = max($maxResult, $a[0]);
-			return $a[0] > 1;
+			return $a[0] >= 0;
 		});
 		usort($this->results, function($a, $b) {
 			return $b[0] <=> $a[0];

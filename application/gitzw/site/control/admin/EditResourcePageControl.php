@@ -50,7 +50,7 @@ class EditResourcePageControl extends DefaultPageControl {
 		$this->getResource()->setTitle($_POST['title_nl'], 'nl');
 		$this->getResource()->setTitle($_POST['title_en'], 'en');
 		$this->getResource()->setPreferredLanguage($_POST['preferred_language']);
-		$this->getResource()->setTechnique($_POST['technique']);
+		$this->getResource()->setMedia($_POST['media']);
 		$w = floatval($_POST['width']);
 		$this->getResource()->setWidth($w <= 0 ? -1 : $w);
 		$h = floatval($_POST['height']);
