@@ -103,6 +103,10 @@ class SiteResources extends Path {
     	return array_unique($names, SORT_STRING);
     }
     
+    public function getVisarts() : array {
+    	return $this->getChildByName('var')->getChildren();
+    }
+    
     public function getActivitytNames() : array {
     	$names = array();
     	foreach($this->getChildByName('var')->getChildren() as $visart) {
@@ -111,6 +115,20 @@ class SiteResources extends Path {
     		}
     	}
     	return array_unique($names, SORT_STRING);
+    }
+    
+    public function getActivities(string $varName) {
+    	if ($varName == 'all') {
+    		$acts = array();
+    		foreach($this->getChildByName('var')->getChildren() as $visart) {
+    			foreach ($visart->getChildren() as $activity) {
+    				$acts[] = $activity;
+    			}
+    		}
+    		return $acts;
+    	} else {
+    		return $this->getDescendant(['var', $varName])->getChildren();
+    	}
     }
     
     public function getCategoryNames() : array {

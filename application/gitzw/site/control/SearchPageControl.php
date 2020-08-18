@@ -56,6 +56,10 @@ class SearchPageControl extends DefaultPageControl {
 		$showForm = FALSE;
 		if (empty($_POST)) {
 			$input = json_decode(file_get_contents('php://input'), true);
+			if ($input['reason'] == 'select_changed') {
+				$this->handleSelectChanged(Search::cleanInput($input));
+				return;
+			}
 			$data = Search::cleanInput($input['payload']);
 			$paging = Search::cleanInput($input['paging']);
 			$this->start = max(0, intval($paging['start']));
@@ -101,19 +105,25 @@ class SearchPageControl extends DefaultPageControl {
 			$maxResult = max($maxResult, $a[0]);
 			return $a[0] >= 0;
 		});
-			usort($this->results, function($a, $b) {
-				return $b[0] <=> $a[0];
-			});
-				$this->itemCount = count($this->results);
-				$this->resultFactor = 100;
-				if ($maxResult > 100) {
-					$this->resultFactor = $maxResult;
-				}
-				
-				$this->pager = new Pager($this->start, $this->itemsPerPage, $this->itemCount, $this->action);
-				$this->pager->setTemplate(Pager::AJAX_TEMPLATE);
-				
-				parent::renderPage();
+		usort($this->results, function($a, $b) {
+			return $b[0] <=> $a[0];
+		});
+		$this->itemCount = count($this->results);
+		$this->resultFactor = 100;
+		if ($maxResult > 100) {
+			$this->resultFactor = $maxResult;
+		}
+		
+		$this->pager = new Pager($this->start, $this->itemsPerPage, $this->itemCount, $this->action);
+		$this->pager->setTemplate(Pager::AJAX_TEMPLATE);
+		
+		parent::renderPage();
+	}
+	
+	private function handleSelectChanged(array $data) {
+		$tree = SiteResources::get()->getTree($data);
+		header('Content-Type: application/json');
+		echo json_encode($tree);		
 	}
 	
 	protected function getPageResources() {
