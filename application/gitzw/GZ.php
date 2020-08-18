@@ -70,7 +70,7 @@ abstract class GZ {
      * eclipse/wztig/application/logs <br/>
      * /var/www/logs
      */
-    const LOG_DIRECTORY = GZ_ROOT.DIRECTORY_SEPARATOR.'logs';
+    const LOG_DIRECTORY = GZ_ROOT.DIRECTORY_SEPARATOR.'logs'.DIRECTORY_SEPARATOR.'gitzw';
     
     /**
      * The source directory.

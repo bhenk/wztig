@@ -6,7 +6,7 @@ class Search {
 	
 	public static function cleanInput($input) {
 		$isstring = FALSE;
-		$catch = ['[<]', '[>]', '/[^0-9a-zA-Z\/._ &;-]/'];
+		$catch = ['[<]', '[>]', '/[^0-9a-zA-Z\/._ &;-\?]/'];
 		$replace = ['&lt;', '&gt;', ' '];
 		if (!is_array($input)) {
 			$input = [$input];
@@ -66,11 +66,69 @@ class Search {
 		return $dp;
 	}
 	
+	public static function dateParse2(string $date) : array {
+		$dp = array();
+		// 20200228 02-02-2020 02-2020 2020 2020-02 2020-02-02
+		// len 8        10        7      4     7       10
+		$x = strlen(trim($date));
+		
+		$d = explode('-', $date);
+		if (count($d) < 2) $d = explode('/', $date);
+		
+		if (count($d) == 1 and $x == 8) {
+			$dp['y'] = substr($date, 0, 4);
+			$dp['m'] = substr($date, 4, 2);
+			$dp['d'] = substr($date, 6, 2);
+		} elseif (count($d) == 1 and $x == 6) {
+			$dp['y'] = substr($date, 0, 4);
+			$dp['m'] = substr($date, 4, 2);
+			$dp['d'] = '??';
+		} elseif (count($d) == 1 and $x == 4) {
+			$dp['y'] = $date;
+			$dp['m'] = '??';
+			$dp['d'] = '??';
+		} elseif (count($d) == 1)	{
+			$dp['y'] = $d[0];
+			$dp['m'] = '??';
+			$dp['d'] = '??';
+		} elseif (count($d) == 2 and strlen($d[0]) == 4) {
+			$dp['y'] = $d[0];
+			$dp['m'] = $d[1];
+			$dp['d'] = '??';
+		} elseif (count($d) == 2 and strlen($d[1]) == 4) {
+			$dp['y'] = $d[1];
+			$dp['m'] = $d[0];
+			$dp['d'] = '??';
+		} elseif (count($d) == 3 and strlen($d[0]) == 4) {
+			$dp['y'] = $d[0];
+			$dp['m'] = $d[1];
+			$dp['d'] = $d[2];
+		}  elseif (count($d) == 3 and strlen($d[2]) == 4) {
+			$dp['y'] = $d[2];
+			$dp['m'] = $d[1];
+			$dp['d'] = $d[0];
+		}
+		return $dp;
+	}
+	
+	public static function makeEquivalent($dateString1, $dateString2) {
+		$d1 = implode('-', self::dateParse2($dateString1));
+		$d2 = implode('-', self::dateParse2($dateString2));
+		for ($i=0; $i < strlen($d1); $i++) {
+			if ($d1[$i] == '?') $d2[$i] = '?';
+		}
+		for ($i=0; $i < strlen($d2); $i++) {
+			if ($d2[$i] == '?') $d1[$i] = '?';
+		}
+		return [$d1, $d2];
+	}
+	
 	public static function inspectDates($dateString1, $dateString2) : int {
 		if (empty($dateString1) or empty($dateString2)) return 0;
-		$d1 = self::dateParse($dateString1);
-		$d2 = self::dateParse($dateString2);
-		$result = 0;
+		$dd = self::makeEquivalent($dateString1, $dateString2);
+		$d1 = self::dateParse($dd[0]);
+		$d2 = self::dateParse($dd[1]);
+		$result = -1;
 		if (isset($d1['y']) and $d1['y'] == $d2['y']) {
 			$result += 10;
 			if (isset($d1['m']) and $d1['m'] == $d2['m']) {
@@ -83,11 +141,11 @@ class Search {
 		return $result;
 	}
 	
-	public static function uniDate($dateString, $replace) {
-		$d = self::dateParse(trim($dateString));
-		$y = isset($d['y']) ? $d['y'] : $replace.$replace;
-		$m = isset($d['m']) ? sprintf('%02d', $d['m']) : $replace;
-		$x = isset($d['d']) ? sprintf('%02d', $d['d']) : $replace;
+	public static function uniDate($dateString, $r) {
+		$d = self::dateParse(trim(preg_replace('[\?]', $r, $dateString)));
+		$y = isset($d['y']) ? $d['y'] : $r.$r.$r.$r;
+		$m = isset($d['m']) ? sprintf('%02d', $d['m']) : $r.$r;
+		$x = isset($d['d']) ? sprintf('%02d', $d['d']) : $r.$r;
 		return intval($y.$m.$x);
 	}
 	
@@ -181,7 +239,11 @@ class Search {
 		}
 		$result += $h;
 		
-		$result += $this->inspectDate($r);
+		$h = $this->inspectDate($r);
+		if ($h < 0) {
+			return -1;
+		}
+		$result += $h;
 		
 		return $result;
 	}
@@ -258,13 +320,13 @@ class Search {
 		$s = $this->data['date'];
 		$result = 0;
 		if (substr($s, 0, 4) == '&gt;') {
-			$d1 = self::uniDate(substr($s, 4), '99');
-			$d2 = self::uniDate($r->getDate(), '00');
-			if ($d2 > $d1) $result += 10;
+			$d1 = self::uniDate(substr($s, 4), '9');
+			$d2 = self::uniDate($r->getDate(), '0');
+			if ($d2 < $d1) return -1;
 		} elseif (substr($s, 0, 4) == '&lt;') {
-			$d1 = self::uniDate(substr($s, 4), '00');
-			$d2 = self::uniDate($r->getDate(), '99');
-			if ($d2 < $d1) $result += 10;
+			$d1 = self::uniDate(substr($s, 4), '0');
+			$d2 = self::uniDate($r->getDate(), '9');
+			if ($d2 > $d1) return -1;
 		} else {
 			$result += self::inspectDates($s, $r->getDate());
 		}

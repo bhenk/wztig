@@ -2,7 +2,7 @@
 namespace gitzw\templates\admin;
 
 /** @var mixed $this */
-
+use gitzw\GZ;
 use gitzw\site\data\ImageData;
 
 const SMALL_IMG_WIDTH = 200;
@@ -21,9 +21,10 @@ const SMALL_IMG_HEIGHT = 200;
 		<div class="img_data2">
 			
 			<div class="smallformrow">
-			<a class="incognito" href="/admin/exif-data/<?php echo $this->getLocationAsPath(); ?>" target="_blank">
-			<?php echo $this->isFrontPage() ? '&#9635 ' : ''; echo $this->getLocation(); ?>
-			</a>
+			<a title="exif data" class="incognito" href="/admin/exif-data/<?php echo $this->getLocationAsPath(); ?>" 
+			target="_blank"><?php echo $this->isFrontPage() ? '&#9635 ' : ''; echo $this->getLocation(); ?></a>
+			<span style="display: none"><?php echo $this->getLocation(); ?></span>
+			<span title="copy location to clipboard" class="copyprevious" onclick="copyPrevious(this)"> &#9776; </span>
 			</div>
 			<div class="smallformrow">type: <?php echo $ida->getMediaType(); ?></div>
 			<div class="smallformrow">size: <?php echo $ida->getSize()['width']; ?> x <?php echo $ida->getSize()['height']; ?> px.</div>
@@ -77,3 +78,4 @@ const SMALL_IMG_HEIGHT = 200;
 		</div>
 	</div>
 </div>
+<script><?php require_once GZ::SCRIPTS.'/copy-previous.js'; ?></script>

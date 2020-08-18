@@ -1,5 +1,5 @@
 <?php
-namespace gitzw\templates\admin;
+namespace gitzw\templates\frame;
 
 use gitzw\site\model\SiteResources;
 
@@ -8,7 +8,7 @@ use gitzw\site\model\SiteResources;
 $site = SiteResources::get();
 ?>
 
-<h1 class="gitzw">Search resources</h1>
+<h1 class="gitzw">Search</h1>
 
 <div class="container large">
 	<form action="<?php echo $this->action; ?>" method="post">

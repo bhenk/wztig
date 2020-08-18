@@ -14,6 +14,7 @@ use gitzw\site\logging\Req;
 use gitzw\site\model\SiteResources;
 use Exception;
 use gitzw\site\model\NotFoundException;
+use gitzw\site\control\SearchPageControl;
 
 
 class Gitz {
@@ -26,7 +27,7 @@ class Gitz {
 
     public function handleRequest(array $path) {
         Req::log()->info('');
-        Log::log()->info('======================== start request handling ==========================', $path);
+        Log::log()->info('======================== start request handling', $path);
         if (GZ::MINIFY_HTML) {
             ob_start("self::minifyHtml");
         } else {
@@ -47,6 +48,10 @@ class Gitz {
                 case 'favicon.ico':
                     Site::get()->redirect('/img/favicon/favicon.ico');
                     return;
+                case 'search':
+                	(new SearchPageControl($path))->renderPage();
+                	Log::log()->info('end request handling '.SearchPageControl::class);
+                	return;
                 case 'gendan':
                     echo Site::get()->clientIp();
                     Log::log()->info('end request handling gendan');

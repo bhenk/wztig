@@ -22,8 +22,9 @@ namespace gitzw\templates\frame;
 		<!-- 1st column -->
 		<div class="col-3 col-s-3 place"></div>
 		<div class="col-3 col-s-3 menu">
-			<?php $this->renderLogo() ?>
+			<?php $this->renderLogo(); ?>
 			<?php $this->renderNavigation(); ?>
+			<?php $this->renderButtonPanel(); ?>
 		</div>
 		<!-- end 1st column -->
 		<!-- 2nd column -->

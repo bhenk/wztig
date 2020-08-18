@@ -13,4 +13,4 @@ use gitzw\site\data\Security;
 </table>
 
 <h1>Gitzw.art</h1>
-version: RC_0.0.1 &nbsp;&bull;&nbsp; date: 2020-08-04
+version: RC_0.0.2 &nbsp;&bull;&nbsp; date: 2020-08-18

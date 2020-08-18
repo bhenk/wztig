@@ -71,9 +71,10 @@ class EditResourcePageControl extends DefaultPageControl {
 			
 		}
 		$addRepr = $_POST['add_repr'] ?? '';
-		
 		if (!empty($addRepr) and file_exists(GZ::DATA.'/images/'.$addRepr)) {
 			$this->getResource()->addRepresentation($addRepr);
+		} elseif (!empty($addRepr) and !file_exists(GZ::DATA.'/images/'.$addRepr)) {
+			echo '<script>alert("the file '.GZ::DATA.'/images/'.$addRepr.' does not exist")</script>';
 		}
 		
 		$this->getResource()->getParent()->persist();

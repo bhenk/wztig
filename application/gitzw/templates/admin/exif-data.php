@@ -26,7 +26,7 @@ $image = exif_thumbnail($file, $width, $height, $type);
 echo "<img  width='$width' height='$height' src='data:image/gif;base64,".base64_encode($image)."'>";
 
 foreach ($exif as $key => $section) { ?>
-<h1 class="collapse-button"><?php echo $key; ?></h1>
+<h3 class="collapse-button"><?php echo $key; ?></h3>
 	<div class="collapsable">
 		<div class="table-data">
 			<?php foreach ($section as $name=>$val) { ?>

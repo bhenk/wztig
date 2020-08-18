@@ -130,6 +130,10 @@ class DefaultPageControl implements iPageControl {
     	}
     }
     
+    protected function renderButtonPanel() {
+    	require GZ::TEMPLATES . '/frame/button-panel.php';
+    }
+    
     protected function renderContent() {
         if (isset($this->contentFile)) {
             if (file_exists($this->contentFile)) {

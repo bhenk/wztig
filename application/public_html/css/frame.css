@@ -42,6 +42,10 @@ fieldset {
 	/* border: 1px solid red; */
 }
 
+.button-panel {
+	margin-top: 10px;
+}
+
 button {
   background-color: gray;
   color: white;

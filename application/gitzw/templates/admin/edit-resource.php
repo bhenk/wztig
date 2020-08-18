@@ -11,7 +11,9 @@ const IMG_HEIGHT = 500;
 
 ?>
 
-<h1 class="gitzw">Edit resource <small><?php echo $this->longId; ?></small></h1>
+<h1 class="gitzw">Edit resource <small><?php echo $this->longId; ?></small>
+	<span title="copy longId to clipboard" class="copyprevious" onclick="copyPrevious(this)"> &#9776; </span>
+</h1>
 
 <div class="img-data-container">
 	<div class="img-container">
@@ -138,3 +140,4 @@ const IMG_HEIGHT = 500;
 		</div>
 	</div>
 </div>
+<script><?php require_once GZ::SCRIPTS.'/copy-previous.js'; ?></script>
