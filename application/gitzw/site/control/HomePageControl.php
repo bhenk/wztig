@@ -2,8 +2,9 @@
 namespace gitzw\site\control;
 
 use gitzw\GZ;
-use gitzw\site\model\SiteResources;
+use gitzw\site\control\menu\MenuManager;
 use gitzw\site\logging\Log;
+use gitzw\site\model\SiteResources;
 
 /**
  *
@@ -22,7 +23,17 @@ class HomePageControl extends DefaultPageControl
     public function __construct()
     {
         $this->setContentFile(GZ::TEMPLATES.'/home.php');
+        $this->constructMenu();
         Log::log()->info(__METHOD__);
+    }
+    
+    private function constructMenu() {
+    	$visarts = SiteResources::get()->getChildByName('var')->getChildren();
+    	$manager = new MenuManager();
+    	foreach($visarts as $visart) {
+    		$manager->addItem($visart->getName(), $visart->getFullNamePath());
+    	}
+    	$this->setMenuManager($manager);
     }
     
     protected function renderHomeContent() {

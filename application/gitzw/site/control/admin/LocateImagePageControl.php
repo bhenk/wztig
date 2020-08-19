@@ -6,6 +6,7 @@ use gitzw\GZ;
 use gitzw\site\control\DefaultPageControl;
 use gitzw\site\data\Site;
 use gitzw\site\model\SiteResources;
+use gitzw\site\data\Security;
 
 /**
  * 
@@ -14,7 +15,6 @@ class LocateImagePageControl extends DefaultPageControl {
 	
 	private $path = array();
 	
-	protected $var;
 	protected $representation;
 	protected $imageFile;
 	protected $action;
@@ -23,16 +23,18 @@ class LocateImagePageControl extends DefaultPageControl {
 	protected $submitType = '';
 	protected $existingId = '';
 	
-	protected $subject = '';
+	protected $visart = '';
+	protected $activity = '';
 	protected $category = '';
 	protected $year = '';
 	
-	protected $sub = NULL;
-	protected $cat = NULL;
-	protected $yea = NULL;
+// 	protected $sub = NULL;
+// 	protected $cat = NULL;
+// 	protected $yea = NULL;
 	
 	protected $existingIdError = FALSE;
-	protected $subjectError = FALSE;
+	protected $visartError = FALSE;
+	protected $activityError = FALSE;
 	protected $categoryError = FALSE;
 	protected $yearError = FALSE;
 	
@@ -44,7 +46,7 @@ class LocateImagePageControl extends DefaultPageControl {
 		$this->setMenuManager(new AdminMenuManager());
 		$this->addStylesheet('/css/form.css');
 		
-		$this->var = SiteResources::get()->getChildByName('var')->getChildByName($path[3]);
+		//$this->var = SiteResources::get()->getChildByName('var')->getChildByName($path[3]);
 		$this->representation = implode('/', array_slice($path, 3));
 		$this->imgFile = GZ::DATA.'/images/'.$this->representation;
 		$this->action = '/'.implode('/', array_slice($path, 1));
@@ -63,103 +65,33 @@ class LocateImagePageControl extends DefaultPageControl {
 	}
 	
 	private function handleGet() : bool {
-		// also at GET
-		$this->sub = NULL;
-		$this->subject = '';
-		$this->cat = NULL;
-		$this->category = '';
-		$this->yea = NULL;
-		$this->year = '';
-		
-		$this->sub = $this->var->getChildByPosition(0);
-		if (isset($this->sub)) {
-			$this->subject = $this->sub->getName();
-			$this->cat = $this->sub->getChildByPosition(0);
-			if (isset($this->cat)) {
-				$this->category = $this->cat->getName();
-				$this->yea = $this->cat->getChildByPosition(0);
-				if (isset($this->yea)) {
-					$this->year = $this->yea->getName();
-				}
-			}
-		}
 		return TRUE;
-	}
-	
-	private function handleLevel1() {
-		// subject is set
-		$this->cat = NULL;
-		$this->category = '';
-		$this->yea = NULL;
-		$this->year = '';
-		
-		$this->cat = $this->sub->getChildByPosition(0);
-		if (isset($this->cat)) {
-			$this->category = $this->cat->getName();
-			$this->yea = $this->cat->getChildByPosition(0);
-			if (isset($this->yea)) {
-				$this->year = $this->yea->getName();
-			}
-		}
-	}
-	
-	private function handleLevel2() {
-		// category is set
-		$this->yea = NULL;
-		$this->year = '';
-		
-		$this->yea = $this->cat->getChildByPosition(0);
-		if (isset($this->yea)) {
-			$this->year = $this->yea->getName();
-		}
 	}
 	
 	private function handlePost() : bool {
-		$this->submitType = $_POST['submit_type'] ?? '';
-		$this->locate = $_POST['locate'] ?? '';
-		$this->existingId = $_POST['exist_id'] ?? '';
-		$this->subject = $_POST['subject'] ?? '';
-		$this->category = $_POST['category'] ?? '';
-		$this->year = $_POST['year'] ?? '';
-		if ($this->submitType == 'script') {
-			return $this->handleScript();
+		if (empty($_POST)) {
+			$input = json_decode(file_get_contents('php://input'), true);
+			if ($input['reason'] == 'select_changed') {
+				$this->handleSelectChanged(Security::cleanInput($input));
+				return false;
+			}
+			$data = Security::cleanInput($input);
 		} else {
-			return $this->handleButton();
+			$data = Security::cleanInput($_POST);
 		}
+		$this->locate = $data['locate'] ?? '';
+		$this->existingId = $data['exist_id'] ?? '';
+		$this->visart = $data['visart'];
+		$this->activity = $data['activity'] ?? '';
+		$this->category = $data['category'] ?? '';
+		$this->year = $data['year'] ?? '';
+		return $this->handleButton();
 	}
 	
-	private function handleScript() : bool {
-		if ($this->locate == 'existing') {
-			return $this->handleScriptExistingId();
-		} else {
-			return $this->handleScriptNewId();
-		}
-	}
-	
-	private function handleScriptExistingId() : bool {
-		return TRUE;
-	}
-	
-	private function handleScriptNewId() : bool {
-		$this->sub = $this->var->getChildByName($this->subject);
-		if (is_null($this->sub)) {
-			$this->handleGet();
-		} else {
-			$this->subject = $this->sub->getName();
-			$this->cat = $this->sub->getChildByName($this->category);
-			if (is_null($this->cat)) {
-				$this->handleLevel1();
-			} else {
-				$this->category = $this->cat->getName();
-				$this->yea = $this->cat->getChildByName($this->year);
-				if (is_null($this->yea)) {
-					$this->handleLevel2();
-				} else {
-					$this->year = $this->yea->getName();
-				}
-			}			
-		}
-		return TRUE;
+	private function handleSelectChanged(array $data) {
+		$tree = SiteResources::get()->getTree($data, false);
+		header('Content-Type: application/json');
+		echo json_encode($tree);
 	}
 	
 	private function handleButton() : bool {
@@ -176,7 +108,7 @@ class LocateImagePageControl extends DefaultPageControl {
 			$this->msg = 'Please fill in an existing resource id';
 			return TRUE;
 		} else {
-			echo '@Todo check if resource id is correct';
+			echo '<script>alert("@Todo check if resource id is correct");';
 			return TRUE;
 		}
 	}
@@ -190,21 +122,32 @@ class LocateImagePageControl extends DefaultPageControl {
 			$this->categoryError = TRUE;
 			$this->msg = 'Please fill in an existing category';
 		}
-		if (empty($this->subject)) {
-			$this->subjectError = TRUE;
-			$this->msg = 'Please fill in an existing subject';
+		if (empty($this->activity)) {
+			$this->activityError = TRUE;
+			$this->msg = 'Please fill in an existing activity';
 		}
-		if ($this->yearError or $this->categoryError or $this->subjectError) {
+		if (empty($this->visart)) {
+			$this->visartError = TRUE;
+			$this->msg = 'Please fill in an existing name';
+		}
+		if ($this->yearError or $this->categoryError or $this->activityError or $this->visartError) {
 			return TRUE;
 		} else {
-			echo '@Todo assign resource id and redirect to edit resource page';
-			$yea = $this->var->getDescendant([$this->subject, $this->category, $this->year]);
+			$yea = SiteResources::get()->getDescendant(['var', $this->visart, $this->activity, $this->category, $this->year]);
 			$resource = $yea->addResource();
 			$resource->addRepresentation($this->representation);
 			$resourceId = $resource->getLongId();
 			Site::get()->redirect('/admin/edit-resource/'.$resourceId);
 			return FALSE;
 		}
+	}
+	
+	/**
+	 * Called by template upon first load.
+	 * @return string
+	 */
+	protected function getJsonForSelects() : string {
+		return json_encode(SiteResources::get()->getTree(null, false));
 	}
 }
 

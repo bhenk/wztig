@@ -10,7 +10,7 @@ use gitzw\GZ;
 <div class="collapsable<?php echo $this->start == 0 ? ' open' : ''; ?>">
 	<div class="search-dashboard">
 		<div class="searchquery">
-			<span>&bull; visual artist: <?php echo $this->visart; ?></span>
+			<span>&bull; name: <?php echo $this->visart; ?></span>
 			<span>&bull; activity: <?php echo $this->activity; ?></span>
 			<span>&bull; category: <?php echo $this->category; ?></span>
 			<span>&bull; year: <?php echo $this->year; ?></span>

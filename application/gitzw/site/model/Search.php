@@ -4,22 +4,6 @@ namespace gitzw\site\model;
 
 class Search {
 	
-	public static function cleanInput($input) {
-		$isstring = FALSE;
-		$catch = ['[<]', '[>]', '/[^0-9a-zA-Z\/._ &;-\?]/'];
-		$replace = ['&lt;', '&gt;', ' '];
-		if (!is_array($input)) {
-			$input = [$input];
-			$isstring = TRUE;
-		}
-		foreach ($input as &$x) {
-			$x = preg_replace($catch, $replace, $x);
-		}
-		if ($isstring === TRUE) {
-			$input = $input[0];
-		}
-		return $input;
-	}
 	
 	public static function dateParse(string $date) : array {
 		$dp = array();

@@ -272,7 +272,8 @@ class Path extends JsonData implements iViewRender {
      * @param string $name
      * @return Path|NULL
      */
-    public function getChildByName(string $name) : ?Path {
+    public function getChildByName(?string $name) : ?Path {
+    	if (is_null($name)) return null;
     	$this->loadChildren();
         return $this->children[$name];
     }
@@ -324,6 +325,34 @@ class Path extends JsonData implements iViewRender {
     		return $child->getDescendant($segmentNames);
     	} else {
     		return NULL;
+    	}
+    }
+    
+    public function getDescendantChildren(array $segmentNames) : array {
+    	$this->loadChildren();
+    	$this->loadResources();
+    	if (count($segmentNames) == 0) {
+    		return $this->children;
+    	}
+    	$next = array_shift($segmentNames);
+    	if ($next == 'all') { // or is_null($this->getChildByName($next))) {
+    		$kids = array();
+    		foreach ($this->children as $kid) {
+    			$kids = array_merge($kids, $kid->getDescendantChildren($segmentNames));
+    		}
+    		return $kids;
+    	} else {
+    		$kid = $this->getChildByName($next);
+    		if (isset($kid)) {
+    			return $kid->getDescendantChildren($segmentNames);
+    		} else {
+    			$first = reset($this->children);
+    			if ($first) {
+    				return $first->getDescendantChildren($segmentNames);
+    			} else {
+    				return [];
+    			}
+    		}
     	}
     }
     

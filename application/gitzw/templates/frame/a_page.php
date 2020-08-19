@@ -18,27 +18,33 @@ namespace gitzw\templates\frame;
 <!-- link rel="manifest" href="img/favicon/site.webmanifest" -->
 </head>
 <body>
-	<div class="row">
-		<!-- 1st column -->
-		<div class="col-3 col-s-3 place"></div>
-		<div class="col-3 col-s-3 menu">
-			<?php $this->renderLogo(); ?>
-			<?php $this->renderNavigation(); ?>
-			<?php $this->renderButtonPanel(); ?>
+	<div id="page-container">
+		<div id="content-wrap">
+			<div class="row">
+				<!-- 1st column -->
+	 			<div class="col-3 col-s-3 place"></div>
+				<div class="col-3 col-s-3 menu">
+					<?php $this->renderLogo(); ?>
+					<?php $this->renderNavigation(); ?>
+					<?php $this->renderButtonPanel(); ?>
+				</div>
+				<!-- end 1st column -->
+				<!-- 2nd column -->
+				<div class="col-7 col-s-9">	
+					<?php $this->renderContent(); ?>	
+				</div>
+				<!-- end 2nd column -->
+				<!-- 3th column -->
+				<div class="col-2 col-s-12">
+					<?php $this->renderThirdColumn(); ?>
+				</div>
+				<!-- end 3th column -->
+			</div>
 		</div>
-		<!-- end 1st column -->
-		<!-- 2nd column -->
-		<div class="col-7 col-s-9">
-			<?php $this->renderContent(); ?>
-		</div>
-		<!-- end 2nd column -->
-		<!-- 3th column -->
-		<div class="col-2 col-s-12">
-		<?php $this->renderThirdColumn(); ?>
-		</div>
-		<!-- end 3th column -->
+		<footer id="footer">
+			<?php $this->renderFooter(); ?>
+		</footer>
 	</div>
-<?php $this->renderFooter(); ?>
-<?php $this->renderScripts(); ?>
+	<?php $this->renderScripts(); ?>
 </body>
 </html>

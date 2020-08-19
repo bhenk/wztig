@@ -15,6 +15,33 @@ html {
 	background-color: #eeebeb;
 } */
 
+#page-container {
+  position: relative;
+  min-height: 100vh;
+}
+
+#content-wrap {
+  padding-bottom: 3rem;    /* Footer height */
+}
+
+#footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 3rem;            /* Footer height */
+  
+  background-color: #E6E6E6;
+  color: var(--font-color);
+  text-align: center;
+  font-size: 12px;
+  padding-top: 6px;
+}
+
+#footer a {
+	color: inherit;
+}
+
+
 a {
 	text-decoration: none !important;
 }
@@ -43,7 +70,8 @@ fieldset {
 }
 
 .button-panel {
-	margin-top: 10px;
+	margin: 20px 10px 20px 20px;
+	padding-bottom: 3rem;  			/* Footer height */
 }
 
 button {
@@ -215,18 +243,6 @@ button {
 	text-align: center;
 	font-size: 14px;
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-}
-
-.footer {
-	background-color: #E6E6E6;
-	color: var(--font-color);
-	text-align: center;
-	font-size: 12px;
-	padding: 5px;
-}
-
-.footer a {
-	color: inherit;
 }
 
 .name-blok {

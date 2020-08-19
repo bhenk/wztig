@@ -3,7 +3,9 @@
 namespace gitzw\site\control;
 
 use gitzw\GZ;
+use gitzw\site\control\menu\MenuManager;
 use gitzw\site\control\menu\Pager;
+use gitzw\site\data\Security;
 use gitzw\site\data\Site;
 use gitzw\site\model\Search;
 use gitzw\site\model\SiteResources;
@@ -38,9 +40,20 @@ class SearchPageControl extends DefaultPageControl {
 	
 	function __construct(array $path) {
 		$this->path = $path;
+		$this->setTitle('search gitzw art');
 		$this->addStylesheet('/css/form.css');
 		$this->addScript(GZ::SCRIPTS.'/collapse.js');
 		$this->action = '/'.implode('/', array_slice($path, 1));
+		$this->constructMenu();
+	}
+	
+	private function constructMenu() {
+		$visarts = SiteResources::get()->getChildByName('var')->getChildren();
+		$manager = new MenuManager();
+		foreach($visarts as $visart) {
+			$manager->addItem($visart->getName(), $visart->getFullNamePath());
+		}
+		$this->setMenuManager($manager);
 	}
 	
 	public function renderPage() {
@@ -57,17 +70,17 @@ class SearchPageControl extends DefaultPageControl {
 		if (empty($_POST)) {
 			$input = json_decode(file_get_contents('php://input'), true);
 			if ($input['reason'] == 'select_changed') {
-				$this->handleSelectChanged(Search::cleanInput($input));
+				$this->handleSelectChanged(Security::cleanInput($input));
 				return;
 			}
-			$data = Search::cleanInput($input['payload']);
-			$paging = Search::cleanInput($input['paging']);
+			$data = Security::cleanInput($input['payload']);
+			$paging = Security::cleanInput($input['paging']);
 			$this->start = max(0, intval($paging['start']));
 			if ($paging['start'] === 'form') {
 				$showForm = TRUE;
 			}
 		} else {
-			$data = Search::cleanInput($_POST);
+			$data = Security::cleanInput($_POST);
 		}
 		$this->visart = $data['visart'];
 		$this->activity = $data['activity'];
@@ -126,6 +139,16 @@ class SearchPageControl extends DefaultPageControl {
 		echo json_encode($tree);		
 	}
 	
+	protected function getJsonForSelects() : string {
+		$data = [
+				'visart'=>$this->visart,
+				'activity'=>$this->activity,
+				'category'=>$this->category,
+				'year'=>$this->year
+		];
+		return json_encode(SiteResources::get()->getTree($data));
+	}
+	
 	protected function getPageResources() {
 		if ($this->start >= $this->itemCount) {
 			return [];
@@ -133,5 +156,11 @@ class SearchPageControl extends DefaultPageControl {
 			return array_slice($this->results, $this->start, $this->itemsPerPage);
 		}
 	}  
+	
+// 	protected function renderFooter() {
+// 		echo 'visart: '.$this->visart.' category: '.$this->category;
+// 	}
+	
+	
 }
 

@@ -5,6 +5,7 @@ namespace gitzw\site\control\admin;
 use gitzw\GZ;
 use gitzw\site\control\DefaultPageControl;
 use gitzw\site\control\menu\Pager;
+use gitzw\site\data\Security;
 use gitzw\site\data\Site;
 use gitzw\site\model\Search;
 use gitzw\site\model\SiteResources;
@@ -56,14 +57,14 @@ class ResourceListPageControl extends DefaultPageControl {
 		$showForm = FALSE;
 		if (empty($_POST)) {
 			$input = json_decode(file_get_contents('php://input'), true);
-			$data = Search::cleanInput($input['payload']);
-			$paging = Search::cleanInput($input['paging']);
+			$data = Security::cleanInput($input['payload']);
+			$paging = Security::cleanInput($input['paging']);
 			$this->start = max(0, intval($paging['start']));
 			if ($paging['start'] === 'form') {
 				$showForm = TRUE;
 			}
 		} else {
-			$data = Search::cleanInput($_POST);
+			$data = Security::cleanInput($_POST);
 		}
 		$this->visart = $data['visart'];
 		$this->activity = $data['activity'];

@@ -1,11 +1,8 @@
 <?php
 namespace gitzw\templates\frame;
 
-use gitzw\site\model\SiteResources;
-
 /** @var mixed $this */
 
-$site = SiteResources::get();
 ?>
 
 <h1 class="gitzw">Find</h1>
@@ -15,33 +12,19 @@ $site = SiteResources::get();
 		
 		<div class="formrw">
 			<div class="form-25">
-				<label for="visart">Visual artist</label>
+				<label for="visart">Names</label>
 			</div>
 			<div class="form-75">
-				<select class="mediuminput" id="visart" name="visart">
-					<option value="all"<?php echo $this->visart == 'all' ? ' selected' : ''; ?>>all</option>
-		         	<?php foreach ($site->getVisarts() as $var) { ?>
-		         		<option value="<?php echo $var->getName(); ?>"
-		         		<?php echo $this->visart == $var->getName() ? ' selected' : ''; ?>
-		         		><?php echo $var->getFullName(); ?></option>
-					<?php } ?>
-		        </select>
+				<select class="mediuminput" id="visart" name="visart" onchange="updateForm()"></select>
 			</div>
 		</div>
 		
 		<div class="formrw">
 			<div class="form-25">
-				<label for="subject">Activity</label>
+				<label for="activity">Activity</label>
 			</div>
 			<div class="form-75">
-				<select class="mediuminput" id="activity" name="activity">
-					<option value="all"<?php echo $this->activity == 'all' ? ' selected' : ''; ?>>all</option>
-		         	<?php foreach ($site->getActivities($this->visart) as $act) { ?>
-		         		<option value="<?php echo $act->getName(); ?>"
-		         		<?php echo $this->activity == $act->getName() ? ' selected' : ''; ?>
-		         		><?php echo $act->getFullName(); ?></option>
-					<?php } ?>
-		        </select>
+				<select class="mediuminput" id="activity" name="activity" onchange="updateForm()"> </select>
 			</div>
 		</div>
 		
@@ -50,14 +33,7 @@ $site = SiteResources::get();
 				<label for="category">Category</label>
 			</div>
 			<div class="form-75">
-				<select class="smallinput" id="category" name="category">
-					<option value="all"<?php echo $this->category == 'all' ? ' selected' : ''; ?>>all</option>
-		         	<?php foreach ($site->getCategoryNames() as $name) { ?>
-		         		<option value="<?php echo $name; ?>"
-		         		<?php echo $this->category == $name ? ' selected' : ''; ?>
-		         		><?php echo $name; ?></option>
-					<?php } ?>
-		        </select>
+				<select class="mediuminput" id="category" name="category" onchange="updateForm()"></select>
 			</div>
 		</div>
 		
@@ -66,14 +42,7 @@ $site = SiteResources::get();
 				<label for="year">Year</label>
 			</div>
 			<div class="form-75">
-				<select class="smallinput" id="year" name="year">
-					<option value="all"<?php echo $this->year == 'all' ? ' selected' : ''; ?>>all</option>
-		         	<?php foreach ($site->getYearNames() as $name) { ?>
-		         		<option value="<?php echo $name; ?>"
-		         		<?php echo $this->year == $name ? ' selected' : ''; ?>
-		         		><?php echo $name; ?></option>
-					<?php } ?>
-		        </select>
+				<select class="mediuminput" id="year" name="year"></select>
 			</div>
 		</div>
 		
@@ -189,25 +158,50 @@ $site = SiteResources::get();
 	    
 	</form>
 </div>
-<div style="height: 600px"> </div>
 
 <script>
 function updateForm() {
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
-			alert('ready');
+			setSelectors(this.responseText);
 		}
 	};
 	xhttp.open("POST", "<?php echo $this->action; ?>", true);
 	xhttp.setRequestHeader("Content-type", "application/json");
 	data = JSON.stringify({
-		reason: select_changed,
+		reason: "select_changed",
 		visart : document.getElementById('visart').value,
-		activity: document.getElementById('activity').value
-		});
+		activity: document.getElementById('activity').value,
+		category: document.getElementById('category').value,
+		year: document.getElementById('year').value
+	});
 	xhttp.send(data);
 }
+
+function setSelectors(json) {
+	var data = JSON.parse(json);
+	for (var x of Object.keys(data)) {		
+		var select = document.getElementById(x);
+		removeOptions(select);
+		for (var o of Object.keys(data[x])) {			
+			var opt = document.createElement('option');
+			opt.appendChild( document.createTextNode(data[x][o]["fullname"]) );
+			opt.value = o;
+			opt.selected = data[x][o]["selected"];
+			select.appendChild(opt);
+		}
+	}	
+}
+
+function removeOptions(selectElement) {
+   var i, L = selectElement.options.length - 1;
+   for(i = L; i >= 0; i--) {
+      selectElement.remove(i);
+   }
+}
+
+window.onload = setSelectors('<?php echo $this->getJsonForSelects(); ?>');
 </script>
 
 

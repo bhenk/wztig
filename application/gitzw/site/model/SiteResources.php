@@ -143,6 +143,10 @@ class SiteResources extends Path {
     	return array_unique($names, SORT_STRING);
     }
     
+    public function getCategories(array $parents) {
+    	
+    }
+    
     public function getYearNames() : array {
     	$names = array();
     	foreach($this->getChildByName('var')->getChildren() as $visart) {
@@ -163,6 +167,65 @@ class SiteResources extends Path {
     		$child->collectResources($stack, $query, $callback);
     	}
     	return $stack;
+    }
+    
+    public function getTree(?array $data, bool $includeAllOption=true) : array {
+    	if ($includeAllOption) {
+    		$visart = ['all'=>['fullname'=>'all', 'selected'=>$data['visart'] == 'all' ? 'selected' : '']];
+    		$activity = ['all'=>['fullname'=>'all', 'selected'=>$data['activity'] == 'all' ? 'selected' : '']];
+    		$category = ['all'=>['fullname'=>'all', 'selected'=>$data['category'] == 'all' ? 'selected' : '']];
+    		$year = ['all'=>['fullname'=>'all', 'selected'=>$data['year'] == 'all' ? 'selected' : '']];
+    	} else {
+    		$visart = [];
+    		$activity = [];
+    		$category = [];
+    		$year = [];
+    	}
+		
+    	$followFirst = empty($data);
+    	
+    	$kids = $this->getDescendantChildren(['var']);
+    	if ($followFirst) {
+    		$data = [];
+    		$first = reset($kids);
+    		$data['visart'] = isset($first) ? $first->getName() : '';
+    	}
+    	foreach ($kids as $c) {
+    		$visart[$c->getName()] = ['fullname'=>$c->getFullName(), 'selected'=>$data['visart'] == $c->getName() ? 'selected' : ''];
+    	}
+    	
+    	$kids = $this->getDescendantChildren(['var', $data['visart']]);
+    	if ($followFirst) {
+    		$first = reset($kids);
+    		$data['activity'] = isset($first) ? $first->getName() : '';
+    	}
+    	foreach ($kids as $c) {
+    		$activity[$c->getName()] = ['fullname'=>$c->getFullName(), 'selected'=>$data['activity'] == $c->getName() ? 'selected' : ''];
+    	}
+    	
+    	$kids = $this->getDescendantChildren(['var', $data['visart'], $data['activity']]);
+    	if ($followFirst) {
+    		$first = reset($kids);
+    		$data['category'] = isset($first) ? $first->getName() : '';
+    	}
+    	foreach ($kids as $c) {
+    		$category[$c->getName()] = ['fullname'=>$c->getFullName(), 'selected'=>$data['category'] == $c->getName() ? 'selected' : ''];
+    	}
+    	
+    	$kids = $this->getDescendantChildren(['var', $data['visart'], $data['activity'], $data['category']]);
+    	foreach ($kids as $c) {
+    		$year[$c->getName()] = ['fullname'=>$c->getFullName(), 'selected'=>$data['year'] == $c->getName() ? 'selected' : ''];
+    	}
+    	krsort($year, SORT_STRING);
+    	
+    	$tree = [
+    			'visart'=>$visart,
+    			'activity'=>$activity,
+    			'category'=>$category,
+    			'year'=>$year
+    	];
+    	
+    	return $tree;
     }
     
     
