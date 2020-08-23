@@ -21,16 +21,17 @@ foreach ($ii->imageDiff() as $name=>$images) {
 		<?php 
 		foreach ($images as $image) {
 			?>
-			<a class="incognito" href="/admin/locate-image/<?php echo $image; ?>">
+			<a title="create resource" class="incognito" href="/admin/locate-image/<?php echo $image; ?>">
 			<span class="image-container">
 			<?php 
 			$imgFile = GZ::DATA.'/images/'.$image;
-			$id = new ImageData($imgFile);
-			echo $id->getImgTag(IMG_WIDTH, IMG_HEIGHT, $image, 'maxheight');
+			$ida = new ImageData($imgFile);
+			echo $ida->getImgTag(IMG_WIDTH, IMG_HEIGHT, $image, 'maxheight');
 			?>
 			</span>
-			<small><?php echo $image; ?></small>
 			</a>
+			<small><?php echo $image; ?></small>
+			<span title="copy id" class="copyprevious" onclick="copyPrevious(this)"> &#9776; </span>
 			<?php 
 		}
 		?>
@@ -42,3 +43,4 @@ foreach ($ii->imageDiff() as $name=>$images) {
 <script>
 <?php require_once GZ::SCRIPTS.'/collapse.js' ?>
 </script>
+<script><?php require_once GZ::SCRIPTS.'/copy-previous.js'; ?></script>

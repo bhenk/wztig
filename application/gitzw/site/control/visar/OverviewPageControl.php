@@ -12,7 +12,7 @@ use gitzw\site\model\Visart;
 
 class OverviewPageControl extends VisartPageControl {
 	
-	const ITEMS_PER_PAGE = 10;
+	const ITEMS_PER_PAGE = 15;
     
     private array $path;
     private ResourceContainer $year;

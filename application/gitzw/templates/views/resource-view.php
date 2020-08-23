@@ -35,10 +35,14 @@ $ida = new ImageData($this->getImagePath());
 			<a href="<?php echo '/admin/edit-resource/'.$this->getResource()->getLongId(); ?>">
 				<?php require GZ::TEMPLATES.'/svg/edit.svg'; ?></a>
 		<?php } ?>
+		<div class="representation-id">
+			<span><?php echo $this->mainRepresentation->getLocation(); ?></span>
+			<span title="copy id" class="copyprevious" onclick="copyPrevious(this)"> &#9776; </span>
+		</div>
 	</div>
 	
-	<h1><span><?php echo $this->getResource()->getLongId(); ?></span>
-		<!-- span title="copy Id to clipboard" class="copyprevious" onclick="copyPrevious(this)"> &#9776; </span -->
+	<h1 class="resource-id"><span><?php echo $this->getResource()->getLongId(); ?></span>
+		<span title="copy id" class="copyprevious" onclick="copyPrevious(this)"> &#9776; </span>
 	</h1>
 	
 	<?php foreach ($this->getRepresentations() as $id=>$rep) { 
@@ -55,6 +59,10 @@ $ida = new ImageData($this->getImagePath());
 				<?php require GZ::TEMPLATES.'/svg/zoom.svg'; ?></a>
 			<a href="<?php echo '/exif-data/'.$id; ?>">
 				<?php require GZ::TEMPLATES.'/svg/exif.svg'; ?></a>
+			<div class="representation-id">
+				<span><?php echo $rep->getLocation(); ?></span>
+				<span title="copy id" class="copyprevious" onclick="copyPrevious(this)"> &#9776; </span>
+			</div>
 		</div>
 		<div>
 			

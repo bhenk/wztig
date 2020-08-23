@@ -422,13 +422,21 @@ td {
 	/* border: 1px solid blue; */
 }
 
+.heap {
+	float: left;
+	padding: 25px 19px 19px 25px;
+	/* border: 1px solid blue; */
+}
+
 .img-container {
 	float: left;
 	padding: 0px;
 	margin-right: 1em;
 	margin-bottom: 1em;
-	/* min-width: 20%; */
-	/* border: 1px solid red; */
+}
+
+.img-container img {
+	border: 1px solid rgba(130, 130, 130, 0.5);
 }
 
 .img_data {
@@ -633,8 +641,24 @@ div.table-data > div > div:first-child {
 	stroke: black; /* rgba(127, 127, 127, 0.5); */
 	font-size: 9px;
 }
-
 /* ---*/
+
+.representation-id {
+	margin-right: 50px;
+	font-size: 12px;
+	vertical-align: top;
+	/* border: 1px solid green; */
+}
+
+.representation-id::before {
+	content: "representation id: ";
+	font-weight: bold;
+}
+
+.resource-id::after {
+	content: ": resource id";
+	font-size: 12px;
+}
 
 
 

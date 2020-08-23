@@ -29,6 +29,8 @@ class ResourcePageControl extends VisartPageControl {
 		$this->nextResource = $this->resource->getParent()->nextPublicResource($this->resource->getId());
 		$this->previousResource = $this->resource->getParent()->previousPublicResource($this->resource->getId());
 		$this->mainRepresentation = $this->resource->getRepresentation();
+		
+		$this->setTitle($visart->getFullName().' - '.$this->resource->getLongId());
 		$this->setContentFile(GZ::TEMPLATES.'/views/resource-view.php');
 		$this->constructMenu($work, $path);
 	}
