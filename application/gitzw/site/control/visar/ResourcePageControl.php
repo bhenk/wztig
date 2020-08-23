@@ -17,6 +17,7 @@ class ResourcePageControl extends VisartPageControl {
 	private $resource;
 	private $nextResource;
 	private $previousResource;
+	protected $mainRepresentation;
 	
 	function __construct(Visart $visart, array $path) {
 		parent::__construct($visart);
@@ -27,6 +28,7 @@ class ResourcePageControl extends VisartPageControl {
 		}
 		$this->nextResource = $this->resource->getParent()->nextPublicResource($this->resource->getId());
 		$this->previousResource = $this->resource->getParent()->previousPublicResource($this->resource->getId());
+		$this->mainRepresentation = $this->resource->getRepresentation();
 		$this->setContentFile(GZ::TEMPLATES.'/views/resource-view.php');
 		$this->constructMenu($work, $path);
 	}
@@ -50,11 +52,11 @@ class ResourcePageControl extends VisartPageControl {
 	}
 	
 	protected function getRepresentation() : Representation {
-		return $this->getResource()->getRepresentation();
+		return $this->mainRepresentation;
 	}
 	
 	protected function getImagePath() : string {
-		return GZ::DATA.'/images/'.$this->getRepresentation()->getLocation();
+		return GZ::DATA.'/images/'.$this->mainRepresentation->getLocation();
 	}
 	
 	protected function hasNext() : bool {
@@ -71,6 +73,12 @@ class ResourcePageControl extends VisartPageControl {
 	
 	protected function previousUrl() : ?string {
 		return $this->hasPrevious() ? $this->previousResource->getResourcePath() : '';
+	}
+	
+	protected function getRepresentations() {
+		$reps = $this->resource->getRepresentations();
+		unset($reps[$this->mainRepresentation->getLocation()]);
+		return $reps;
 	}
 }
 

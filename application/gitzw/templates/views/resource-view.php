@@ -27,9 +27,9 @@ $ida = new ImageData($this->getImagePath());
 	<div class="subscript"><?php echo $this->getResource()->getSubscript(); ?></div>
 	
 	<div class="button-rect">
-		<a href="<?php echo '/zoom/'.$this->getResource()->getRepresentation()->getLocation(); ?>">
+		<a href="<?php echo '/zoom/'.$this->mainRepresentation->getLocation(); ?>">
 			<?php require GZ::TEMPLATES.'/svg/zoom.svg'; ?></a>
-		<a href="<?php echo '/exif-data/'.$this->getResource()->getRepresentation()->getLocation(); ?>">
+		<a href="<?php echo '/exif-data/'.$this->mainRepresentation->getLocation(); ?>">
 			<?php require GZ::TEMPLATES.'/svg/exif.svg'; ?></a>
 		<?php if (Security::get()->hasAccess()) { ?>
 			<a href="<?php echo '/admin/edit-resource/'.$this->getResource()->getLongId(); ?>">
@@ -37,6 +37,30 @@ $ida = new ImageData($this->getImagePath());
 		<?php } ?>
 	</div>
 	
-	<h1><?php echo $this->getResource()->getLongId(); ?></h1>
+	<h1><span><?php echo $this->getResource()->getLongId(); ?></span>
+		<!-- span title="copy Id to clipboard" class="copyprevious" onclick="copyPrevious(this)"> &#9776; </span -->
+	</h1>
+	
+	<?php foreach ($this->getRepresentations() as $id=>$rep) { 
+		$ida = new ImageData(null, $id);
+		?>
+		<div class="resource">
+		
+		<?php echo $ida->getImgTag(600, 500, $id); ?>
+		</div>
+		<div class="subscript"><?php echo $rep->getDescription(); ?></div>
+		
+		<div class="button-rect">
+			<a href="<?php echo '/zoom/'.$id; ?>">
+				<?php require GZ::TEMPLATES.'/svg/zoom.svg'; ?></a>
+			<a href="<?php echo '/exif-data/'.$id; ?>">
+				<?php require GZ::TEMPLATES.'/svg/exif.svg'; ?></a>
+		</div>
+		<div>
+			
+		</div>
+	<?php } ?>
+	
+	
 </div>
-
+<script><?php require_once GZ::SCRIPTS.'/copy-previous.js'; ?></script>
