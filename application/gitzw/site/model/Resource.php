@@ -81,8 +81,39 @@ class Resource implements iViewRender, JsonSerializable {
         return $this->parent->getIdPath().'.'.$this->id;
     }
     
+    /**
+     * Get the URL of this resource.
+     * 
+     * @return string
+     */
+    public function getResourcePath() :string {
+    	return $this->parent->getResourcePath().'/'.$this->id;
+    }
+    
+    public function getSubscript() {
+    	$bull = '&nbsp;&nbsp;<wbr>&bull;&nbsp;&nbsp;';
+    	$subscript = '';
+    	if ($this->hasTitle()) {
+    		$subscript .= $this->getDisplayTitle().$bull;
+    	} else {
+    		$subscript .= '<span lang="nl">geen titel</span> (no title)'.$bull;
+    	}
+    	if (!empty($this->media)) $subscript .= $this->media.$bull;
+    	$dimensions = $this->getDimensions();
+    	if (!empty($dimensions)) $subscript .= $dimensions.$bull;
+    	if (!empty($this->date)) $subscript .= $this->date;
+    	return $subscript;
+    }
+    
     public function getTitles() : array {
     	return $this->titles;
+    }
+    
+    public function hasTitle() : bool {
+    	foreach (array_values($this->titles) as $title) {
+    		if (!empty($title)) return true;
+    	}
+    	return false;
     }
     
     public function getDisplayTitle() {

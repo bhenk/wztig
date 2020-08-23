@@ -2,19 +2,21 @@
 namespace gitzw\site\handle;
 
 use gitzw\GZ;
+use gitzw\site\control\DefaultPageControl;
 use gitzw\site\control\HomePageControl;
 use gitzw\site\control\InternalErrorPageControl;
 use gitzw\site\control\LoginControl;
 use gitzw\site\control\NotFoundPageControl;
+use gitzw\site\control\SearchPageControl;
+use gitzw\site\control\ZoomControl;
 use gitzw\site\data\Security;
 use gitzw\site\data\Site;
 use gitzw\site\ext\TinyHtmlMinifier;
 use gitzw\site\logging\Log;
 use gitzw\site\logging\Req;
+use gitzw\site\model\NotFoundException;
 use gitzw\site\model\SiteResources;
 use Exception;
-use gitzw\site\model\NotFoundException;
-use gitzw\site\control\SearchPageControl;
 
 
 class Gitz {
@@ -51,6 +53,14 @@ class Gitz {
                 case 'search':
                 	(new SearchPageControl($path))->renderPage();
                 	Log::log()->info('end request handling '.SearchPageControl::class);
+                	return;
+                case 'zoom':
+                	(new ZoomControl($path))->renderPage();
+                	Log::log()->info('end request handling '.ZoomControl::class);
+                	return;
+                case 'exif-data':
+                	(new DefaultPageControl(GZ::TEMPLATES.'/frame/exif-data.php'))->renderPage();
+                	Log::log()->info('end request handling /exif-data');
                 	return;
                 case 'gendan':
                     echo Site::get()->clientIp();

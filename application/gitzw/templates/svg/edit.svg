@@ -1,0 +1,8 @@
+<svg width="32" height="24" xmlns="http://www.w3.org/2000/svg">
+
+  <rect style="width: 32px; height: 24px;" class="brect"/>
+
+  <title>edit resource</title>
+  <line stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_1" y2="2.8423" x2="30.5152" y1="2.87355" x1="0.73463" style="fill:rgb(0,0,0);stroke-width:3;stroke:rgb(0,0,0)"/>
+  <text xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="8" id="svg_15" y="13.90464" x="8.4" fill-opacity="null" stroke-opacity="null" stroke-width="0" stroke="white" fill="white">edit</text>
+</svg>

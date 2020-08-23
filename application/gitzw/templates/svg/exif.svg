@@ -1,0 +1,11 @@
+<svg width="32" height="24" xmlns="http://www.w3.org/2000/svg">
+
+  <rect style="width: 32px; height: 24px;" class="brect"/>
+
+  <title>exif data</title>
+  <line stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_1" y2="2.8423" x2="7.01574" y1="2.87355" x1="0.73463" style="fill:rgb(0,0,0);stroke-width:3;stroke:rgb(0,0,0)"/>
+  <line stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_5" y2="19.87316" x2="7.01574" y1="19.90441" x1="1.29712" style="fill:rgb(0,0,0);stroke-width:3;stroke:rgb(0,0,0)"/>
+  <line stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_6" y2="20.4669" x2="30.5152" y1="20.49815" x1="23.85911" style="fill:rgb(0,0,0);stroke-width:3;stroke:rgb(0,0,0)"/>
+  <text xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="8" id="svg_15" y="13.90464" x="8.4" fill-opacity="null" stroke-opacity="null" stroke-width="0" stroke="white" fill="white">exif</text>
+  <line stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_16" y2="2.62356" x2="30.5152" y1="2.65481" x1="23.85911" style="fill:rgb(0,0,0);stroke-width:3;stroke:rgb(0,0,0)"/>
+</svg>

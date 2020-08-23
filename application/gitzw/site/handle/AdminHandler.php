@@ -8,7 +8,6 @@ use gitzw\site\control\admin\AdminMenuManager;
 use gitzw\site\control\admin\EditResourcePageControl;
 use gitzw\site\control\admin\ForcedExceptionPage;
 use gitzw\site\control\admin\LocateImagePageControl;
-use gitzw\site\control\admin\ResourceListPageControl;
 use gitzw\site\control\visar\FrontPageControl;
 use gitzw\site\logging\Log;
 use gitzw\site\model\SiteResources;
@@ -60,10 +59,6 @@ class AdminHandler {
     			(new EditResourcePageControl($this->path))->renderPage();
     			Log::log()->info('end request handling admin/edit-resource');
     			return;
-    		case 'find-resources':
-    			(new ResourceListPageControl($this->path))->renderPage();
-    			Log::log()->info('end request handling admin/find-resources');
-    			return;
     		case 'front-page':
     			$var = SiteResources::get()->getChildByName('var')->getChildByName($this->path[3]);
     			$location = str_replace(' ', '/', $this->path[4]);
@@ -71,10 +66,6 @@ class AdminHandler {
     			$control->setLocation($location);
     			$control->renderPage();
     			Log::log()->info('end request handling admin/front-page');
-    			return;
-    		case 'exif-data':
-    			(new DefaultPageControl(GZ::TEMPLATES.'/admin/exif-data.php'))->renderPage();
-    			Log::log()->info('end request handling admin/exif-data');
     			return;
     		case 'raise-exception':
     			(new ForcedExceptionPage())->renderPage();

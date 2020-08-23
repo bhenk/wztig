@@ -6,14 +6,14 @@ use gitzw\GZ;
 ?>
 
 <div class="gitzw collapse-button"><b>
-  &bull; found <?php echo $this->itemCount; ?> resource<?php echo $this->itemCount == 1 ? '' : 's'; ?></b></div>
+  &bull; found <?php echo $this->itemCount; ?></b></div>
 <div class="collapsable<?php echo $this->start == 0 ? ' open' : ''; ?>">
 	<div class="search-dashboard">
 		<div class="searchquery">
-			<span>&bull; name: <?php echo $this->visart; ?></span>
-			<span>&bull; activity: <?php echo $this->activity; ?></span>
-			<span>&bull; category: <?php echo $this->category; ?></span>
-			<span>&bull; year: <?php echo $this->year; ?></span>
+			<?php if ($this->visart != 'all') { ?><span id="visart">&bull; name: <?php echo $this->fullNames['visart']; ?></span><?php } ?>
+			<?php if ($this->activity != 'all') { ?><span id="activity">&bull; activity: <?php echo $this->fullNames['activity']; ?></span><?php } ?>
+			<?php if ($this->category != 'all') { ?><span id="category">&bull; category: <?php echo $this->fullNames['category']; ?></span><?php } ?>
+			<?php if ($this->year != 'all') { ?><span id="year">&bull; year: <?php echo $this->fullNames['year']; ?></span><?php } ?>
 			<?php if (!empty($this->title_en)) { ?><div><span>&bull; title en: <?php echo $this->title_en; ?></span></div> <?php } ?>
 			<?php if (!empty($this->title_nl)) { ?><div><span>&bull; title nl: <?php echo $this->title_nl; ?></span></div> <?php } ?>
 			<?php if (!empty($this->media)) { ?><div><span>&bull; media: <?php echo $this->media; ?></span></div> <?php } ?>
@@ -28,7 +28,7 @@ use gitzw\GZ;
 			<?php if (!empty($this->date)) { ?><div><span>&bull; date: <?php echo $this->date; ?></span></div> <?php } ?>
 			<?php if (!empty($this->longId)) { ?><div><span>&bull; id: <?php echo $this->longId; ?></span></div> <?php } ?>
 		</div>
-		<div class="searchbutton" onclick="sendPagingRequest('form')">
+		<div title="recycle search query" class="searchbutton" onclick="sendPagingRequest('form')">
 			&#9851;
 		</div>
 	</div>

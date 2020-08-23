@@ -228,6 +228,32 @@ class SiteResources extends Path {
     	return $tree;
     }
     
+    public function getFullNames(array $data) : array {
+    	$names = [];
+    	$visart = $this->getDescendant(['var', $data['visart']]);
+    	$names['visart'] = is_null($visart) ? $data['visart'] : $visart->getFullName();
+    	
+    	$activity = $this->getDescendant(['var', $data['visart'], $data['activity']]);
+    	$names['activity'] = is_null($activity) ? $data['activity'] : $activity->getFullName();
+    	
+    	$category = $this->getDescendant(['var', $data['visart'], $data['activity'], $data['category']]);
+    	$names['category'] = is_null($category) ? $data['category'] : $category->getFullName();
+    	
+    	$year = $this->getDescendant(['var', $data['visart'], $data['activity'], $data['category'], $data['year']]);
+    	$names['year'] = is_null($year) ? $data['year'] : $year->getFullName();
+    	return $names;
+    }
+    
+    public function getResourceByFullNamePath($path) : ?Resource {
+    	if ($path[0] == '') array_shift($path);
+    	$segment = $this->getChildByName('var');
+    	for ($i = 0; $i < count($path) - 1; $i++) {
+    		$segment = $segment->getChildByFullNamePath($path[$i]);
+    		if (is_null($segment)) return null;
+    	}
+    	return $segment->getResourceByShortId($path[$i]);
+    }
+    
     
 }
 

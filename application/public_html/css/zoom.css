@@ -1,0 +1,44 @@
+* {box-sizing: border-box;}
+
+.img-zoom-container {
+	position: relative;
+}
+
+#img-panel {
+	position: absolute;
+	top: 15px;
+	left: 15px;
+	z-index: 100
+}
+
+.img-zoom-lens {
+	position: absolute;
+	z-index: 102;
+	border: 1px solid red;
+	/*set the size of the lens:*/
+	width: 7vw;
+	height: 7vh;
+}
+
+.img-zoom-result {
+	position:absolute;
+	top: 0;
+	left: 0;
+	z-index: 99;
+	border: 1px solid #d4d4d4;
+	
+	width: 100vw;
+	height: 100vh;
+}
+
+
+.slider-wrap {
+	position: absolute;
+	left: 10px;
+	bottom: 10px;
+	text-align: center;
+	z-index: 150;
+	background-color: rgba(0, 0, 0, 0.5);
+	padding: 5px 10px 0px 10px;
+	border-radius: 10px;
+}

@@ -1,0 +1,19 @@
+<svg width="32" height="24">
+
+  <rect style="width: 32px; height: 24px;"/>
+
+  <title>zoom</title>
+  <line stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_1" y2="2.8423" x2="7.01574" y1="2.87355" x1="0.73463" style="fill:rgb(0,0,0);stroke-width:3;stroke:rgb(0,0,0)"/>
+  <line stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_5" y2="19.87316" x2="7.01574" y1="19.90441" x1="1.29712" style="fill:rgb(0,0,0);stroke-width:3;stroke:rgb(0,0,0)"/>
+  <line stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_6" y2="20.4669" x2="30.5152" y1="20.49815" x1="23.85911" style="fill:rgb(0,0,0);stroke-width:3;stroke:rgb(0,0,0)"/>
+  <line transform="rotate(-90.2032, 1.72918, 4.98345)" stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_7" y2="4.96783" x2="4.60468" y1="4.99908" x1="-1.14631" style="fill:rgb(0,0,0);stroke-width:3;stroke:rgb(0,0,0)"/>
+  <line transform="rotate(-90.2032, 29.6949, 5.10923)" stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_8" y2="5.09361" x2="33.16443" y1="5.12486" x1="26.2253" style="fill:rgb(0,0,0);stroke-width:3;stroke:rgb(0,0,0)"/>
+  <line transform="rotate(-90.2032, 1.80726, 17.8108)" stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_9" y2="17.82652" x2="4.88466" y1="17.79505" x1="-1.27014" style="fill:rgb(0,0,0);stroke-width:3;stroke:rgb(0,0,0)"/>
+  <line transform="rotate(-90.2032, 29.9572, 18.3112)" stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_10" y2="18.29562" x2="33.09722" y1="18.32687" x1="26.81721" style="fill:rgb(0,0,0);stroke-width:3;stroke:rgb(0,0,0)"/>
+  <line transform="rotate(-44.5848, 26.7911, 5.60844)" stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_11" y2="5.62083" x2="29.77574" y1="5.59605" x1="23.80648" style="fill:rgb(0,0,0);stroke-width:3;stroke:rgb(0,0,0)"/>
+  <line transform="rotate(-44.5848, 4.38537, 16.7332)" stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_12" y2="16.74557" x2="7.37" y1="16.7208" x1="1.40074" style="fill:rgb(0,0,0);stroke-width:3;stroke:rgb(0,0,0)"/>
+  <line transform="rotate(-135.393, 4.88536, 5.63969)" stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_13" y2="5.65207" x2="7.86999" y1="5.6273" x1="1.90073" style="fill:rgb(0,0,0);stroke-width:3;stroke:rgb(0,0,0)"/>
+  <line transform="rotate(-135.393, 27.4473, 17.9519)" stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_14" y2="17.96429" x2="30.43198" y1="17.93952" x1="24.46271" style="fill:rgb(0,0,0);stroke-width:3;stroke:rgb(0,0,0)"/>
+  <text xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="8" id="svg_15" y="13.90464" x="6.8" fill-opacity="null" stroke-opacity="null" stroke-width="0" stroke="white" fill="white">zoom</text>
+  <line stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_16" y2="2.62356" x2="30.5152" y1="2.65481" x1="23.85911" style="fill:rgb(0,0,0);stroke-width:3;stroke:rgb(0,0,0)"/>
+</svg>

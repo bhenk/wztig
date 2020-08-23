@@ -1,11 +1,12 @@
 <?php
 namespace gitzw\site\handle;
 
+use gitzw\site\control\visar\FrontPageControl;
+use gitzw\site\control\visar\OverviewPageControl;
+use gitzw\site\control\visar\ResourcePageControl;
+use gitzw\site\data\Site;
 use gitzw\site\logging\Log;
 use gitzw\site\model\Path;
-use gitzw\site\control\visar\FrontPageControl;
-use gitzw\site\data\Site;
-use gitzw\site\control\visar\OverviewPageControl;
 
 class VarHandler {
     
@@ -53,11 +54,14 @@ class VarHandler {
         	return;
         }
         if ($this->path[5] == 'overview') {
-	        // /var/work/cat/year
+	        // /var/work/cat/year/overview
 	        (new OverviewPageControl($this->firstSegment, $this->path))->renderPage();
 	        return;
         }
-        echo implode('->', $this->path);
+        // /var/work/cat/year/resource-id
+        (new ResourcePageControl($this->firstSegment, $this->path))->renderPage();
+        
+        //echo implode('->', $this->path);
     }
     
     public function handleBlogs() {

@@ -2,6 +2,11 @@
 namespace gitzw\templates\admin;
 
 /** @var mixed $this */
+
+/**
+ * See views/resource-ov.php
+ * @deprecated
+ */
 use gitzw\GZ;
 use gitzw\site\data\ImageData;
 

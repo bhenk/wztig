@@ -1,6 +1,10 @@
 <?php
 namespace gitzw\templates\admin;
 
+/**
+ * See frame/search-results.php
+ * @deprecated
+ */
 use gitzw\GZ;
 /** @var mixed $this */
 ?>

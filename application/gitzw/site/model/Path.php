@@ -458,6 +458,18 @@ class Path extends JsonData implements iViewRender {
     	}
     }
     
+    public function previousSibling(string $name) : ?Path {
+    	$this->loadChildren();
+    	$keys = array_keys($this->children);
+    	return $this->children[$keys[array_search($name, $keys) - 1]];
+    }
+    
+    public function nextSibling(string $name) : ?Path {
+    	$this->loadChildren();
+    	$keys = array_keys($this->children);
+    	return $this->children[$keys[array_search($name, $keys) + 1]];
+    }
+    
     public function echoResourcePaths() {
         $resourcePath = $this->getResourcePath();
         if ($resourcePath != '') {

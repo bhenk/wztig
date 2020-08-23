@@ -1,6 +1,9 @@
 <?php
 namespace gitzw\templates\admin;
 
+/**
+ * @deprecated See frame/search-form.php
+ */
 use gitzw\site\model\SiteResources;
 
 /** @var mixed $this */

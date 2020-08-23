@@ -5,7 +5,7 @@ namespace gitzw\templates\frame;
 
 ?>
 
-<h1 class="gitzw">Find</h1>
+<h1 class="gitzw byellow">Find</h1>
 
 <div class="container large">
 	<form action="<?php echo $this->action; ?>" method="post">
@@ -99,7 +99,7 @@ namespace gitzw\templates\frame;
 			</div>
 			<div class="form-75">
 				<input class="smallinput" type="text" id="date" name="date" value="<?php echo $this->date; ?>">
-				[&lt;] [&gt;] [yyyy | yyyy-mm | yyyy-mm-dd] (/==-) [(y | m | d) == ?]
+				[&lt;] [&gt;] yyyy[-mm[-dd]], [ymd] | ?, - | /
 			</div>
 		</div>
 		

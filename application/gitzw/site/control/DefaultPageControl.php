@@ -2,10 +2,11 @@
 namespace gitzw\site\control;
 
 use gitzw\GZ;
-use gitzw\site\logging\Log;
+use gitzw\site\control\menu\MenuManager;
 use gitzw\site\data\Security;
 use gitzw\site\data\Site;
-use gitzw\site\control\menu\MenuManager;
+use gitzw\site\logging\Log;
+use gitzw\site\model\SiteResources;
 
 class DefaultPageControl implements iPageControl {
     
@@ -77,8 +78,20 @@ class DefaultPageControl implements iPageControl {
     
     
     public function renderPage() {
+    	if (is_null($this->menuManager) and empty($this->navigation)) {
+    		$this->setDefaultMenuManager();
+    	}
         Log::log()->debug(static::class.'->'.__METHOD__);
         require GZ::TEMPLATES . '/frame/a_page.php';
+    }
+    
+    private function setDefaultMenuManager() {
+    	$visarts = SiteResources::get()->getChildByName('var')->getChildren();
+    	$manager = new MenuManager();
+    	foreach($visarts as $visart) {
+    		$manager->addItem($visart->getName(), '/'.$visart->getFullNamePath());
+    	}
+    	$this->setMenuManager($manager);
     }
     
     protected function getPath() : ?array {

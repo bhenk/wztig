@@ -11,7 +11,7 @@ const SMALL_IMG_HEIGHT = 150;
 ?>
 <div class="img-data-container">
 	<div class="img-container">
-		<a href="/admin/edit-resource/<?php echo $this->getLongId(); ?>">
+		<a href="<?php echo $this->getResourcePath(); ?>">
     	<?php 
     	$representation = $this->getRepresentation();
     	if (isset($representation)) {

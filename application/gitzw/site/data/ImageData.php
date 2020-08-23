@@ -19,7 +19,7 @@ class ImageData {
      * 
      * @var array
      */
-    const OPTIONS = ['default'=>'_d', 'exact'=>'_e', 'maxwidth'=>'_w', 'maxheight'=>'_h'];
+    const OPTIONS = ['default'=>'_d', 'exact'=>'_e', 'maxwidth'=>'_w', 'maxheight'=>'_h', 'max'=>'_m'];
     
     /**
      * The directory name for derived images.
@@ -30,6 +30,7 @@ class ImageData {
     
     private $imgFile;
     private $imgSize;
+    private $imgExists = true;
     
     /**
      * Construct new ImageData for the given filename.
@@ -40,20 +41,33 @@ class ImageData {
      */
     function __construct(?string $imgFile, string $dataFile = NULL) {
     	if (is_null($imgFile)) {
-    		if (empty($dataFile)) {
-    			$this->imgFile = GZ::DATA.'/images/no_image/Broken-image-01.jpg';
-    		} else {
+    		if (!empty($dataFile)) {
     			$this->imgFile = GZ::DATA.'/images/'.$dataFile;
     		}
     	} else {
         	$this->imgFile =$imgFile;
     	}
         if (!file_exists($this->imgFile)) {
+        	$this->imgExists = false;
         	$this->imgFile = GZ::DATA.'/images/no_image/Broken-image-01.jpg';
         }
     }
     
-    public function getImgFile() {
+    /**
+     * Does the file exist.
+     * 
+     * @return bool
+     */
+    public function imgExists() : bool {
+    	return $this->imgExists;
+    }
+    
+    /**
+     * Get the absolute path to this image file.
+     * 
+     * @return string
+     */
+    public function getImgFile() : string {
     	return $this->imgFile;
     }
     
@@ -97,6 +111,7 @@ class ImageData {
      */
     public function getFilename(string $postfix) : string {
     	$derivedDir = Site::get()->documentRoot().'/img/derived';
+    	// $derivedDir = '/Users/ecco/git2/wztig/application/public_html/img/derived';
     	// GZ::DATA.'/images/hnq/2020/xyz/_DSC123.jpg'
     	$path = substr(dirname($this->imgFile), strlen(GZ::DATA.'/images/'));
     	$parts = explode('.', basename($this->imgFile));
@@ -110,13 +125,37 @@ class ImageData {
     	return $newFile;
     }
     
+    /**
+     * Get the url for a derived image.
+     * 
+     * @param string $postfix
+     * @return string
+     */
     public function getImgLocation(string $postfix) : string {
         return substr($this->getFilename($postfix), strlen(Site::get()->documentRoot()));
     }
     
+    /**
+     * Resize the image according to given specifications.
+     * 
+     * @param int $width desired width
+     * @param int $height desired height
+     * @param string $resizeOption 'default'=>'_d', 'exact'=>'_e', 'maxwidth'=>'_w', 'maxheight'=>'_h'
+     * @throws Exception for invallid resize options
+     * @return array with <ul><li>'filename'=>absolute path for the derived image,</li>
+     * 						<li>'location'=>the url for a derived image,</li>
+     * 						<li>'size'=>gd <code>getimagesize</code></li></ul>
+     * 
+     */
     public function resize(int $width, int $height, string $resizeOption='default') : array {
         if (is_null(self::OPTIONS[strtolower($resizeOption)])) {
             throw new Exception('Invalid resizeOption: '.$resizeOption);
+        }
+        if ($resizeOption == 'max') {
+        	$this->getImgSize();
+        	$width = $this->imgSize[0];
+        	$height = $this->imgSize[1];
+        	$resizeOption = 'default';
         }
         $postfix = '_'.$width.'_'.$height.self::OPTIONS[strtolower($resizeOption)];
         $filename = $this->getFilename($postfix);

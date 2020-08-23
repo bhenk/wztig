@@ -18,7 +18,7 @@ class EditResourcePageControl extends DefaultPageControl {
 	function __construct(array $path) {
 		$resourceId = $path[3]; // hnq.work.draw.2020.0002
 		if (is_null($resourceId)) {
-			echo '@Todo: find some way to collect a resource id.';
+			throw new NotFoundException('unknown resource');
 		}
 		
 		$this->setContentFile(GZ::TEMPLATES.'/admin/edit-resource.php');

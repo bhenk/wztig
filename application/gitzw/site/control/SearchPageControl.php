@@ -3,7 +3,6 @@
 namespace gitzw\site\control;
 
 use gitzw\GZ;
-use gitzw\site\control\menu\MenuManager;
 use gitzw\site\control\menu\Pager;
 use gitzw\site\data\Security;
 use gitzw\site\data\Site;
@@ -18,6 +17,7 @@ class SearchPageControl extends DefaultPageControl {
 	protected $activity = 'all';
 	protected $category = 'all';
 	protected $year = 'all';
+	protected $fullNames = array();
 	protected $title_en;
 	protected $title_nl;
 	protected $media;
@@ -39,21 +39,12 @@ class SearchPageControl extends DefaultPageControl {
 	private $itemsPerPage = 5;
 	
 	function __construct(array $path) {
+		header("Cache-Control: max-age=300, must-revalidate");
 		$this->path = $path;
 		$this->setTitle('search gitzw art');
 		$this->addStylesheet('/css/form.css');
 		$this->addScript(GZ::SCRIPTS.'/collapse.js');
 		$this->action = '/'.implode('/', array_slice($path, 1));
-		$this->constructMenu();
-	}
-	
-	private function constructMenu() {
-		$visarts = SiteResources::get()->getChildByName('var')->getChildren();
-		$manager = new MenuManager();
-		foreach($visarts as $visart) {
-			$manager->addItem($visart->getName(), $visart->getFullNamePath());
-		}
-		$this->setMenuManager($manager);
 	}
 	
 	public function renderPage() {
@@ -105,6 +96,7 @@ class SearchPageControl extends DefaultPageControl {
 		}
 		
 		$this->setContentFile(GZ::TEMPLATES.'/frame/search-results.php');
+		$this->fullNames = SiteResources::get()->getFullNames($data);
 		$query = ['', $this->visart, $this->activity, $this->category, $this->year];
 		$search = new Search($data);
 		if ($search->isRelevant()) {
@@ -155,7 +147,7 @@ class SearchPageControl extends DefaultPageControl {
 		} else {
 			return array_slice($this->results, $this->start, $this->itemsPerPage);
 		}
-	}  
+	}
 	
 // 	protected function renderFooter() {
 // 		echo 'visart: '.$this->visart.' category: '.$this->category;
