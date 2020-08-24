@@ -1,0 +1,44 @@
+<?php 
+namespace gitzw\templates\frame;
+/** @var mixed $this */ 
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title><?php $this->renderTitle(); ?></title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="apple-touch-icon" sizes="180x180" href="/img/favicon/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/img/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/img/favicon/favicon-16x16.png">
+<link rel="stylesheet" href="/css/normalize.css">
+<link rel="stylesheet" href="/css/frame.css">
+<?php $this->renderStylesheets(); ?>
+<?php $this->renderScriptLinks(); ?>
+<?php $this->renderCanonicalURI(); ?>
+</head>
+<body>
+	<div id="page-container">
+		<div id="content-wrap">
+			<div class="row">
+				<!-- 1st column -->
+	 			<div class="col-3 col-s-3 place"></div>
+				<div class="col-3 col-s-3 menu">
+					<?php $this->renderLogo(); ?>
+					<?php $this->renderNavigation(); ?>
+					<?php $this->renderButtonPanel(); ?>
+				</div>
+				<!-- end 1st column -->
+				<!-- 2nd column -->
+				<div class="col-9 col-s-9">	
+					<?php $this->renderContent(); ?>	
+				</div>
+				<!-- end 2nd column -->
+			</div>
+		</div>
+		<footer id="footer">
+			<?php $this->renderFooter(); ?>
+		</footer>
+	</div>
+	<?php $this->renderScripts(); ?>
+</body>
+</html>

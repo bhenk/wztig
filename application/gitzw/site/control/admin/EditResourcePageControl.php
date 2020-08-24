@@ -14,6 +14,7 @@ class EditResourcePageControl extends DefaultPageControl {
 	protected $resource;
 	protected $longId;
 	protected $action;
+	private $path;
 	
 	function __construct(array $path) {
 		$resourceId = $path[3]; // hnq.work.draw.2020.0002
@@ -32,6 +33,7 @@ class EditResourcePageControl extends DefaultPageControl {
 		}
 		$this->longId = $this->resource->getLongId();
 		$this->action = '/'.implode('/', array_slice($path, 1));
+		$this->path = $path;
 	}
 	
 	private function getResource() : Resource {
@@ -78,6 +80,11 @@ class EditResourcePageControl extends DefaultPageControl {
 		}
 		
 		$this->getResource()->getParent()->persist();
+		
+		if ($_POST['rmove'] == 'rmove') {
+			(new MoveResourcePageControl($this->path, true))->renderPage();
+			return;
+		}
 		parent::renderPage();
 	}
 	

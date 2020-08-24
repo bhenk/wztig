@@ -60,6 +60,29 @@ class ResourceContainer extends Path {
 		return $resource;
 	}
 	
+	public function addExistingResource(Resource $r) : Resource {
+		$shortId = $this->getNextResourceId();
+		$r->moveTo($this, $shortId);
+		$this->resources[$shortId] = $r;
+		$this->persist();
+		return $r;
+	}
+	
+	public function removeResource(string $shortId) : bool {
+		$this->loadResources();
+		$success = array_key_exists($shortId, $this->resources);
+		if ($success) {
+			unset($this->resources[$shortId]);
+			$this->persist();
+		}
+		return $success;
+	}
+	
+	/**
+	 * Get the next open resource id.
+	 * 
+	 * @return string a 4-digit string
+	 */
 	public function getNextResourceId() : string {
 		$this->loadResources();
 		$rid = -1;
@@ -102,8 +125,9 @@ class ResourceContainer extends Path {
 	
 	public function nextPublicResource(string $idCurrent) : ?Resource {
 		$this->loadResources();
-		$keys = array_keys($this->resources);
-		$next = $this->resources[$keys[array_search($idCurrent, $keys) + 1]];
+		$pubResources = $this->getPublicResources();
+		$keys = array_keys($pubResources);
+		$next = $pubResources[$keys[array_search($idCurrent, $keys) + 1]];
 		if (is_null($next)) {
 			$sib = $this->parent->nextSibling($this->name);
 			if (isset($sib)) {
@@ -115,8 +139,9 @@ class ResourceContainer extends Path {
 	
 	public function previousPublicResource(string $idCurrent) : ?Resource {
 		$this->loadResources();
-		$keys = array_keys($this->resources);
-		$prev = $this->resources[$keys[array_search($idCurrent, $keys) - 1]];
+		$pubResources = $this->getPublicResources();
+		$keys = array_keys($pubResources);
+		$prev = $pubResources[$keys[array_search($idCurrent, $keys) - 1]];
 		if (is_null($prev)) {
 			$sib = $this->parent->previousSibling($this->name);
 			if (isset($sib)) {
@@ -128,7 +153,8 @@ class ResourceContainer extends Path {
 	
 	public function getFirstResource() : ?Resource {
 		$this->loadResources();
-		$first = array_values($this->resources)[0];
+		$pubResources = $this->getPublicResources();
+		$first = array_values($pubResources)[0];
 		if (is_null($first)) {
 			$sib = $this->parent->nextSibling($this->name);
 			if (isset($sib)) {
@@ -140,7 +166,8 @@ class ResourceContainer extends Path {
 	
 	public function getLastResource() {
 		$this->loadResources();
-		$last = array_values($this->resources)[count($this->resources) - 1];
+		$pubResources = $this->getPublicResources();
+		$last = array_values($pubResources)[count($pubResources) - 1];
 		if (is_null($last)) {
 			$sib = $this->parent->previoustSibling($this->name);
 			if (isset($sib)) {

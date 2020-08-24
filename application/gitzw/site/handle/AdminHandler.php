@@ -11,6 +11,7 @@ use gitzw\site\control\admin\LocateImagePageControl;
 use gitzw\site\control\visar\FrontPageControl;
 use gitzw\site\logging\Log;
 use gitzw\site\model\SiteResources;
+use gitzw\site\control\admin\MoveResourcePageControl;
 
 class AdminHandler {
     
@@ -58,6 +59,10 @@ class AdminHandler {
     		case 'edit-resource':
     			(new EditResourcePageControl($this->path))->renderPage();
     			Log::log()->info('end request handling admin/edit-resource');
+    			return;
+    		case 'move-resource':
+    			(new MoveResourcePageControl($this->path))->renderPage();
+    			Log::log()->info('end request handling admin/move-resource');
     			return;
     		case 'front-page':
     			$var = SiteResources::get()->getChildByName('var')->getChildByName($this->path[3]);

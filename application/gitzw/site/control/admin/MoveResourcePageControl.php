@@ -1,34 +1,24 @@
 <?php
-
 namespace gitzw\site\control\admin;
 
 use gitzw\GZ;
 use gitzw\site\control\DefaultPageControl;
-use gitzw\site\data\Site;
-use gitzw\site\model\SiteResources;
 use gitzw\site\data\Security;
+use gitzw\site\data\Site;
+use gitzw\site\model\NotFoundException;
+use gitzw\site\model\SiteResources;
 
-/**
- * 
- */
-class LocateImagePageControl extends DefaultPageControl {
+
+class MoveResourcePageControl  extends DefaultPageControl {
 	
-	private $path = array();
-	
-	protected $representation;
-	protected $imageFile;
+	protected $resource;
 	protected $action;
-	
-	protected $locate = 'new_resource';
-	protected $submitType = '';
-	protected $existingId = '';
 	
 	protected $visart = '';
 	protected $activity = '';
 	protected $category = '';
 	protected $year = '';
 	
-	protected $existingIdError = FALSE;
 	protected $visartError = FALSE;
 	protected $activityError = FALSE;
 	protected $categoryError = FALSE;
@@ -36,32 +26,39 @@ class LocateImagePageControl extends DefaultPageControl {
 	
 	protected $msg = '';
 	
-	function __construct(array $path) {
-		$this->path = $path;
-		$this->setContentFile(GZ::TEMPLATES.'/admin/locate-image.php');
+	private $fromEditPage;
+	
+	
+	function __construct(array $path, bool $fromEditPage = false) {
+		$resourceId = $path[3]; // hnq.work.draw.2020.0002
+		if (is_null($resourceId)) {
+			throw new NotFoundException('unknown resource');
+		}
+		$group = SiteResources::get()->getChildByName('var');
+		$this->resource = $group->getResource($resourceId);
+		if (is_null($this->resource)) {
+			throw new NotFoundException('Unknown resource id: '.$resourceId);
+		}
+		$this->fromEditPage = $fromEditPage;
+		
+		$this->setTemplate(self::COLUMN_3);
+		$this->setContentFile(GZ::TEMPLATES.'/admin/move-resource.php');
 		$this->setMenuManager(new AdminMenuManager());
 		$this->addStylesheet('/css/form.css');
 		
-		//$this->var = SiteResources::get()->getChildByName('var')->getChildByName($path[3]);
-		$this->representation = implode('/', array_slice($path, 3));
-		$this->imgFile = GZ::DATA.'/images/'.$this->representation;
-		$this->action = '/'.implode('/', array_slice($path, 1));
+		$this->action = '/admin/move-resource/'.$this->resource->getLongId();
 	}
 	
 	public function renderPage() {
-		$renderPage = FALSE;
-		if (Site::get()->requestMethod() == 'GET') {
-			$renderPage = $this->handleGet();
-		} elseif (Site::get()->requestMethod() == 'POST') {
+		$renderPage = false;
+		if ($this->fromEditPage) {
+			$renderPage = true;
+		} else {
 			$renderPage = $this->handlePost();
 		}
 		if ($renderPage) {
 			parent::renderPage();
 		}
-	}
-	
-	private function handleGet() : bool {
-		return TRUE;
 	}
 	
 	private function handlePost() : bool {
@@ -75,8 +72,6 @@ class LocateImagePageControl extends DefaultPageControl {
 		} else {
 			$data = Security::cleanInput($_POST);
 		}
-		$this->locate = $data['locate'] ?? '';
-		$this->existingId = $data['exist_id'] ?? '';
 		$this->visart = $data['visart'];
 		$this->activity = $data['activity'] ?? '';
 		$this->category = $data['category'] ?? '';
@@ -91,25 +86,6 @@ class LocateImagePageControl extends DefaultPageControl {
 	}
 	
 	private function handleButton() : bool {
-		if ($this->locate == 'existing') {
-			return $this->handleButtonExistingId();
-		} else {
-			return $this->handleButtonNewId();
-		}
-	}
-	
-	private function handleButtonExistingId() : bool {
-		if (empty ($this->existingId)) {
-			$this->existingIdError = TRUE;
-			$this->msg = 'Please fill in an existing resource id';
-			return TRUE;
-		} else {
-			echo '<script>alert("@Todo check if resource id is correct");';
-			return TRUE;
-		}
-	}
-	
-	private function handleButtonNewId() : bool {
 		if (empty($this->year)) {
 			$this->yearError = TRUE;
 			$this->msg = 'Please fill in an existing year';
@@ -129,9 +105,10 @@ class LocateImagePageControl extends DefaultPageControl {
 		if ($this->yearError or $this->categoryError or $this->activityError or $this->visartError) {
 			return TRUE;
 		} else {
-			$yea = SiteResources::get()->getDescendant(['var', $this->visart, $this->activity, $this->category, $this->year]);
-			$resource = $yea->addResource();
-			$resource->addRepresentation($this->representation);
+			$currentContainer = $this->resource->getParent();
+			$newContainer = SiteResources::get()->getDescendant(['var', $this->visart, $this->activity, $this->category, $this->year]);
+			$currentContainer->removeResource($this->resource->getId());
+			$resource = $newContainer->addExistingResource($this->resource);
 			$resourceId = $resource->getLongId();
 			Site::get()->redirect('/admin/edit-resource/'.$resourceId);
 			return FALSE;
@@ -143,7 +120,13 @@ class LocateImagePageControl extends DefaultPageControl {
 	 * @return string
 	 */
 	protected function getJsonForSelects() : string {
-		return json_encode(SiteResources::get()->getTree(null, false));
+		$data = [];
+		$values = explode('.', $this->resource->getLongId());
+		$data['visart'] = $values[0];
+		$data['activity'] = $values[1];
+		$data['category'] = $values[2];
+		$data['year'] = $values[3];
+		return json_encode(SiteResources::get()->getTree($data, false));
 	}
 }
 

@@ -59,7 +59,10 @@ class Gitz {
                 	Log::log()->info('end request handling '.ZoomControl::class);
                 	return;
                 case 'exif-data':
-                	(new DefaultPageControl(GZ::TEMPLATES.'/frame/exif-data.php'))->renderPage();
+                	$control = new DefaultPageControl(GZ::TEMPLATES.'/frame/exif-data.php');
+                	$control->setTemplate(DefaultPageControl::COLUMN_3);
+                	$control->setTitle('exif data');
+                	$control->renderPage();
                 	Log::log()->info('end request handling /exif-data');
                 	return;
                 case 'gendan':

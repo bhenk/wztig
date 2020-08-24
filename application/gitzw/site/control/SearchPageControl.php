@@ -49,6 +49,7 @@ class SearchPageControl extends DefaultPageControl {
 	
 	public function renderPage() {
 		if (Site::get()->requestMethod() == 'GET') {
+			$this->setTemplate(DefaultPageControl::COLUMN_3);
 			$this->setContentFile(GZ::TEMPLATES.'/frame/search-form.php');
 			parent::renderPage();
 		} else {
@@ -90,6 +91,7 @@ class SearchPageControl extends DefaultPageControl {
 		$this->longId = $data['longid'];
 		
 		if ($showForm == TRUE) {
+			$this->setTemplate(DefaultPageControl::COLUMN_3);
 			$this->setContentFile(GZ::TEMPLATES.'/frame/search-form.php');
 			parent::renderPage();
 			return;

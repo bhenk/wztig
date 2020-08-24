@@ -424,7 +424,7 @@ td {
 
 .heap {
 	float: left;
-	padding: 25px 19px 19px 25px;
+	padding: 0px 19px 19px 50px;
 	/* border: 1px solid blue; */
 }
 

@@ -113,6 +113,11 @@ const IMG_HEIGHT = 500;
 		    </div>
 		    
 		    <div class="formrw">
+		    	<input type="checkbox" id="rmove" name="rmove" value="rmove">
+		    	<label for="hidden">Move resource</label>
+		    </div>
+		    
+		    <div class="formrw">
 		      <div class="form-25">
 		        <label><b>Representations</b></label>
 		      </div>
@@ -137,7 +142,9 @@ const IMG_HEIGHT = 500;
 		      <input type="submit" value="Submit">
 		    </div>
 		  </form>
+		  <a class="incognito" href="<?php echo '/'.str_replace('.', '/', $this->resource->getLongId())?>">&#9654; <?php echo $this->resource->getLongId(); ?></a>
 		</div>
 	</div>
 </div>
+
 <script><?php require_once GZ::SCRIPTS.'/copy-previous.js'; ?></script>

@@ -9,9 +9,14 @@ use gitzw\site\logging\Log;
 use gitzw\site\model\SiteResources;
 
 class DefaultPageControl implements iPageControl {
+	
+	const COLUMN_2 = GZ::TEMPLATES . '/frame/a_page2.php';
+	const COLUMN_3 = GZ::TEMPLATES . '/frame/a_page3.php';
+	const DEFAULT_TEMPLATE = self::COLUMN_2;
     
+	private $template;
 	private $path;
-    private $title = 'gitzw art';
+    private $title = 'gitzw.art';
     private $stylesheets = array();
     private $scriptLinks = array();
     private $navigation = array();
@@ -30,6 +35,10 @@ class DefaultPageControl implements iPageControl {
         Log::log()->info(__METHOD__);
     }
     
+    public function setTemplate(string $template) {
+    	$this->template = $template;
+    }
+    
     public function setPath(array $path) {
     	$this->path = $path;
     }
@@ -39,7 +48,7 @@ class DefaultPageControl implements iPageControl {
     }
     
     public function setTitle($title) {
-        $this->title = $title;
+    	$this->title = 'gitzw.art '.$title;
     }
     
     public function addStylesheet($styleSheet) {
@@ -82,7 +91,15 @@ class DefaultPageControl implements iPageControl {
     		$this->setDefaultMenuManager();
     	}
         Log::log()->debug(static::class.'->'.__METHOD__);
-        require GZ::TEMPLATES . '/frame/a_page.php';
+        require $this->getTemplate();
+    }
+    
+    private function getTemplate() : string {
+    	if (is_null($this->template)) {
+    		return self::DEFAULT_TEMPLATE;
+    	} else {
+    		return $this->template;
+    	}
     }
     
     private function setDefaultMenuManager() {

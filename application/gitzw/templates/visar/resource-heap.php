@@ -24,11 +24,9 @@ $ida = new ImageData(NULL, $location);
 ?>
 <div class="heap">
 	<div class="img-container">
-		<a href="<?php echo $this->getResourcePath(); ?>">
-			<?php  
+		<a href="<?php echo $this->getResourcePath(); ?>"><?php  
 			echo $ida->getImgTag(SMALL_IMG_WIDTH, SMALL_IMG_HEIGHT, $this->getLongId(), 'maxheight');
-			?>
-		</a>
+			?></a>
 		<div class="subscript"><?php echo $title; ?>&nbsp;</div>
 	</div>
 </div>

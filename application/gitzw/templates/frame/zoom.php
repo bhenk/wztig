@@ -30,7 +30,7 @@ $data1 = $this->getLocationData(IMG_WIDTH, IMG_HEIGHT);
 </div>
 
 <div class="slider-wrap" title="magnification factor">
-	<input id="slider" type="range" min="-15" max="-3" value="-7" onchange="change(this)">	
+	<input class="slider" id="slider" type="range" min="-15" max="-3" value="-7" onchange="change(this)">	
 </div>	
 
 

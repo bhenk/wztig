@@ -1,50 +1,30 @@
 <?php
 namespace gitzw\templates\admin;
 
-/** @var mixed $this */
 use gitzw\site\data\ImageData;
+
+/** @var mixed $this */
 
 const IMG_WIDTH = 500;
 const IMG_HEIGHT = 500;
 
+$representation = $this->resource->getRepresentation();
+$ida = new ImageData(null, $representation->getLocation());
 ?>
-
-<h1 class="gitzw">Locate image <small><?php echo $this->representation; ?></small></h1>
-
+<h1 class="gitzw">Move resource <small><?php echo $this->resource->getLongId(); ?></small></h1>
 
 <div class="img-data-container">
 	<div class="img-container">
 		<?php 
-		$id = new ImageData($this->imgFile);
-		echo $id->getImgTag(IMG_WIDTH, IMG_HEIGHT, $this->representation, 'maxheight');
+		echo $ida->getImgTag(IMG_WIDTH, IMG_HEIGHT, $representation->getLocation(), 'maxheight');
 		?>
 	</div>
-
+	
 	<div class="img_data">
 		<div class="container">
-		  <form id="location" action="<?php echo $this->action; ?>" method="post">
-		  	<fieldset>
-		  	 	<input type="radio" id="existing" onclick="setExisting(true)" name="locate" value="existing"
-		  	 		<?php echo $this->locate == 'existing' ? 'checked="checked"' : ''; ?>>
-		  	 	<label for="existing">Existing resource</label>
-			    <div class="formrw">
-			      <div class="form-25">
-			        <label<?php echo $this->existingIdError ? ' class="error"' : ''; ?> for="exist_id">resource id</label>
-			      </div>
-			      <div class="form-75">
-			        <input type="text" id="exist_id" name="exist_id" 
-			        	placeholder="name.work...">
-			      </div>		      
-			    </div>
-		    </fieldset>
+			<form id="move" action="<?php echo $this->action; ?>" method="post">
 			
-			<!-- New resource -->
-		    <fieldset>
-		  	 	<input type="radio" id="new_resource" onclick="setExisting(false)" name="locate" value="new_resource" 
-		  	 		<?php echo $this->locate == 'new_resource' ? 'checked="checked"' : ''; ?>>
-		  	 	<label for="new_resource">New resource</label>
-		  	 	
-		  	 	<div class="formrw">
+				<div class="formrw">
 					<div class="form-25">
 						<label<?php echo $this->visartError ? ' class="error"' : ''; ?> for="visart">Names</label>
 					</div>
@@ -79,30 +59,18 @@ const IMG_HEIGHT = 500;
 						<select class="mediuminput" id="year" name="year"></select>
 					</div>
 				</div>
-			    
-			   </fieldset>
-			   
-			<div class=formrw><label><?php echo $this->msg; ?></label></div>
-		    <div class="formrw">
-		      <input type="submit" value="Next &#9656;">
-		    </div>
-		    
-		  </form>
-		  
+				
+				<div class=formrw><label><?php echo $this->msg; ?></label></div>
+			    <div class="formrw">
+			      <input type="submit" value="Move &#9656;">
+			    </div>
+			
+			</form>
 		</div>
 	</div>
-	
+
 </div>
-
 <script>
-function setExisting(state) {
-	document.getElementById('exist_id').disabled = !state;
-	document.getElementById('visart').disabled = state;
-	document.getElementById('activity').disabled = state;
-	document.getElementById('category').disabled = state;
-	document.getElementById('year').disabled = state;
-}
-
 function updateForm() {
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
@@ -146,4 +114,3 @@ function removeOptions(selectElement) {
 
 window.onload = setSelectors('<?php echo $this->getJsonForSelects(); ?>');
 </script>
-

@@ -59,8 +59,8 @@ class Resource implements iViewRender, JsonSerializable {
         $this->date = $data[self::KEY_DATE] ?? '';
         $this->hidden = $data[self::KEY_HIDDEN] ?? FALSE;
         $reparr = $data[self::KEY_REPRESENTATIONS] ?? array();
-        foreach ($reparr as $key=>$data) {
-        	$this->representations[$key] = new Representation($this, $key, $data);
+        foreach ($reparr as $key=>$repdata) {
+        	$this->representations[$key] = new Representation($this, $key, $repdata);
         }
     }
     
@@ -75,6 +75,15 @@ class Resource implements iViewRender, JsonSerializable {
         	self::KEY_HIDDEN=>$this->hidden,
             self::KEY_REPRESENTATIONS=>$this->representations,
         ];
+    }
+    
+    public function getId() : string {
+    	return $this->id;
+    }
+    
+    public function moveTo(ResourceContainer $parent, string $shortId) {
+    	$this->parent = $parent;
+    	$this->id = $shortId;
     }
     
     public function getLongId() : string {
@@ -249,10 +258,6 @@ class Resource implements iViewRender, JsonSerializable {
     		}
     	}
     	return FALSE;
-    }
-
-    public function getId() : string {
-        return $this->id;
     }
 
     public function getParent() : ?Path {
