@@ -6,7 +6,7 @@
 
 #img-panel {
 	position: absolute;
-	top: 15px;
+	bottom: 50px;
 	left: 15px;
 	z-index: 100
 }
@@ -16,8 +16,8 @@
 	z-index: 102;
 	border: 1px solid red;
 	/*set the size of the lens:*/
-	width: 7vw;
-	height: 7vh;
+	width: 9vw;
+	height: 9vh;
 }
 
 .img-zoom-result {

@@ -1,13 +1,15 @@
 <?php
-namespace gitzw\templates\visar;
+namespace gitzw\templates\admin;
 /**
  * resource-heap.php called from
  * 		templates/visar/overview2.php
+ * 
+ * for updating ordinal of resources.
  */
 /** @var mixed $this */
 
 use gitzw\site\data\ImageData;
-
+use gitzw\GZ;
 
 const SMALL_IMG_WIDTH = 250;
 const SMALL_IMG_HEIGHT = 250;
@@ -23,7 +25,6 @@ if (isset($representation)) {
 
 $ida = new ImageData(NULL, $location);
 
-
 ?>
 <div class="heap">
 	<div class="img-container">
@@ -32,4 +33,14 @@ $ida = new ImageData(NULL, $location);
 			?></a>
 		<div class="subscript"><?php echo $title; ?>&nbsp;</div>
 	</div>
+	<div class="ordinal">
+		<input type="number" id="ordinal_<?php echo $this->getId(); ?>" 
+			name="ordinal_<?php echo $this->getId() ?>"
+			value="<?php echo $this->getOrdinal(); ?>"
+			min="-1" max="1000" step="1" size="3"
+			onchange="setOrdinal(this, '<?php echo $this->getId(); ?>')">
+	</div>
 </div>
+<script><?php require_once GZ::SCRIPTS.'/resource-ordinal.min.js'; ?></script>
+
+

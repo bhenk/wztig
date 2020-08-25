@@ -137,7 +137,8 @@ class Search {
 		return strpos($haystack, $needle) !== false;
 	}
 	
-	public static function wordCount(string $s, string $t) : int {
+	public static function wordCount(string $s, ?string $t) : int {
+		if (is_null($t)) return 0;
 		$words = explode(' ', strtolower($s));
 		$target = ' '.strtolower($t).' ';
 		$r = 0;

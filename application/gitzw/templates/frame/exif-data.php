@@ -50,5 +50,5 @@ foreach ($exif as $key => $section) { ?>
 ?>
 
 <script>
-<?php require_once GZ::SCRIPTS.'/collapse.js' ?>
+collapse();
 </script>

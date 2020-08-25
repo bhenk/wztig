@@ -33,16 +33,16 @@ class MenuManager {
     	}
     }
     
-    public function getScript() : string {
-    	return GZ::TEMPLATES . '/frame/nav-menu.js';
-    }
-    
     public function render() {
     	echo '<div class="sidenav">';
     	foreach($this->items as $item) {
     		$item->render();
     	}
     	echo '</div>';
+    	
+    	echo '<script>';
+    	echo 'menuButtons();'; // see document root/js/gitzw.js
+    	echo '</script>';
     }
     
     

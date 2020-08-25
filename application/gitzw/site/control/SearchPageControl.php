@@ -11,7 +11,6 @@ use gitzw\site\model\SiteResources;
 
 class SearchPageControl extends DefaultPageControl {
 	
-	private $path;
 	protected string $action;
 	protected $visart = 'all';
 	protected $activity = 'all';
@@ -40,16 +39,15 @@ class SearchPageControl extends DefaultPageControl {
 	
 	function __construct(array $path) {
 		header("Cache-Control: max-age=300, must-revalidate");
-		$this->path = $path;
+		$this->setPath($path);
+		$this->setTemplate(self::COLUMN_3);
 		$this->setTitle('search gitzw art');
 		$this->addStylesheet('/css/form.css');
-		$this->addScript(GZ::SCRIPTS.'/collapse.js');
 		$this->action = '/'.implode('/', array_slice($path, 1));
 	}
 	
 	public function renderPage() {
 		if (Site::get()->requestMethod() == 'GET') {
-			$this->setTemplate(DefaultPageControl::COLUMN_3);
 			$this->setContentFile(GZ::TEMPLATES.'/frame/search-form.php');
 			parent::renderPage();
 		} else {
@@ -91,7 +89,6 @@ class SearchPageControl extends DefaultPageControl {
 		$this->longId = $data['longid'];
 		
 		if ($showForm == TRUE) {
-			$this->setTemplate(DefaultPageControl::COLUMN_3);
 			$this->setContentFile(GZ::TEMPLATES.'/frame/search-form.php');
 			parent::renderPage();
 			return;

@@ -1,8 +1,10 @@
 <?php
 namespace gitzw\templates\views;
-
+/**
+ * resource-ov.php called from 
+ * 		templates/frame/search-results.php
+ */
 /** @var mixed $this */
-use gitzw\GZ;
 use gitzw\site\data\ImageData;
 
 const SMALL_IMG_WIDTH = 100;
@@ -55,5 +57,4 @@ const SMALL_IMG_HEIGHT = 150;
 		</div>
 	</div>
 </div>
-<script><?php require_once GZ::SCRIPTS.'/copy-previous.js'; ?></script>
 

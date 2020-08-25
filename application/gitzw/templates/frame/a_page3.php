@@ -13,9 +13,9 @@ namespace gitzw\templates\frame;
 <link rel="stylesheet" href="/css/normalize.css">
 <link rel="stylesheet" href="/css/frame.css">
 <?php $this->renderStylesheets(); ?>
+<script type="text/javascript" src="/js/gitzw.js"></script>
 <?php $this->renderScriptLinks(); ?>
 <?php $this->renderCanonicalURI(); ?>
-<!-- link rel="manifest" href="img/favicon/site.webmanifest" -->
 </head>
 <body>
 	<div id="page-container">

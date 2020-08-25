@@ -9,12 +9,13 @@ use gitzw\site\logging\Log;
 use gitzw\site\model\Path;
 use gitzw\site\model\ResourceContainer;
 use gitzw\site\model\Visart;
+use gitzw\site\data\Security;
 
 class OverviewPageControl extends VisartPageControl {
 	
 	const ITEMS_PER_PAGE = 15;
     
-    private array $path;
+    //private array $path;
     private ResourceContainer $year;
     private int $start;
     private ?string $seedString;
@@ -22,9 +23,11 @@ class OverviewPageControl extends VisartPageControl {
     private array $resources;
     private Pager $pager;
     
+    protected $state = 'normal';
+    
     function __construct(Visart $visart, array $path) {
     	parent::__construct($visart);
-        $this->path = $path;
+        $this->setPath($path);
         $work = $this->visart->getChildByFullNamePath($path[2]);
         $cat = $work->getChildByFullNamePath($path[3]);
         $this->year = $cat->getChildByFullNamePath($path[4]);
@@ -32,8 +35,11 @@ class OverviewPageControl extends VisartPageControl {
         $this->seedString = $path[6];
         $this->start = max(0, intval($path[7]));
         $this->itemsPerPage = max(1, intval($path[8] ?? self::ITEMS_PER_PAGE));
-
-        if ($this->seedString == 'chrono') {
+		
+        if ($this->seedString == 'adm' and Security::get()->hasAccess()) {
+        	$this->resources = $this->year->getResourcesOrdered();
+        	$this->state = 'adm';
+        } elseif ($this->seedString == 'chrono') {
         	$this->resources = $this->year->getPublicResources();
         } else {
 	        $pak = $this->year->getPubResourcesRandomized($this->seedString);
@@ -69,12 +75,34 @@ class OverviewPageControl extends VisartPageControl {
     	$this->setMenuManager($manager);
     }
     
+    public function renderPage() {
+    	if (Site::get()->requestMethod() == 'POST' and Security::get()->hasAccess()) {
+    		$this->handlePost();
+    		return;
+    	}
+    	parent::renderPage();
+    }
+    
+    private function handlePost() {
+    	$input = json_decode(file_get_contents('php://input'), true);
+    	$data = Security::cleanInput($input);
+    	$shortid = $data['shortid'];
+    	$ordinal = intval($data['ordinal']);
+    	foreach (array_values($this->resources) as $resource) {
+    		if ($resource->getId() == $shortid) {
+    			$resource->setOrdinal($ordinal);
+    			$resource->getParent()->persist();
+    			Log::log()->info('Updated resource ordinal. id='.$resource->getLongId(). ', value='.$ordinal);
+    		}
+    	}
+    }
+    
     private function getLink() : string {
     	return $this->year->getResourcePath().'/overview';
     }
     
     private function getItemCount() {
-    	return $this->year->getPublicResourceCount();
+    	return count($this->resources);
     }
     
     protected function getPager() {
@@ -92,7 +120,7 @@ class OverviewPageControl extends VisartPageControl {
     	} else {
     		return array_slice($this->resources, $this->start, $this->itemsPerPage);
     	}
-    }    
+    }
     
 }
 

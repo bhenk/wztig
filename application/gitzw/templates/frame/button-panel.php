@@ -1,6 +1,7 @@
 <?php
 namespace gitzw\templates\frame;
 /** @var mixed $this */ 
+/** requires button-panel from gitzw.js */
 ?>
 <div class="button-panel">
 	
@@ -64,80 +65,6 @@ namespace gitzw\templates\frame;
 		</div>
 	</div>
 </div>
-<script>
-function changeBackgroundColor(n) {
-	let bc = document.documentElement.style.getPropertyValue("--bg-color");
-	if (bc == "" & n > 0) {
-		bc = "rgb(238, 238, 238)";
-	} else if (bc == "" & n < 0) {
-		bc = "rgb(255, 255, 255)";
-	}
-	let rgb = parseRGB(bc);
-	rgb = changeRGB(rgb, n);
-	bc = "rgb(" + rgb[0] + ", " + rgb[1] + ", " + rgb[2] + ")"  
-	
-	let cc = "rgb(127, 127, 127)";
-	if (rgb[1] > 127 & rgb[1] < 205) {
-		cc = "rgb(55, 55, 55)";
-	} else if (rgb[1] < 128) {
-		cc = "rgb(200, 200, 200)";
-	}
-	
-	document.documentElement.style.setProperty("--bg-color", bc);
-	document.documentElement.style.setProperty("--contrast-color", cc);
-	document.cookie = "bgrgb=" + bc + "; path=/";
-	document.cookie = "ccrgb=" + cc + "; path=/"; 
-}
 
-function parseRGB(rgb) {
-	let sep = rgb.indexOf(",") > -1 ? "," : " ";
-	rgb = rgb.substr(4).split(")")[0].split(sep);
-	let r = parseInt(rgb[0]),
-      	g = parseInt(rgb[1]),
-      	b = parseInt(rgb[2]);
-    return [r, g, b];
-}
 
-function changeRGB(rgb, n) {
-	for(i=0; i < rgb.length; i++) {
-		if ((rgb[i] + n) > 255) {
-			rgb[i] = 255;
-		} else if ((rgb[i] + n) < 0) {
-			rgb[i] = 0;
-		} else {
-			rgb[i] = rgb[i] + n;
-		}
-	}
-	return rgb;
-}
-
-function continueBackgroundColor() {
-	let bc = getCookie("bgrgb");
-	if (bc != "") {
-		document.documentElement.style.setProperty("--bg-color", bc);
-	}
-	let cc = getCookie("ccrgb");
-	if (cc != "") {
-		document.documentElement.style.setProperty("--contrast-color", cc);
-	}
-}
-
-function getCookie(cname) {
-  var name = cname + "=";
-  var decodedCookie = decodeURIComponent(document.cookie);
-  var ca = decodedCookie.split(';');
-  for(var i = 0; i <ca.length; i++) {
-    var c = ca[i];
-    while (c.charAt(0) == ' ') {
-      c = c.substring(1);
-    }
-    if (c.indexOf(name) == 0) {
-      return c.substring(name.length, c.length);
-    }
-  }
-  return "";
-}
-
-window.onload = continueBackgroundColor();
-</script>
 

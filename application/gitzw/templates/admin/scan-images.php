@@ -1,6 +1,8 @@
 <?php
 namespace gitzw\templates\admin;
-
+/**
+ * requires collapse, copy-previous from gitzw.js
+ */
 use gitzw\site\data\ImageData;
 use gitzw\site\model\ImageInspector;
 use gitzw\GZ;
@@ -39,8 +41,3 @@ foreach ($ii->imageDiff() as $name=>$images) {
 <?php 
 }
 ?>
-
-<script>
-<?php require_once GZ::SCRIPTS.'/collapse.js' ?>
-</script>
-<script><?php require_once GZ::SCRIPTS.'/copy-previous.js'; ?></script>

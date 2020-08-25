@@ -106,6 +106,17 @@ const IMG_HEIGHT = 500;
 		    </div>
 		    
 		    <div class="formrw">
+		    	<div class="form-25">
+		    		<label for="ordinal">Ordinal</label>
+		    	</div>
+		    	<div class="form-75">
+		    		<input type="number" id="ordinal" name="ordinal"
+		    			value="<?php echo $this->resource->getOrdinal(); ?>" 
+		    			min="-1" max="1000" step="1" size="3">
+		    	</div>
+		    </div>
+		    
+		    <div class="formrw">
 		    	<input type="checkbox" id="rhidden" 
 					name="rhidden" value="rhidden" 
 					<?php echo $this->resource->getHidden() ? ' checked' : ''; ?>>
@@ -147,4 +158,3 @@ const IMG_HEIGHT = 500;
 	</div>
 </div>
 
-<script><?php require_once GZ::SCRIPTS.'/copy-previous.js'; ?></script>

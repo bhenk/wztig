@@ -3,6 +3,7 @@ namespace gitzw\templates\frame;
 
 use gitzw\GZ;
 /** @var mixed $this */
+$url = "'".$this->action."'";
 ?>
 
 <div class="gitzw collapse-button"><b>
@@ -28,7 +29,7 @@ use gitzw\GZ;
 			<?php if (!empty($this->date)) { ?><div><span>&bull; date: <?php echo $this->date; ?></span></div> <?php } ?>
 			<?php if (!empty($this->longId)) { ?><div><span>&bull; id: <?php echo $this->longId; ?></span></div> <?php } ?>
 		</div>
-		<div title="recycle search query" class="searchbutton" onclick="sendPagingRequest('form')">
+		<div title="recycle search query" class="searchbutton" onclick="sendPagingRequest('form', <?php echo $url; ?>)">
 			&#9851;
 		</div>
 	</div>
@@ -70,4 +71,6 @@ function getPagingPayload() {
 		longid: "<?php echo $this->longId; ?>"
 	};
 }
+
+collapse();
 </script>

@@ -162,7 +162,7 @@ foreach(ini_get_all() as $key=>$value) {
 </div>
 
 <script>
-<?php require_once GZ::SCRIPTS.'/collapse.js' ?>
+collapse();
 </script>
 
 <!-- h2>PHP info</h2 -->

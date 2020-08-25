@@ -34,14 +34,18 @@ $ida = new ImageData($this->getImagePath());
 		<?php if (Security::get()->hasAccess()) { ?>
 			<a href="<?php echo '/admin/edit-resource/'.$this->getResource()->getLongId(); ?>">
 				<?php require GZ::TEMPLATES.'/svg/edit.svg'; ?></a>
+			<span><?php echo $this->getResource()->getOrdinal(); ?></span>
 		<?php } ?>
+		
+		
 		<div class="representation-id">
 			<span><?php echo $this->mainRepresentation->getLocation(); ?></span>
 			<span title="copy id" class="copyprevious" onclick="copyPrevious(this)"> &#9776; </span>
 		</div>
 	</div>
 	
-	<h1 class="resource-id"><span><?php echo $this->getResource()->getLongId(); ?></span>
+	<h1 class="resource-id">
+		<span><?php echo $this->getResource()->getLongId(); ?></span>
 		<span title="copy id" class="copyprevious" onclick="copyPrevious(this)"> &#9776; </span>
 	</h1>
 	
@@ -71,4 +75,3 @@ $ida = new ImageData($this->getImagePath());
 	
 	
 </div>
-<script><?php require_once GZ::SCRIPTS.'/copy-previous.js'; ?></script>

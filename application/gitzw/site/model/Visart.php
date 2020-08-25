@@ -2,6 +2,7 @@
 
 namespace gitzw\site\model;
 
+
 class Visart extends Path {
 	
 	const PROP_KEY_IMAGE_FRONT = 'img_front';
@@ -28,7 +29,7 @@ class Visart extends Path {
 	}
 	
 	public function hasFrontpageImage(string $location) {
-		return array_search($location, $this->props[self::PROP_KEY_IMAGE_FRONT]);
+		return array_search($location, $this->getFrontPageImages());
 	}
 	
 	public function getCopyrightStart() {

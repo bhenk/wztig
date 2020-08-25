@@ -643,6 +643,12 @@ div.table-data > div > div:first-child {
 }
 /* ---*/
 
+.button-rect span {
+	margin-left: 5px;
+	font-size: 12px;
+	vertical-align: top;
+}
+
 .representation-id {
 	margin-right: 50px;
 	font-size: 12px;

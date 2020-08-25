@@ -1,8 +1,7 @@
 <?php
 namespace gitzw\templates\admin;
-
+// representation-form.php
 /** @var mixed $this */
-use gitzw\GZ;
 use gitzw\site\data\ImageData;
 
 const SMALL_IMG_WIDTH = 200;
@@ -55,8 +54,7 @@ const SMALL_IMG_HEIGHT = 200;
 				<input type="number" id="<?php echo $this->getName().'0'; ?>" 
 					name="<?php echo $this->getName().'+ordinal'?>" 
 					value="<?php echo $this->getOrdinal(); ?>" 
-					min="0" max="1000" step="1" 
-					value="<?php echo $this->getOrdinal(); ?>" size="3">
+					min="-1" max="1000" step="1" size="3">
 			</div>
 			
 			
@@ -78,4 +76,3 @@ const SMALL_IMG_HEIGHT = 200;
 		</div>
 	</div>
 </div>
-<script><?php require_once GZ::SCRIPTS.'/copy-previous.js'; ?></script>

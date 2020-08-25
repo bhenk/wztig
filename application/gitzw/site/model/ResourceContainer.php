@@ -108,12 +108,29 @@ class ResourceContainer extends Path {
 		return $pr;
 	}
 	
+	public function getPublicResourcesOrdered() {
+		$ordered = $this->getPublicResources();
+		uasort($ordered, function($a, $b) {
+			return $b->getOrdinal() <=> $a->getOrdinal();
+		});
+		return $ordered;
+	}
+	
 	public function getPublicResourcesReversed() : array {
 		return array_reverse($this->getPublicResources());
 	}
 	
 	public function getPubResourcesRandomized(string $seedString = NULL) : array {
 		return Shuffler::fisherYatesShuffle($this->getPublicResources(), $seedString);
+	}
+	
+	public function getResourcesOrdered() : array {
+		$this->loadResources();
+		$ordered = $this->resources;
+		uasort($ordered, function($a, $b) {
+			return $a->getOrdinal() <=> $b->getOrdinal();
+		});
+		return $ordered;
 	}
 	
 	public function getPublicResourceCount() : int {
@@ -124,8 +141,7 @@ class ResourceContainer extends Path {
 	}
 	
 	public function nextPublicResource(string $idCurrent) : ?Resource {
-		$this->loadResources();
-		$pubResources = $this->getPublicResources();
+		$pubResources = $this->getPublicResourcesOrdered();
 		$keys = array_keys($pubResources);
 		$next = $pubResources[$keys[array_search($idCurrent, $keys) + 1]];
 		if (is_null($next)) {
@@ -138,8 +154,7 @@ class ResourceContainer extends Path {
 	}
 	
 	public function previousPublicResource(string $idCurrent) : ?Resource {
-		$this->loadResources();
-		$pubResources = $this->getPublicResources();
+		$pubResources = $this->getPublicResourcesOrdered();
 		$keys = array_keys($pubResources);
 		$prev = $pubResources[$keys[array_search($idCurrent, $keys) - 1]];
 		if (is_null($prev)) {
@@ -152,8 +167,7 @@ class ResourceContainer extends Path {
 	}
 	
 	public function getFirstResource() : ?Resource {
-		$this->loadResources();
-		$pubResources = $this->getPublicResources();
+		$pubResources = $this->getPublicResourcesOrdered();
 		$first = array_values($pubResources)[0];
 		if (is_null($first)) {
 			$sib = $this->parent->nextSibling($this->name);
@@ -165,11 +179,10 @@ class ResourceContainer extends Path {
 	}
 	
 	public function getLastResource() {
-		$this->loadResources();
-		$pubResources = $this->getPublicResources();
+		$pubResources = $this->getPublicResourcesOrdered();
 		$last = array_values($pubResources)[count($pubResources) - 1];
 		if (is_null($last)) {
-			$sib = $this->parent->previoustSibling($this->name);
+			$sib = $this->parent->previousSibling($this->name);
 			if (isset($sib)) {
 				$last = $sib->getLastResource();
 			}

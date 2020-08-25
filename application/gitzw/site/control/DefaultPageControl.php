@@ -15,7 +15,7 @@ class DefaultPageControl implements iPageControl {
 	const DEFAULT_TEMPLATE = self::COLUMN_2;
     
 	private $template;
-	private $path;
+	protected $path;
     private $title = 'gitzw.art';
     private $stylesheets = array();
     private $scriptLinks = array();
@@ -69,7 +69,7 @@ class DefaultPageControl implements iPageControl {
     
     public function setMenuManager(MenuManager $manager) {
     	$this->addStylesheet($manager->getStylesheet());
-    	$this->addScript($manager->getScript());
+    	//$this->addScript($manager->getScript());
     	$this->menuManager = $manager;
     }
     
@@ -218,7 +218,12 @@ class DefaultPageControl implements iPageControl {
     
     protected function getAdminLink() {
         if (Security::get()->hasAccess()) {
-            return '&nbsp;&bull; &nbsp;<a href="/admin">admin</a>';
+        	if ($this->path[5] == 'overview') {
+        		$link = '/'.implode('/', array_slice($this->path, 1, 5));
+        		return '&nbsp;&bull; &nbsp;<a href="'.$link.'/adm">admin</a>';
+        	} else {
+            	return '&nbsp;&bull; &nbsp;<a href="/admin">admin</a>';
+        	}
         } else {
             return '';
         }

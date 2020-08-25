@@ -2,7 +2,7 @@
 namespace gitzw\templates\frame;
 
 /** @var mixed $this */
-
+$url = "'".$this->action."'";
 ?>
 
 <h1 class="gitzw byellow">Find</h1>
@@ -15,7 +15,7 @@ namespace gitzw\templates\frame;
 				<label for="visart">Names</label>
 			</div>
 			<div class="form-75">
-				<select class="mediuminput" id="visart" name="visart" onchange="updateForm()"></select>
+				<select class="mediuminput" id="visart" name="visart" onchange="updateForm(<?php echo $url; ?>)"></select>
 			</div>
 		</div>
 		
@@ -24,7 +24,7 @@ namespace gitzw\templates\frame;
 				<label for="activity">Activity</label>
 			</div>
 			<div class="form-75">
-				<select class="mediuminput" id="activity" name="activity" onchange="updateForm()"> </select>
+				<select class="mediuminput" id="activity" name="activity" onchange="updateForm(<?php echo $url; ?>)"> </select>
 			</div>
 		</div>
 		
@@ -33,7 +33,7 @@ namespace gitzw\templates\frame;
 				<label for="category">Category</label>
 			</div>
 			<div class="form-75">
-				<select class="mediuminput" id="category" name="category" onchange="updateForm()"></select>
+				<select class="mediuminput" id="category" name="category" onchange="updateForm(<?php echo $url; ?>)"></select>
 			</div>
 		</div>
 		
@@ -160,47 +160,6 @@ namespace gitzw\templates\frame;
 </div>
 
 <script>
-function updateForm() {
-	var xhttp = new XMLHttpRequest();
-	xhttp.onreadystatechange = function() {
-		if (this.readyState == 4 && this.status == 200) {
-			setSelectors(this.responseText);
-		}
-	};
-	xhttp.open("POST", "<?php echo $this->action; ?>", true);
-	xhttp.setRequestHeader("Content-type", "application/json");
-	data = JSON.stringify({
-		reason: "select_changed",
-		visart : document.getElementById('visart').value,
-		activity: document.getElementById('activity').value,
-		category: document.getElementById('category').value,
-		year: document.getElementById('year').value
-	});
-	xhttp.send(data);
-}
-
-function setSelectors(json) {
-	var data = JSON.parse(json);
-	for (var x of Object.keys(data)) {		
-		var select = document.getElementById(x);
-		removeOptions(select);
-		for (var o of Object.keys(data[x])) {			
-			var opt = document.createElement('option');
-			opt.appendChild( document.createTextNode(data[x][o]["fullname"]) );
-			opt.value = o;
-			opt.selected = data[x][o]["selected"];
-			select.appendChild(opt);
-		}
-	}	
-}
-
-function removeOptions(selectElement) {
-   var i, L = selectElement.options.length - 1;
-   for(i = L; i >= 0; i--) {
-      selectElement.remove(i);
-   }
-}
-
 window.onload = setSelectors('<?php echo $this->getJsonForSelects(); ?>');
 </script>
 
