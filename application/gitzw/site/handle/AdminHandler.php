@@ -48,6 +48,7 @@ class AdminHandler {
     			return;
     		case 'scan-images':
     			$control = new DefaultPageControl(GZ::TEMPLATES.'/admin/scan-images.php');
+    			$control->setTemplate(DefaultPageControl::COLUMN_3);
     			$control->setMenuManager(new AdminMenuManager('/admin/scan-images'));
     			$control->renderPage();
     			Log::log()->info('end request handling admin/scan-images');

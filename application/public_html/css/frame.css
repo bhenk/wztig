@@ -651,6 +651,7 @@ div.table-data > div > div:first-child {
 
 .representation-id {
 	margin-right: 50px;
+	margin-bottom: 15px;
 	font-size: 12px;
 	vertical-align: top;
 	/* border: 1px solid green; */

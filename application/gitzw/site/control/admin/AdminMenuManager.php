@@ -16,7 +16,7 @@ class AdminMenuManager extends MenuManager {
 					['scan images', '/admin/scan-images']
 			],
 			'misc'=>[
-					['raise exception', 'admin/raise-exception']
+					['raise exception', '/admin/raise-exception']
 			]			
 	];
 	

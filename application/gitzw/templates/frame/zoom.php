@@ -2,10 +2,7 @@
 namespace gitzw\templates\frame;
 /** @var mixed $this */ 
 
-const IMG_WIDTH = 4500;
-const IMG_HEIGHT = 4500;
-
-$data1 = $this->getLocationData(IMG_WIDTH, IMG_HEIGHT);
+$data1 = $this->getLocationData();
 ?>
 <!DOCTYPE html>
 <html lang="en">

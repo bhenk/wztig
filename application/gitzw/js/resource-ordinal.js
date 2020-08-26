@@ -1,5 +1,8 @@
-/* sets ordinal on resources. called from */
-/* resource-ordinal.js resource-ordinal.min.js */
+/* sets ordinal on resources. called from 
+	gitzw\templates\admin\resource-heap
+*/
+
+/* resource-ordinal.js > resource-ordinal.min.js */
 
 function setOrdinal(ele, id) {
 	var xhttp = new XMLHttpRequest();

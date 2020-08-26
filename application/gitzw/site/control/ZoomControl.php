@@ -11,15 +11,22 @@ use gitzw\site\model\NotFoundException;
  */
 class ZoomControl {
 	
+	const IMG_WIDTH = 4500;
+	const IMG_HEIGHT = 4500;
 	
 	protected $imgId;
 	private ImageData $ida;
+	private $maxHeight = self::IMG_HEIGHT;
 	
 	function __construct(array $path) {
 		$this->imgId = implode('/', array_slice($path, 2));
 		$this->ida = new ImageData(null, $this->imgId);
 		if (!$this->ida->imgExists()) {
 			throw new NotFoundException('image does not exists');
+		}
+		$h = $this->ida->getSize()['height'];
+		if ($h < $this->maxHeight) {
+			$this->maxHeight = $h;
 		}
 		ini_set('memory_limit','512M');
 	}
@@ -32,8 +39,8 @@ class ZoomControl {
 		return 'zoom '.$this->imgId;
 	}
 	
-	protected function getLocationData(int $w, int $h) {
-		return $this->ida->resize($w, $h);
+	protected function getLocationData() {
+		return $this->ida->resize(self::IMG_WIDTH, $this->maxHeight, 'maxheight');
 	}
 	
 }

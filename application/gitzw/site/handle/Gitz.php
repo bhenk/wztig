@@ -31,7 +31,7 @@ class Gitz {
         Req::log()->info('');
         Log::log()->info('======================== start request handling', $path);
         if (GZ::MINIFY_HTML) {
-            ob_start("self::minifyHtml");
+            ob_start("self::sanitize_output");
         } else {
             ob_start();
         }
@@ -123,10 +123,6 @@ class Gitz {
         }
     }
     
-    static function minifyHtml($buffer) {
-        $minifier = new TinyHTMLMinifier();
-        return $minifier->minify($buffer);
-    }
     
     private static function handleException(?Exception $e) {
         Log::log()->error('Catch all', array('exception' => $e));
@@ -134,6 +130,39 @@ class Gitz {
         (new InternalErrorPageControl($e))->renderPage();
         Log::log()->info('end request handling '.InternalErrorPageControl::class);
     }
+    
+    static function sanitize_output($buffer) {
+    	
+    	$search = array(
+    			'/\>[^\S ]+/s',     // strip whitespaces after tags, except space
+    			'/[^\S ]+\</s',     // strip whitespaces before tags, except space
+    			'/(\s)+/s',         // shorten multiple whitespace sequences
+    			'/<!--(.|\s)*?-->/' // Remove HTML comments
+    	);
+    	
+    	$replace = array(
+    			'>',
+    			'<',
+    			'\\1',
+    			''
+    	);
+    	
+    	$buffer = preg_replace($search, $replace, $buffer);
+    	
+    	return $buffer;
+    }
+    
+    /**
+     * Not handling scripts properly.
+     * 
+     * @param string $buffer
+     * @return string
+     */
+    static function minifyHtml(string $buffer) : string {
+    	$minifier = new TinyHTMLMinifier();
+    	return $minifier->minify($buffer);
+    }
+    
     
     
 }

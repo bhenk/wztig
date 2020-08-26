@@ -13,8 +13,6 @@ use gitzw\site\data\Security;
  */
 class LocateImagePageControl extends DefaultPageControl {
 	
-	private $path = array();
-	
 	protected $representation;
 	protected $imageFile;
 	protected $action;
@@ -37,12 +35,10 @@ class LocateImagePageControl extends DefaultPageControl {
 	protected $msg = '';
 	
 	function __construct(array $path) {
-		$this->path = $path;
+		$this->setPath($path);
 		$this->setContentFile(GZ::TEMPLATES.'/admin/locate-image.php');
 		$this->setMenuManager(new AdminMenuManager());
 		$this->addStylesheet('/css/form.css');
-		
-		//$this->var = SiteResources::get()->getChildByName('var')->getChildByName($path[3]);
 		$this->representation = implode('/', array_slice($path, 3));
 		$this->imgFile = GZ::DATA.'/images/'.$this->representation;
 		$this->action = '/'.implode('/', array_slice($path, 1));

@@ -5,6 +5,8 @@ namespace gitzw\templates\admin;
  * 		templates/visar/overview2.php
  * 
  * for updating ordinal of resources.
+ * 
+ * Calling class = gitzw\site\model\Resource
  */
 /** @var mixed $this */
 
@@ -39,6 +41,7 @@ $ida = new ImageData(NULL, $location);
 			value="<?php echo $this->getOrdinal(); ?>"
 			min="-1" max="1000" step="1" size="3"
 			onchange="setOrdinal(this, '<?php echo $this->getId(); ?>')">
+		<span><?php echo $this->hasFrontPage() ? ' &#9635 ' : ''; ?></span>
 	</div>
 </div>
 <script><?php require_once GZ::SCRIPTS.'/resource-ordinal.min.js'; ?></script>

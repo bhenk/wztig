@@ -33,6 +33,7 @@ class DefaultPageControl implements iPageControl {
             $this->contentFile = $contentFile;
         }
         Log::log()->info(__METHOD__);
+        Log::log()->info($_SERVER["REQUEST_METHOD"]);
     }
     
     public function setTemplate(string $template) {
@@ -90,7 +91,7 @@ class DefaultPageControl implements iPageControl {
     	if (is_null($this->menuManager) and empty($this->navigation)) {
     		$this->setDefaultMenuManager();
     	}
-        Log::log()->debug(static::class.'->'.__METHOD__);
+        Log::log()->info(static::class.'->'.__METHOD__);
         require $this->getTemplate();
     }
     
@@ -167,6 +168,7 @@ class DefaultPageControl implements iPageControl {
     protected function renderContent() {
         if (isset($this->contentFile)) {
             if (file_exists($this->contentFile)) {
+            	Log::log()->info('Render content: '.$this->contentFile);
                 require $this->contentFile;
             } else {
                 Log::log()->error('content file "'.$this->contentFile.'" does not exist');

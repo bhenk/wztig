@@ -62,6 +62,10 @@ class ImageInspector {
 		return $arr;
 	}
 	
+	public function deleteImage(string $filename) : bool {
+		return unlink(GZ::DATA.'/images/'.$filename);
+	}
+	
 	
 }
 

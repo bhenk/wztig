@@ -28,15 +28,15 @@ $ida = new ImageData($this->getImagePath());
 	
 	<div class="button-rect">
 		<a href="<?php echo '/zoom/'.$this->mainRepresentation->getLocation(); ?>">
-			<?php require GZ::TEMPLATES.'/svg/zoom.svg'; ?></a>
+			<?php require GZ::TEMPLATES.'/svg/zoom.svg'; ?></a><span> </span>
 		<a href="<?php echo '/exif-data/'.$this->mainRepresentation->getLocation(); ?>">
-			<?php require GZ::TEMPLATES.'/svg/exif.svg'; ?></a>
+			<?php require GZ::TEMPLATES.'/svg/exif.svg'; ?></a><span> </span>
 		<?php if (Security::get()->hasAccess()) { ?>
 			<a href="<?php echo '/admin/edit-resource/'.$this->getResource()->getLongId(); ?>">
-				<?php require GZ::TEMPLATES.'/svg/edit.svg'; ?></a>
-			<span><?php echo $this->getResource()->getOrdinal(); ?></span>
+				<?php require GZ::TEMPLATES.'/svg/edit.svg'; ?></a><span> </span>
 		<?php } ?>
-		
+		<span><?php echo $this->getResource()->getOrdinal(); ?></span>
+		<span><?php echo $this->getResource()->hasFrontPage() ? ' &#9635 ' : ''; ?></span>
 		
 		<div class="representation-id">
 			<span><?php echo $this->mainRepresentation->getLocation(); ?></span>

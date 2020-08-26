@@ -9,7 +9,7 @@ class Security extends JsonData {
 	
 	public static function cleanInput($input) {
 		$isstring = FALSE;
-		$catch = ['[<]', '[>]', '/[^0-9a-zA-Z\/._ &;-\?]/'];
+		$catch = ['[<]', '[>]', '/[^0-9a-zA-Z\/._ &;\-+=@#$%\^*\?()\[\]|!{}~]/'];
 		$replace = ['&lt;', '&gt;', ' '];
 		
 		if (!is_array($input)) {
