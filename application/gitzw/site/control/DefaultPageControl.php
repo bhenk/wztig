@@ -239,7 +239,7 @@ class DefaultPageControl implements iPageControl {
         }
     }
     
-    
+    protected function endRender() {}
     
 }
 

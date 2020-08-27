@@ -20,6 +20,19 @@ use Exception;
 
 
 class Gitz {
+	
+	private static $instance;
+	
+	public static function get() : Gitz {
+		if (is_null(self::$instance)) {
+			self::$instance = new Gitz();
+		}
+		return self::$instance;
+	}
+	
+	private $structuredData;
+	
+	private function __construct() {}
     
     public function handleRequestURI() {
     	$path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
@@ -31,9 +44,9 @@ class Gitz {
         Req::log()->info('');
         Log::log()->info('======================== start request handling', $path);
         if (GZ::MINIFY_HTML) {
-            ob_start("self::sanitize_output");
+            ob_start([$this, 'sanitize_output']);
         } else {
-            ob_start();
+            ob_start([$this, 'insertStructuredData']);
         }
         
         try {
@@ -119,19 +132,19 @@ class Gitz {
         	(new NotFoundPageControl($e))->renderPage();
             return;
         } catch (Exception $e) {
-            self::handleException($e);
+            $this->handleException($e);
         }
     }
     
     
-    private static function handleException(?Exception $e) {
+    private function handleException(?Exception $e) {
         Log::log()->error('Catch all', array('exception' => $e));
         ob_end_clean();
         (new InternalErrorPageControl($e))->renderPage();
         Log::log()->info('end request handling '.InternalErrorPageControl::class);
     }
     
-    static function sanitize_output($buffer) {
+    private function sanitize_output($buffer) {
     	
     	$search = array(
     			'/\>[^\S ]+/s',     // strip whitespaces after tags, except space
@@ -149,8 +162,24 @@ class Gitz {
     	
     	$buffer = preg_replace($search, $replace, $buffer);
     	
+    	return $this->insertStructuredData($buffer);
+    }
+    
+    private function insertStructuredData($buffer) {
+    	if (isset($this->structuredData)) {
+    		$pos = strpos($buffer, '</head>');
+    		$json = "\n".'<script type="application/ld+json">'."\n";
+			$json .= json_encode($this->structuredData, JSON_PRETTY_PRINT+JSON_UNESCAPED_SLASHES);
+			$json .= "\n".'</script>'."\n";
+    		$buffer = substr_replace($buffer, $json, $pos, 0);
+    	}
     	return $buffer;
     }
+    
+    public function setStructuredData(array $data) {
+    	$this->structuredData = $data;
+    }
+    
     
     /**
      * Not handling scripts properly.

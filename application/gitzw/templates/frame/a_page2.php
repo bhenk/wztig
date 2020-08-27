@@ -43,3 +43,4 @@ namespace gitzw\templates\frame;
 	<?php $this->renderScripts(); ?>
 </body>
 </html>
+<?php $this->endRender(); ?>

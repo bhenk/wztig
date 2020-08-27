@@ -98,11 +98,12 @@ class SearchPageControl extends DefaultPageControl {
 		$this->fullNames = SiteResources::get()->getFullNames($data);
 		$query = ['', $this->visart, $this->activity, $this->category, $this->year];
 		$search = new Search($data);
-		if ($search->isRelevant()) {
-			$callback = [$search, 'inspect'];
-		} else {
-			$callback = NULL;
-		}
+// 		if ($search->isRelevant()) {
+// 			$callback = [$search, 'inspect'];
+// 		} else {
+// 			$callback = NULL;
+// 		}
+		$callback = [$search, 'inspect'];
 		$this->results = SiteResources::get()->listResources($query, $callback);
 		$maxResult = 0;
 		$this->results = array_filter($this->results, function($a) use (&$maxResult) {

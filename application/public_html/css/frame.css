@@ -331,8 +331,9 @@ td {
 }
 
 .collapse-button:hover {
-	background-color: gray;
-	color: white;
+	/* background-color: gray;
+	color: white; */
+	font-weight: bold;
 }
 
 .collapse-button::before {
@@ -341,11 +342,11 @@ td {
 	font-size: smaller;
 }
 
-.active::before {
+.colactive::before {
 	/* content: " \25B4   "; */
 	content: " \25B3   ";
 	font-size: smaller;
-}
+} 
 
 .collapsable {
 	display: none;
@@ -667,6 +668,23 @@ div.table-data > div > div:first-child {
 	font-size: 12px;
 }
 
+.json-head {
+	color: black;
+}
+
+.structured-data {
+	position: fixed;
+	right: 5px;
+	bottom: 50px;
+	font-size: 11px;
+	background-color: yellow;
+	color: rgb(55, 55, 55);
+	z-index: 200;
+}
+
+.structured-data .colactive {
+	background-color: rgba(55, 55, 55, 0.3);;
+}
 
 
 

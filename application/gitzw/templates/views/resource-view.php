@@ -18,10 +18,10 @@ $ida = new ImageData($this->getImagePath());
 		<?php echo $ida->getImgTag(IMG_WIDTH, IMG_HEIGHT, $this->getResource()->getLongId()); ?>
 
 		<?php if ($this->hasPrevious()) { ?>
-			<div class="lrpage-prev"><a title="previous" href="<?php echo $this->previousUrl(); ?>"><span>&#9664;</span></a></div>
+			<div class="lrpage-prev"><a title="next" href="<?php echo $this->previousUrl(); ?>"><span>&#9664;</span></a></div>
 		<?php } ?>
 		<?php if ($this->hasNext()) { ?>
-			<div class="lrpage-next"><a title="next" href="<?php echo $this->nextUrl(); ?>"><span>&#9654;</span></a></div>
+			<div class="lrpage-next"><a title="previous" href="<?php echo $this->nextUrl(); ?>"><span>&#9654;</span></a></div>
 		<?php } ?>
 	</div>
 	<div class="subscript"><?php echo $this->getResource()->getSubscript(); ?></div>

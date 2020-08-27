@@ -5,4 +5,4 @@ require_once '../gitzw/GZ.php';
 
 use gitzw\site\handle\Gitz;
 
-(new Gitz())->handleRequestURI();
+Gitz::get()->handleRequestURI();

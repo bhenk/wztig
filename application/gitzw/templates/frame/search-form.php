@@ -1,6 +1,8 @@
 <?php
 namespace gitzw\templates\frame;
 
+use gitzw\site\data\Security;
+
 /** @var mixed $this */
 $url = "'".$this->action."'";
 ?>
@@ -103,6 +105,7 @@ $url = "'".$this->action."'";
 			</div>
 		</div>
 		
+		<?php if (Security::get()->hasAccess()) { ?>
 		<div class="formrw">
 			<div class="form-25">
 				<label>Hidden state</label>
@@ -142,6 +145,7 @@ $url = "'".$this->action."'";
 		  		</div>	
 	  		</div>
 		</div>
+		<?php } ?>
 		
 		<div class="formrw">
 			<div class="form-25">

@@ -43,14 +43,14 @@ function collapse() {
 		
 		var dropdownContent = dropdown[i].nextElementSibling;
 		if (dropdownContent.classList.contains("open")) {
-			dropdown[i].classList.toggle("active");
+			dropdown[i].classList.toggle("colactive");
 			dropdownContent.style.display = "block";
 		}
 		
 		dropdown[i].addEventListener("click", function() {
 			
 			/* toggle state of calling button */
-	  		this.classList.toggle("active");
+	  		this.classList.toggle("colactive");
 	
 			var dropdownContent = this.nextElementSibling;
 		  	if (dropdownContent.style.display === "block") {

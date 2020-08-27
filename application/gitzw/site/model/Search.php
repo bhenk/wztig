@@ -2,6 +2,8 @@
 
 namespace gitzw\site\model;
 
+use gitzw\site\data\Security;
+
 class Search {
 	
 	
@@ -319,6 +321,9 @@ class Search {
 	}
 	
 	private function inspectHiddenState(Resource $r) : float {
+		if (!Security::get()->hasAccess() and $r->getHidden()) {
+			return -1;
+		}
 		if ($this->data['rishidden'] == 'rishidden' and !$r->getHidden()) {
 			return -1;
 		} elseif($this->data['risnothidden'] == 'risnothidden' and $r->getHidden()) {
