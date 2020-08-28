@@ -36,6 +36,8 @@ namespace gitzw\templates\frame;
 				<!-- end 2nd column -->
 			</div>
 		</div>
+		<?php $this->endRenderContent(); ?>
+		<?php $this->renderStructuredData(); ?>
 		<footer id="footer">
 			<?php $this->renderFooter(); ?>
 		</footer>
@@ -43,4 +45,3 @@ namespace gitzw\templates\frame;
 	<?php $this->renderScripts(); ?>
 </body>
 </html>
-<?php $this->endRender(); ?>

@@ -35,5 +35,15 @@ class Visart extends Path {
 	public function getCopyrightStart() {
 		return $this->props[self::PROP_KEY_COPYRIGHT_START];
 	}
+	
+	public function getStructuredData() {
+		return [
+				"@context"=>"http://schema.org",
+				"@type"=>"Person",
+				"@id"=>"https://gitzw.art/".$this->name,
+				"url"=>"https://gitzw.art".$this->getResourcePath(),
+				"name"=>$this->fullName
+		];
+	}
 }
 

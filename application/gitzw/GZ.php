@@ -44,6 +44,10 @@ set_error_handler(function ($severity, $message, $file, $line) {
  *
  */
 abstract class GZ {
+	
+	const VERSION = 'RC_0.0.3';
+	
+	const VERSION_DATE = '2020-08-28';
     
     /**
      * Root of the site.

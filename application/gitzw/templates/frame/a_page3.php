@@ -41,11 +41,11 @@ namespace gitzw\templates\frame;
 				<!-- end 3th column -->
 			</div>
 		</div>
+		<?php $this->endRenderContent(); ?>
+		<?php $this->renderStructuredData(); ?>
 		<footer id="footer">
 			<?php $this->renderFooter(); ?>
 		</footer>
 	</div>
-	<?php $this->renderScripts(); ?>
 </body>
 </html>
-<?php $this->endRender(); ?>

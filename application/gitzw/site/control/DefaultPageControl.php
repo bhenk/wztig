@@ -5,6 +5,7 @@ use gitzw\GZ;
 use gitzw\site\control\menu\MenuManager;
 use gitzw\site\data\Security;
 use gitzw\site\data\Site;
+use gitzw\site\handle\Gitz;
 use gitzw\site\logging\Log;
 use gitzw\site\model\SiteResources;
 
@@ -26,6 +27,7 @@ class DefaultPageControl implements iPageControl {
     private $scripts = array();
     private $canonicalURI;
     private $menuManager;
+    protected $structuredData;
     
     
     function __construct($contentFile = NULL) {
@@ -86,6 +88,13 @@ class DefaultPageControl implements iPageControl {
         $this->footerTemplate = $footerTemplate;
     }
     
+    /**
+     * Subclasses may override.
+     * @return NULL
+     */
+    public function getStructuredData() {
+    	return null;
+    }
     
     public function renderPage() {
     	if (is_null($this->menuManager) and empty($this->navigation)) {
@@ -176,6 +185,26 @@ class DefaultPageControl implements iPageControl {
         }
     }
     
+    protected function endRenderContent() {
+    	$sd = $this->getStructuredData();
+    	if (isset($sd)) {
+    		if (is_array($sd)) {
+    			$sd = json_encode($sd, JSON_PRETTY_PRINT+JSON_UNESCAPED_SLASHES);
+    		}
+    		Gitz::get()->setStructuredData($sd);
+    		$this->structuredData = $sd;
+    	}
+    }
+    
+    /**
+     * For sd collapsable
+     */
+    protected function renderStructuredData() {
+    	if (isset($this->structuredData)) {
+    		require_once GZ::TEMPLATES.'/frame/structured-data.php';
+    	}
+    }
+    
     protected function renderThirdColumn() {
         
     }
@@ -238,8 +267,6 @@ class DefaultPageControl implements iPageControl {
             echo '</script>';
         }
     }
-    
-    protected function endRender() {}
     
 }
 

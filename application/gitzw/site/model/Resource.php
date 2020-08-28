@@ -191,7 +191,7 @@ class Resource implements iViewRender, JsonSerializable {
     }
     
     public function getDimensions() {
-    	if ($this->height == 0 or $this->width == 0) {
+    	if ($this->height <= 0 or $this->width <= 0) {
     		return '';
     	}
     	$hc = $this->height;

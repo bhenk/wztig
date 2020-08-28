@@ -70,5 +70,9 @@ class FrontPageControl extends VisartPageControl {
         $this->visart->render(GZ::TEMPLATES . '/views/simpel_domain_view.php');
     }
     
+    public function getStructuredData() {
+    	return $this->visart->getStructuredData();
+    }
+    
 }
 

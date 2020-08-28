@@ -10,7 +10,7 @@ class Security extends JsonData {
 	public static function cleanInput($input) {
 		$isstring = FALSE;
 		if (self::get()->hasAccess()) {
-			$catch = ['[<]', '[>]', '/[^0-9a-zA-Z\/._ &;\-+=@#$%\^*\?()\[\]|!{}~]/'];
+			$catch = ['[<]', '[>]', '/[^0-9a-zA-Z\/._ &;\-+=@#$%\^*\?()\[\]|!{}~,]/'];
 		} else {
 			$catch = ['[<]', '[>]', '/[^0-9a-zA-Z\/._ &;\-+\?~]/'];
 		}

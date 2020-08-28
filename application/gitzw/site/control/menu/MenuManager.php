@@ -1,7 +1,6 @@
 <?php
 namespace gitzw\site\control\menu;
 
-use gitzw\GZ;
 
 class MenuManager {
 	

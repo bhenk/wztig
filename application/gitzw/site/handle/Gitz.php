@@ -169,14 +169,14 @@ class Gitz {
     	if (isset($this->structuredData)) {
     		$pos = strpos($buffer, '</head>');
     		$json = "\n".'<script type="application/ld+json">'."\n";
-			$json .= json_encode($this->structuredData, JSON_PRETTY_PRINT+JSON_UNESCAPED_SLASHES);
+			$json .= $this->structuredData;
 			$json .= "\n".'</script>'."\n";
     		$buffer = substr_replace($buffer, $json, $pos, 0);
     	}
     	return $buffer;
     }
     
-    public function setStructuredData(array $data) {
+    public function setStructuredData($data) {
     	$this->structuredData = $data;
     }
     

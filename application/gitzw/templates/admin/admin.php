@@ -2,6 +2,7 @@
 namespace gitzw\templates\admin;
 
 use gitzw\site\data\Security;
+use gitzw\GZ;
 
 ?>
 
@@ -13,4 +14,4 @@ use gitzw\site\data\Security;
 </table>
 
 <h1>Gitzw.art</h1>
-version: RC_0.0.2 &nbsp;&bull;&nbsp; date: 2020-08-18
+<?php GZ::VERSION; ?> &nbsp;&bull;&nbsp; date: <?php GZ::VERSION_DATE; ?>
