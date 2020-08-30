@@ -7,21 +7,17 @@ use gitzw\site\data\Security;
 
 /** @var mixed $this */
 
-const IMG_WIDTH = 1200;
-const IMG_HEIGHT = 1000;
-
-$ida = new ImageData($this->getImagePath());
 ?>
 <div class="resource-view">
 	<div class="resource">
-		
-		<?php echo $ida->getImgTag(IMG_WIDTH, IMG_HEIGHT, $this->getResource()->getLongId()); ?>
+		<img src="<?php echo $this->imgData['location']; ?>" 
+			alt="main representation of <?php echo $this->getResource()->getLongId(); ?>">
 
 		<?php if ($this->hasPrevious()) { ?>
-			<div class="lrpage-prev"><a href="<?php echo $this->previousUrl(); ?>"><span title="newer">&#9664;</span></a></div>
+			<div class="lrpage-prev"><a href="<?php echo $this->previousUrl(); ?>"><span title="next">&#9664;</span></a></div>
 		<?php } ?>
 		<?php if ($this->hasNext()) { ?>
-			<div class="lrpage-next"><a href="<?php echo $this->nextUrl(); ?>"><span title="older" >&#9654;</span></a></div>
+			<div class="lrpage-next"><a href="<?php echo $this->nextUrl(); ?>"><span title="previous" >&#9654;</span></a></div>
 		<?php } ?>
 	</div>
 	<div class="subscript"><?php echo $this->getResource()->getSubscript(); ?></div>

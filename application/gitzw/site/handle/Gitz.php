@@ -35,8 +35,7 @@ class Gitz {
 	private function __construct() {}
     
     public function handleRequestURI() {
-    	$path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-        $path = preg_replace('/[^0-9a-zA-Z\/._ ]/', '-', urldecode($path));
+    	$path = preg_replace('/[^0-9a-zA-Z\/._ ]/', '-', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
         $this->handleRequest(explode('/', $path));
     }
 
@@ -87,7 +86,7 @@ class Gitz {
             /////// redirect? //////
             $site = SiteResources::get();
             $cannonicalPath = $site->getCannonicalPath($path, TRUE);
-            if (count(array_diff_assoc($path, $cannonicalPath)) > 0) {
+            if ($cannonicalPath and count(array_diff_assoc($path, $cannonicalPath)) > 0) {
                 $location = Site::get()->redirect($cannonicalPath);
                 Log::log()->info('redirecting to '.$location);
                 return;

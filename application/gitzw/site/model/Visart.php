@@ -38,7 +38,6 @@ class Visart extends Path {
 	
 	public function getStructuredData() {
 		return [
-				"@context"=>"http://schema.org",
 				"@type"=>"Person",
 				"@id"=>"https://gitzw.art/".$this->name,
 				"url"=>"https://gitzw.art".$this->getResourcePath(),

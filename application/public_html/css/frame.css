@@ -326,24 +326,19 @@ td {
 /* for collapse.js */
 .collapse-button {
 	padding: 6px;
-	/* max-width: 500px; */
 	cursor: pointer;
 }
 
 .collapse-button:hover {
-	/* background-color: gray;
-	color: white; */
 	font-weight: bold;
 }
 
 .collapse-button::before {
-	/* content: " \25BE   "; */
 	content: " \25BD   ";
 	font-size: smaller;
 }
 
 .colactive::before {
-	/* content: " \25B4   "; */
 	content: " \25B3   ";
 	font-size: smaller;
 } 
@@ -680,14 +675,14 @@ div.table-data > div > div:first-child {
 	background-color: rgba(250, 250, 250, 0.8);
 	color: rgb(55, 55, 55);
 	z-index: 200;
-	overflow-y: scroll;
-	overflow-x: scroll;
 }
 
 .structured-data .collapsable {
 	padding: 0px 10px 0px 10px;
 	max-height: 50vh;
 	max-width: 50vw;
+	overflow-y: auto;
+	overflow-x: auto;
 }
 
 @media screen and (max-width: 700px) {
@@ -699,6 +694,16 @@ div.table-data > div > div:first-child {
 .structured-data .colactive {
 	background-color: rgba(100, 100, 100, 0.3);;
 }
+
+.structured-data .collapse-button::before {
+	content: " \25B3   ";
+	font-size: smaller;
+}
+
+.structured-data .colactive::before {
+	content: " \25BD   ";
+	font-size: smaller;
+} 
 
 
 

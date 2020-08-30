@@ -12,6 +12,7 @@ class InternalErrorPageControl extends DefaultPageControl {
     
     function __construct(Exception $e) {
         $this->setContentFile(GZ::TEMPLATES.'/err500.php');
+        $this->setTemplate(self::COLUMN_3);
         $this->exception = $e;
         header("HTTP/1.0 500 Internal Serever Error");
         $this->setFooter(FALSE);

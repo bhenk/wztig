@@ -14,6 +14,7 @@ class NotFoundPageControl extends DefaultPageControl {
     
     function __construct(Exception $ex = Null) {
     	$this->exception = $ex;
+    	$this->setTemplate(self::COLUMN_3);
         $this->setContentFile(GZ::TEMPLATES.'/err404.php');
         header("HTTP/1.0 404 Not Found");
         $this->setFooter(FALSE);

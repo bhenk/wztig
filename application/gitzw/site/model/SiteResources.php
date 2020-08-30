@@ -36,11 +36,18 @@ class SiteResources extends Path {
     /**
      * Get the cannonical path (if any) that points to a site resource corresponding to the given $path.
      * 
+     * ['', 'hnq', 'work', 'draw']  returns ['', 'henk-van-den-berg', 'work', 'drawing'].
+     * 
+     * ['', 'hnq.work.draw'] returns ['', 'henk-van-den-berg', 'work', 'drawing'].
+     * 
      * @param array $path url path to inspect
      * @param boolean $keepRest keep segments of $path that are beyond the cannonical part (default False)
      * @return array cannonical path + [rest] or original path
      */
-    public function getCannonicalPath(array $path, $keepRest=FALSE) : array {
+    public function getCannonicalPath(array $path, $keepRest=FALSE) : ?array {
+    	if (count($path) == 2 and strpos($path[1], '.') > 0) {
+    		$path = array_merge([''], explode('.', $path[1]));
+    	}
         $current = $this->getFirstSegment($path);
         if (isset($current)) {
             $cp = array('');
@@ -58,7 +65,7 @@ class SiteResources extends Path {
             }
             return $cp;
         }
-        return $path;
+        return null;
     }
     
     /**

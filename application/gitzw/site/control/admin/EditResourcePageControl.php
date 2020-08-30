@@ -4,11 +4,10 @@ namespace gitzw\site\control\admin;
 
 use gitzw\GZ;
 use gitzw\site\control\DefaultPageControl;
+use gitzw\site\data\Security;
 use gitzw\site\data\Site;
 use gitzw\site\model\NotFoundException;
-use gitzw\site\model\Resource;
 use gitzw\site\model\SiteResources;
-use gitzw\site\data\Security;
 
 class EditResourcePageControl extends DefaultPageControl {
 	
@@ -36,10 +35,6 @@ class EditResourcePageControl extends DefaultPageControl {
 		$this->setPath($path);
 	}
 	
-	private function getResource() : Resource {
-		return $this->resource;
-	}
-	
 	public function renderPage() {
 		if (Site::get()->requestMethod() == 'POST') {
 			$this->handlePost();
@@ -50,39 +45,43 @@ class EditResourcePageControl extends DefaultPageControl {
 	
 	private function handlePost() {
 		$data = Security::cleanInput($_POST);
-		$this->getResource()->setTitle($data['title_nl'], 'nl');
-		$this->getResource()->setTitle($data['title_en'], 'en');
-		$this->getResource()->setPreferredLanguage($data['preferred_language']);
-		$this->getResource()->setMedia($data['media']);
+		$this->resource->setTitle($data['title_nl'], 'nl');
+		$this->resource->setTitle($data['title_en'], 'en');
+		$this->resource->setPreferredLanguage($data['preferred_language']);
+		$this->resource->setMedia($data['media']);
 		$w = floatval($data['width']);
-		$this->getResource()->setWidth($w <= 0 ? -1 : $w);
+		$this->resource->setWidth($w <= 0 ? -1 : $w);
 		$h = floatval($data['height']);
-		$this->getResource()->setHeight($h <= 0 ? -1 : $h);
+		$this->resource->setHeight($h <= 0 ? -1 : $h);
 		$d = floatval($data['depth']);
-		$this->getResource()->setDepth($d <= 0 ? -1 : $d);
-		$this->getResource()->setDate($data['date']);
-		$this->getResource()->setHidden($data['rhidden'] == 'rhidden');
+		$this->resource->setDepth($d <= 0 ? -1 : $d);
+		$this->resource->setDate($data['date']);
+		$this->resource->setHidden($data['rhidden'] == 'rhidden');
 		$o = intval($data['ordinal']);
-		$this->getResource()->setOrdinal($o <= 0 ? -1 : $o);
-		foreach (array_values($this->getResource()->getRepresentations()) as $rep) {
+		$this->resource->setOrdinal($o <= 0 ? -1 : $o);
+		foreach (array_values($this->resource->getRepresentations()) as $rep) {
 			$rep->setPreferred($data['preferred_representation'] == $rep->getLocation());
 			$rep->setOrdinal($data[$rep->getName().'+ordinal'] ?? 0);
 			$rep->setFrontPage($data[$rep->getName().'+frontpage'] == 'frontpage');
 			$rep->setHidden($data[$rep->getName().'+hidden'] == 'hidden');
 			$rep->setDescription($data[$rep->getName().'+desc']);
 			if ($data[$rep->getName().'+remove'] == 'remove') {
-				$this->getResource()->removeRepresentation($rep->getLocation());
-			}
-			
+				$this->resource->removeRepresentation($rep->getLocation());
+			}		
 		}
+		$addTypes = [];
+		$addTypes[] = $data['sdadditionaltype1'] == 'None' ? null : $data['sdadditionaltype1'];
+		$addTypes[] = $data['sdadditionaltype2'] == 'None' ? null : $data['sdadditionaltype2'];
+		$this->resource->setSdAdditionalTypes(array_filter($addTypes));
+		
 		$addRepr = $data['add_repr'] ?? '';
 		if (!empty($addRepr) and file_exists(GZ::DATA.'/images/'.$addRepr)) {
-			$this->getResource()->addRepresentation($addRepr);
+			$this->resource->addRepresentation($addRepr);
 		} elseif (!empty($addRepr) and !file_exists(GZ::DATA.'/images/'.$addRepr)) {
 			echo '<script>alert("the file '.GZ::DATA.'/images/'.$addRepr.' does not exist")</script>';
 		}
 		
-		$this->getResource()->getParent()->persist();
+		$this->resource->getParent()->persist();
 		
 		if ($data['rmove'] == 'rmove') {
 			(new MoveResourcePageControl($this->path, true))->renderPage();

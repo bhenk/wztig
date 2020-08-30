@@ -71,7 +71,10 @@ class FrontPageControl extends VisartPageControl {
     }
     
     public function getStructuredData() {
-    	return $this->visart->getStructuredData();
+    	return [
+    			"@context"=>"http://schema.org",
+    			"@graph"=>[$this->visart->getStructuredData()]
+    	];
     }
     
 }

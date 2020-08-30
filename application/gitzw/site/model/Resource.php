@@ -25,6 +25,33 @@ use JsonSerializable;
  *
  */
 class Resource implements iViewRender, JsonSerializable {
+	
+	const ART_MEDIA = [
+			'acrylic'=>'http://vocab.getty.edu/aat/300015058',
+			'canvas'=>'http://vocab.getty.edu/aat/300014078',
+			'cardboard'=>'http://vocab.getty.edu/aat/300014224',
+			'charcoal'=>'http://vocab.getty.edu/aat/300022414',
+			'crayon'=>'http://vocab.getty.edu/aat/300022415',
+			'ink'=>'http://vocab.getty.edu/aat/300015012',
+			'oil'=>'http://vocab.getty.edu/aat/300015050',
+			'paper'=>'http://vocab.getty.edu/aat/300014109',
+			'pastel'=>'http://vocab.getty.edu/aat/300122621',
+			'pencil'=>'http://vocab.getty.edu/aat/300410335',
+			'watercolour'=>'http://vocab.getty.edu/aat/300015045',
+			'wood'=>'http://vocab.getty.edu/aat/300011914',			
+	];
+	
+	const ADDITIONAL_TYPES = [
+			'None'=>null,
+			'Acrylic Painting'=>'http://vocab.getty.edu/aat/300181918',
+			'Oil Painting'=>'http://vocab.getty.edu/aat/300033799',
+			'Drypoint'=>'http://vocab.getty.edu/aat/300041349',
+			'Drawing'=>'http://vocab.getty.edu/aat/300033973',
+			'Poster'=>'http://vocab.getty.edu/aat/300027221',
+			'Collage'=>'http://vocab.getty.edu/aat/300033963',
+			'Assemblage'=>'http://vocab.getty.edu/aat/300047194',
+			'Lithography'=>'http://vocab.getty.edu/aat/300041379'
+	];
     
     const KEY_TITLES = 'titles';
     const KEY_PREFERRED_LANGUAGE = 'preferred_language';
@@ -36,6 +63,8 @@ class Resource implements iViewRender, JsonSerializable {
     const KEY_HIDDEN = 'hidden';
     const KEY_ORDINAL = 'ordinal';
     const KEY_REPRESENTATIONS = 'representations';
+    
+    const SD_ADDITIONAL_TYPES = 'sd_additional_types';
     
     private $id;
     private $parent;
@@ -49,6 +78,8 @@ class Resource implements iViewRender, JsonSerializable {
     private $hidden = FALSE;
     private $ordinal = 0;
     private $representations = array();
+    
+    private $sdAdditionalTypes;
 
 	function __construct(string $id, array $data, Path $parent=NULL) {
         $this->id = $id;
@@ -66,6 +97,7 @@ class Resource implements iViewRender, JsonSerializable {
         foreach ($reparr as $key=>$repdata) {
         	$this->representations[$key] = new Representation($this, $key, $repdata);
         }
+        $this->sdAdditionalTypes = $data[self::SD_ADDITIONAL_TYPES] ?? [];
     }
     
     public function jsonSerialize() {
@@ -79,6 +111,7 @@ class Resource implements iViewRender, JsonSerializable {
         	self::KEY_HIDDEN=>$this->hidden,
         	self::KEY_ORDINAL=>$this->ordinal,
             self::KEY_REPRESENTATIONS=>$this->representations,
+        	self::SD_ADDITIONAL_TYPES=>$this->sdAdditionalTypes	
         ];
     }
     
@@ -275,6 +308,55 @@ class Resource implements iViewRender, JsonSerializable {
 
     public function getParent() : ?Path {
         return $this->parent;
+    }
+    
+    public function getStructuredData(string $imageURL = null) { 
+    	$names = array_values(array_diff($this->titles, ['']));
+    	if (count($names) <= 1) $names = $names[0];
+    	if (is_null($imageURL)) {
+    		$imageURL = $this->getRepresentation()->getDefaultURL();
+    	}
+    	$material = [];
+    	foreach ($this->getSdMaterial() as $key) {
+    		$material[] = $key;
+    		$material[] = self::ART_MEDIA[$key];
+    	}
+    	$dateCreated = implode('-', array_map(function($x) {
+    		return sprintf('%02d', $x);
+    	}, array_filter(Search::dateParse($this->date))));
+    	if (strpos($this->date, '?') > 0) $dateCreated = null;
+    	$visart = $this->getParent()->getParentByNature('var');
+    	$additionalTypes = [];
+    	foreach ($this->sdAdditionalTypes as $value) {
+    		$additionalTypes[] = $value;
+    		$additionalTypes[] = self::ADDITIONAL_TYPES[$value];
+    	}
+    	return array_filter([
+    			"@type"=>"VisualArtwork",
+    			"@id"=>'https://gitzw.art/'.$this->getLongId(),
+    			"additionalType"=>$additionalTypes,
+    			"url"=>'https://gitzw.art'.$this->getResourcePath(),
+    			"name"=>$names,
+    			"image"=>$imageURL,
+    			"material"=>$material,
+    			"width"=>$this->getWidth().' cm',
+    			"height"=>$this->getHeight().' cm',
+    			"dateCreated"=>$dateCreated,
+    			"creator"=>$visart->getStructuredData()
+    	]);
+    }
+    
+    public function getSdAdditionalTypes() : array {
+    	return $this->sdAdditionalTypes;
+    }
+    
+    public function setSdAdditionalTypes(array $sdAdditionalTypes) {
+    	$this->sdAdditionalTypes = $sdAdditionalTypes;
+    }
+    
+    public function getSdMaterial() : array {
+    	return array_values(array_intersect(array_map('trim', 
+    			explode(' ', str_replace(',', ' ', strtolower($this->media)))), array_keys(self::ART_MEDIA)));
     }
 
     public function render($template, array $args=NULL) {

@@ -4,6 +4,7 @@ namespace gitzw\templates\admin;
 /** @var mixed $this */
 
 use gitzw\site\data\ImageData;
+use gitzw\site\model\Resource;
 use gitzw\GZ;
 
 const IMG_WIDTH = 500;
@@ -127,6 +128,53 @@ const IMG_HEIGHT = 500;
 		    	<input type="checkbox" id="rmove" name="rmove" value="rmove">
 		    	<label for="hidden">Move resource</label>
 		    </div>
+		    
+		    <div class="formrw">
+		      <div class="form-25">
+		        <label><b>Structured data</b></label>
+		      </div>
+		    </div>
+		    
+		    <div class="formrw">
+		    	<div class="form-25">
+		    		<label for="sdadditionaltype1">SD Additional Type</label>
+		    	</div>
+		    	<div class="form-75">
+		    		<select class="mediuminput" id="sdadditionaltype1" name="sdadditionaltype1">
+		    			 <?php foreach (array_keys(Resource::ADDITIONAL_TYPES) as $key) { ?>
+		    			 	<option value="<?php echo $key; ?>"
+		    			 	<?php echo $key == $this->resource->getSdAdditionalTypes()[0] ? 'selected' : ''; ?>>
+		    			 	<?php echo $key; ?></option>
+		    			 <?php } ?>
+		    		</select>
+		    	</div>
+		    </div>
+		    
+		    <div class="formrw">
+		    	<div class="form-25">
+		    		<label for="sdadditionaltype2">SD Additional Type</label>
+		    	</div>
+		    	<div class="form-75">
+		    		<select class="mediuminput" id="sdadditionaltype2" name="sdadditionaltype2">
+		    			 <?php foreach (array_keys(Resource::ADDITIONAL_TYPES) as $key) { ?>
+		    			 	<option value="<?php echo $key; ?>"
+		    			 	<?php echo $key == $this->resource->getSdAdditionalTypes()[1] ? 'selected' : ''; ?>>
+		    			 	<?php echo $key; ?></option>
+		    			 <?php } ?>
+		    		</select>
+		    	</div>
+		    </div>
+		    
+		    <!-- div class="formrw">
+		    	<div class="form-25">
+		    		<label for="sdmaterial">SD material</label>
+		    	</div>
+		    	<div class="form-75">
+		    		<input type="text" id="sdmaterial" name="sdmaterial" 
+		        		value="<?php echo $this->resource->getSdMaterial(); ?>" 
+		        		placeholder="Oil, Acrylic, Pencil, DryPoint, Mixed Media, Watercolour, Lithograph, Pastel..">
+		    	</div>
+		    </div -->
 		    
 		    <div class="formrw">
 		      <div class="form-25">

@@ -3,6 +3,7 @@
 namespace gitzw\site\model;
 
 use JsonSerializable;
+use gitzw\site\data\Site;
 
 class Representation implements JsonSerializable, iViewRender {
 	
@@ -38,6 +39,12 @@ class Representation implements JsonSerializable, iViewRender {
 
 	public function getLocation() : string {
 		return $this->location;
+	}
+	
+	public function getDefaultURL(): string {
+		// http://localhost:8080/img/derived/hnq/2020/_DSC0735_01_1200_1000_d.jpg
+		$pi = pathinfo($this->location);
+		return Site::get()->hostName().'/img/derived/'.$pi['dirname'].'/'.$pi['filename'].'_1200_1000_d.'.$pi['extension'];
 	}
 
 	public function getOrdinal() : int {
