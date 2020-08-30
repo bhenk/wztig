@@ -24,12 +24,12 @@ class SiteResourcesTest extends TestCase {
     
     
     public function testGetCannonicalPath1() {
-        assertEquals(['', ''], 
+        assertEquals(null, 
         	$this->site->getCannonicalPath(['', '']), "1");
     }
         
     public function testGetCannonicalPath2() {
-        assertEquals(['', 'foo'],
+        assertEquals(null,
         	$this->site->getCannonicalPath(['', 'foo']), "2");
     }
     
