@@ -26,6 +26,7 @@ class Path extends JsonData implements iViewRender {
     const KEY_PATH_SEGMENT = 'path_segment';
     const KEY_REQUESTHANDLER = 'request_handler';
     const KEY_PROPS = 'props';
+    const KEY_LAST_SAVED = 'last_saved';
     
     protected $parent;
     protected $name;
@@ -488,7 +489,8 @@ class Path extends JsonData implements iViewRender {
             self::KEY_CHILDREN=>$this->children,
             self::KEY_PATH_SEGMENT=>$this->pathSegment,
             self::KEY_REQUESTHANDLER=>$this->requestHandler,
-            self::KEY_PROPS=>$this->props
+            self::KEY_PROPS=>$this->props,
+        	self::KEY_LAST_SAVED=>date('Y-m-d H:i:s')
         ];       
     }
     
@@ -504,7 +506,8 @@ class Path extends JsonData implements iViewRender {
     			self::KEY_CHILDREN=>array_keys($this->children),
     			self::KEY_PATH_SEGMENT=>$this->pathSegment,
     			self::KEY_REQUESTHANDLER=>$this->requestHandler,
-    			self::KEY_PROPS=>$this->props
+    			self::KEY_PROPS=>$this->props,
+    			self::KEY_LAST_SAVED=>date('Y-m-d H:i:s')
     	];
     }
     

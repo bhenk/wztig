@@ -14,4 +14,4 @@ use gitzw\GZ;
 </table>
 
 <h1>Gitzw.art</h1>
-<?php GZ::VERSION; ?> &nbsp;&bull;&nbsp; date: <?php GZ::VERSION_DATE; ?>
+<?php echo GZ::VERSION; ?> &nbsp;&bull;&nbsp; date: <?php echo GZ::VERSION_DATE; ?>

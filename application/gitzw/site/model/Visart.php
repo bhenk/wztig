@@ -7,6 +7,7 @@ class Visart extends Path {
 	
 	const PROP_KEY_IMAGE_FRONT = 'img_front';
 	const PROP_KEY_COPYRIGHT_START = 'copyright_start';
+	const PROP_KEY_SAME_AS_URLS = 'sameAs';
 	
 	
 	public function addFrontPageImage(string $location) {
@@ -41,7 +42,8 @@ class Visart extends Path {
 				"@type"=>"Person",
 				"@id"=>"https://gitzw.art/".$this->name,
 				"url"=>"https://gitzw.art".$this->getResourcePath(),
-				"name"=>$this->fullName
+				"name"=>$this->fullName,
+				"sameAs"=>$this->props[self::PROP_KEY_SAME_AS_URLS]
 		];
 	}
 }

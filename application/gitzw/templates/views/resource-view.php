@@ -56,9 +56,9 @@ use gitzw\site\data\Security;
 		
 		<div class="button-rect">
 			<a href="<?php echo '/zoom/'.$id; ?>">
-				<?php require GZ::TEMPLATES.'/svg/zoom.svg'; ?></a>
+				<?php require GZ::TEMPLATES.'/svg/zoom.svg'; ?></a><span> </span>
 			<a href="<?php echo '/exif-data/'.$id; ?>">
-				<?php require GZ::TEMPLATES.'/svg/exif.svg'; ?></a>
+				<?php require GZ::TEMPLATES.'/svg/exif.svg'; ?></a><span> </span>
 			<div class="representation-id">
 				<span><?php echo $rep->getLocation(); ?></span>
 				<span title="copy id" class="copyprevious" onclick="copyPrevious(this)"> &#9776; </span>
