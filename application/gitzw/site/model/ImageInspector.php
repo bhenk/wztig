@@ -8,6 +8,26 @@ use RecursiveIteratorIterator;
 
 class ImageInspector {
 	
+	public function listImages() {
+		$temp = tmpfile();
+		fwrite($temp, "var,path,size\n");
+		foreach ($this->scanImages() as $name=>$images) {
+			foreach($images as $image) {
+				$size = filesize(GZ::DATA.'/images/'.$image);
+				fwrite($temp, $name.','.$image.','.$size."\n");
+			}
+		}
+		fflush($temp);
+		$file = stream_get_meta_data($temp)['uri'];
+		header("Content-type: text/csv");
+		header("Content-disposition: attachment; filename = list-images.csv");
+		header('Expires: 0');
+		header('Cache-Control: must-revalidate');
+		header('Content-Length: ' . filesize($file));
+		readfile($file);
+		fclose($temp);
+	}
+	
 	/**
 	 * Get images per var that are not yet referenced by resources of the var.
 	 *

@@ -10,7 +10,8 @@ class AdminMenuManager extends MenuManager {
 			'overview'=>[
 					['admin', '/admin'],
 					['server', '/admin/server'],
-					['resources', '/admin/resources']
+					['resources', '/admin/resources'],
+					['list images', 'admin/list-images']
 			],
 			'edit'=>[
 					['scan images', '/admin/scan-images']

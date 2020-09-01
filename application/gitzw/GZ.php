@@ -116,7 +116,7 @@ abstract class GZ {
      * 
      * FALSE on production!
      */
-    const SHOW_TRACE = FALSE;
+    const SHOW_TRACE = TRUE;
     
     /**
      * The log level.

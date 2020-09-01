@@ -34,7 +34,9 @@ class FrontPageControl extends VisartPageControl {
     	foreach($work->getChildren() as $cat) {
     		$item = $manager->addItem($cat->getName());
     		foreach ($cat->getChildren() as $year) {
-    			$item->addSub($year->getFullName(), $year->getResourcePath().'/overview');
+    			if ($year->getPublicResourceCount() > 0) {
+    				$item->addSub($year->getFullName(), $year->getResourcePath().'/overview');
+    			}
     		}
     	}
     	$this->setMenuManager($manager);

@@ -15,7 +15,7 @@ function renderSite() {
 <h1>Site resources</h1>
 
 <div>
-	<button type="button" class="collapse">Collapse to level 4</button>
+	<button type="button" class="c2ollapse">Collapse to level 4</button>
 	<button type="button" class="maxlvl">Show up to level 5</button>
 	<button type="button" class="expand">Expand all</button>
 </div>
@@ -29,7 +29,7 @@ var jsonViewer = new JSONViewer();
 document.querySelector("#json").appendChild(jsonViewer.getContainer());
 jsonViewer.showJSON(jsonObj, null, 4);
 
-var collapseBtn = document.querySelector("button.collapse");
+var collapseBtn = document.querySelector("button.c2ollapse");
 var maxlvlBtn = document.querySelector("button.maxlvl");
 var expandBtn = document.querySelector("button.expand");
 

@@ -12,6 +12,7 @@ use gitzw\site\control\visar\FrontPageControl;
 use gitzw\site\logging\Log;
 use gitzw\site\model\SiteResources;
 use gitzw\site\control\admin\MoveResourcePageControl;
+use gitzw\site\model\ImageInspector;
 
 class AdminHandler {
     
@@ -46,6 +47,10 @@ class AdminHandler {
     			$control->renderPage();
     			Log::log()->info('end request handling admin/resources');
     			return;
+    		case 'list-images':
+    			(new ImageInspector())->listImages();
+    			Log::log()->info('end request handling admin/list-images');
+    			return;
     		case 'scan-images':
     			$control = new DefaultPageControl(GZ::TEMPLATES.'/admin/scan-images.php');
     			$control->setTemplate(DefaultPageControl::COLUMN_3);
@@ -67,7 +72,7 @@ class AdminHandler {
     			return;
     		case 'front-page':
     			$var = SiteResources::get()->getChildByName('var')->getChildByName($this->path[3]);
-    			$location = str_replace(' ', '/', $this->path[4]);
+    			$location = str_replace('+', '/', $this->path[4]);
     			$control = new FrontPageControl($var, []);
     			$control->setLocation($location);
     			$control->renderPage();

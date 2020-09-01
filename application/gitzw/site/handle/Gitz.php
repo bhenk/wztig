@@ -35,7 +35,7 @@ class Gitz {
 	private function __construct() {}
     
     public function handleRequestURI() {
-    	$path = preg_replace('/[^0-9a-zA-Z\/._ ]/', '-', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
+    	$path = preg_replace('/[^0-9a-zA-Z\/._ +]/', '-', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
         $this->handleRequest(explode('/', $path));
     }
 
