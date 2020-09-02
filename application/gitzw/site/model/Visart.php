@@ -10,17 +10,17 @@ class Visart extends Path {
 	const PROP_KEY_SAME_AS_URLS = 'sameAs';
 	
 	
-	public function addFrontPageImage(string $location) {
-		if (!array_search($location, $this->props[self::PROP_KEY_IMAGE_FRONT])) {
-			$this->props[self::PROP_KEY_IMAGE_FRONT][] = $location;
+	public function addFrontPageImage(string $location, string $resourceId) {
+		if (!$this->props[self::PROP_KEY_IMAGE_FRONT][$location]) {
+			$this->props[self::PROP_KEY_IMAGE_FRONT][$location] = $resourceId;
 			$this->persistFlat();
 		}
 	}
 	
 	public function removeFrontPageImage(string $location) {
-		$key = array_search($location, $this->props[self::PROP_KEY_IMAGE_FRONT]);
-		if ($key) {
-			unset($this->props[self::PROP_KEY_IMAGE_FRONT][$key]);
+		$val = $this->props[self::PROP_KEY_IMAGE_FRONT][$location];
+		if ($val) {
+			unset($this->props[self::PROP_KEY_IMAGE_FRONT][$location]);
 			$this->persistFlat();
 		}
 	}
@@ -30,7 +30,7 @@ class Visart extends Path {
 	}
 	
 	public function hasFrontpageImage(string $location) {
-		return array_search($location, $this->getFrontPageImages());
+		return $this->getFrontPageImages()[$location];
 	}
 	
 	public function getCopyrightStart() {
@@ -40,7 +40,7 @@ class Visart extends Path {
 	public function getStructuredData() {
 		return [
 				"@type"=>"Person",
-				"@id"=>"https://gitzw.art/".$this->name,
+				"@id"=>"http://gitzw.art/".$this->name,
 				"url"=>"https://gitzw.art".$this->getResourcePath(),
 				"name"=>$this->fullName,
 				"sameAs"=>$this->props[self::PROP_KEY_SAME_AS_URLS]

@@ -261,6 +261,5 @@ class SiteResources extends Path {
     	return $segment->getResourceByShortId($path[$i]);
     }
     
-    
 }
 

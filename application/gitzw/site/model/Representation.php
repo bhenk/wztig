@@ -110,7 +110,7 @@ class Representation implements JsonSerializable, iViewRender {
 		if ($this->isFrontPage() and !$frontPage) {
 			$this->getVar()->removeFrontPageImage($this->getLocation());
 		} elseif (!$this->isFrontPage() and $frontPage) {
-			$this->getVar()->addFrontPageImage($this->location);
+			$this->getVar()->addFrontPageImage($this->location, $this->parent->getLongId());
 		}
 	}
 

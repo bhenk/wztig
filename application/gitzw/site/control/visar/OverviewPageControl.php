@@ -2,11 +2,9 @@
 namespace gitzw\site\control\visar;
 
 use gitzw\GZ;
-use gitzw\site\control\menu\MenuManager;
 use gitzw\site\control\menu\Pager;
 use gitzw\site\data\Site;
 use gitzw\site\logging\Log;
-use gitzw\site\model\Path;
 use gitzw\site\model\ResourceContainer;
 use gitzw\site\model\Visart;
 use gitzw\site\data\Security;
@@ -56,25 +54,9 @@ class OverviewPageControl extends VisartPageControl {
         $this->setTitle($this->visart->getFullName().' '.$cat->getFullName().
             ' '.$this->year->getFullName());
         $this->setContentFile(GZ::TEMPLATES.'/visar/overview2.php');
-        $this->constructMenu($work);
+        $this->constructMenu();
         $this->pager = new Pager($this->start, $this->itemsPerPage, $this->getItemCount(), $this->getLink(), $this->seedString);
         Log::log()->info(__METHOD__);
-    }
-    
-    private function constructMenu(Path $work) {
-    	$manager = new MenuManager();
-    	foreach($work->getChildren() as $cat) {
-    		$catSelected = $cat->getFullNamePath() == $this->path[3];
-    		$item = $manager->addItem($cat->getName(), NULL, $catSelected);
-    		foreach ($cat->getChildren() as $year) {
-    			if ($year->getPublicResourceCount() > 0) {
-	    			$selected = $year->getFullNamePath() == $this->path[4] and $catSelected;
-	    			$item->addSub($year->getFullName(), $year->getResourcePath().'/overview', $selected);
-    			}
-    		}
-    	}
-		$manager->addItem($this->visart->getName(), $this->visart->getResourcePath());
-    	$this->setMenuManager($manager);
     }
     
     public function renderPage() {

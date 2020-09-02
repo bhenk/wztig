@@ -10,7 +10,6 @@ class ResourceContainer extends Path {
 	const PROP_KEY_PUB_RESOURCE_COUNT = 'pub_resource_count';
 	
 	private $resources = array();
-	private $publicResourceCount = -1;
 	
 	public function loadResources() {
 		if (!$this->resourcesLoaded) {
@@ -135,15 +134,7 @@ class ResourceContainer extends Path {
 	}
 	
 	public function getPublicResourceCount() : int {
-		if ($this->publicResourceCount < 0) {
-			if (isset($this->props[self::PROP_KEY_PUB_RESOURCE_COUNT])) {
-				$this->publicResourceCount = $this->props[self::PROP_KEY_PUB_RESOURCE_COUNT];
-			} else {
-				$this->publicResourceCount = count($this->getPublicResources());
-				$this->persistFlat();
-			}
-		}
-		return $this->publicResourceCount;
+		return $this->props[self::PROP_KEY_PUB_RESOURCE_COUNT];
 	}
 	
 	public function nextPublicResource(string $idCurrent) : ?Resource {
@@ -198,7 +189,7 @@ class ResourceContainer extends Path {
 	
 	public function jsonSerialize() {
 		$this->loadResources();
-		$this->props[self::PROP_KEY_PUB_RESOURCE_COUNT] = $this->getPublicResourceCount();
+		$this->props[self::PROP_KEY_PUB_RESOURCE_COUNT] = count($this->getPublicResources());
 		$jsonArray = parent::jsonSerialize();
 		$jsonArray[self::KEY_RESOURCES] = $this->resources;
 		return $jsonArray;
@@ -206,7 +197,7 @@ class ResourceContainer extends Path {
 	
 	public function jsonSerializeFlat() : array {
 		$this->loadResources();
-		$this->props[self::PROP_KEY_PUB_RESOURCE_COUNT] = $this->getPublicResourceCount();
+		$this->props[self::PROP_KEY_PUB_RESOURCE_COUNT] = count($this->getPublicResources());
 		$jsonArray = parent::jsonSerializeFlat();
 		$jsonArray[self::KEY_RESOURCES] = $this->resources;
 		return $jsonArray;

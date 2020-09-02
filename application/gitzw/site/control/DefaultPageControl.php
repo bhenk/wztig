@@ -51,7 +51,7 @@ class DefaultPageControl implements iPageControl {
     }
     
     public function setTitle($title) {
-    	$this->title = 'gitzw.art '.$title;
+    	$this->title = $title;
     }
     
     public function addStylesheet($styleSheet) {
