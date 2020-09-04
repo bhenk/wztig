@@ -2,6 +2,8 @@
 namespace gitzw\site\model;
 
 use JsonSerializable;
+use gitzw\GZ;
+use gitzw\site\data\Site;
 
 /**
  * 
@@ -27,30 +29,49 @@ use JsonSerializable;
 class Resource implements iViewRender, JsonSerializable {
 	
 	const ART_MEDIA = [
-			'acrylic'=>'http://vocab.getty.edu/aat/300015058',
-			'canvas'=>'http://vocab.getty.edu/aat/300014078',
-			'cardboard'=>'http://vocab.getty.edu/aat/300014224',
-			'charcoal'=>'http://vocab.getty.edu/aat/300022414',
-			'crayon'=>'http://vocab.getty.edu/aat/300022415',
-			'ink'=>'http://vocab.getty.edu/aat/300015012',
-			'oil'=>'http://vocab.getty.edu/aat/300015050',
-			'paper'=>'http://vocab.getty.edu/aat/300014109',
-			'pastel'=>'http://vocab.getty.edu/aat/300122621',
-			'pencil'=>'http://vocab.getty.edu/aat/300410335',
-			'watercolour'=>'http://vocab.getty.edu/aat/300015045',
-			'wood'=>'http://vocab.getty.edu/aat/300011914',			
+			'acrylic'=>'aat:300015058',
+			'canvas'=>'aat:300014078',
+			'cardboard'=>'aat:300014224',
+			'charcoal'=>'aat:300022414',
+			'crayon'=>'aat:300022415',
+			'ink'=>'aat:300015012',
+			'oil'=>'aat:300015050',
+			'paper'=>'aat:300014109',
+			'pastel'=>'aat:300122621',
+			'pencil'=>'aat:300410335',
+			'watercolour'=>'aat:300015045',
+			'wood'=>'aat:300011914',			
+	];
+	
+	const ART_SURFACE = [
+			'canvas'=>'aat:300014078',
+			'cardboard'=>'aat:300014224',
+			'paper'=>'aat:300014109',
+			'wood'=>'aat:300011914'
+	];
+	
+	const ART_MEDIUM = [
+			'acrylic'=>'aat:300015058',
+			'cardboard'=>'aat:300014224',
+			'charcoal'=>'aat:300022414',
+			'crayon'=>'aat:300022415',
+			'ink'=>'aat:300015012',
+			'oil'=>'aat:300015050',
+			'pastel'=>'aat:300122621',
+			'pencil'=>'aat:300410335',
+			'watercolour'=>'aat:300015045',
 	];
 	
 	const ADDITIONAL_TYPES = [
 			'None'=>null,
-			'Acrylic Painting'=>'http://vocab.getty.edu/aat/300181918',
-			'Oil Painting'=>'http://vocab.getty.edu/aat/300033799',
-			'Drypoint'=>'http://vocab.getty.edu/aat/300041349',
-			'Drawing'=>'http://vocab.getty.edu/aat/300033973',
-			'Poster'=>'http://vocab.getty.edu/aat/300027221',
-			'Collage'=>'http://vocab.getty.edu/aat/300033963',
-			'Assemblage'=>'http://vocab.getty.edu/aat/300047194',
-			'Lithography'=>'http://vocab.getty.edu/aat/300041379'
+			'Acrylic Painting'=>'aat:300181918',
+			'Oil Painting'=>'aat:300033799',
+			'Drypoint'=>'aat:300041349',
+			'Drawing'=>'aat:300033973',
+			'Poster'=>'aat:300027221',
+			'Collage'=>'aat:300033963',
+			'Assemblage'=>'aat:300047194',
+			'Lithography'=>'aat:300041379'
 	];
     
     const KEY_TITLES = 'titles';
@@ -65,6 +86,8 @@ class Resource implements iViewRender, JsonSerializable {
     const KEY_REPRESENTATIONS = 'representations';
     
     const SD_ADDITIONAL_TYPES = 'sd_additional_types';
+    
+    const NO_TITLES = ['nl'=>'geen titel', 'en'=>'no title'];
     
     private $id;
     private $parent;
@@ -128,6 +151,14 @@ class Resource implements iViewRender, JsonSerializable {
         return $this->parent->getIdPath().'.'.$this->id;
     }
     
+    public function getFullId() : string {
+    	return GZ::SD_PREFIX.$this->getLongId();
+    }
+    
+    public function getFullUrl() {
+    	return Site::get()->hostName().$this->getResourcePath();
+    }
+    
     /**
      * Get the URL of this resource.
      * 
@@ -150,6 +181,15 @@ class Resource implements iViewRender, JsonSerializable {
     	if (!empty($dimensions)) $subscript .= $dimensions.$bull;
     	if (!empty($this->date)) $subscript .= $this->date;
     	return $subscript;
+    }
+    
+    public function getHtmlTitle() : string {
+    	$title = $this->titles[$this->preferredLanguage];
+    	if (empty($title)) $title = self::NO_TITLES[$this->preferredLanguage];
+    	$otherLanguage = $this->preferredLanguage == 'nl' ? 'en' : 'nl';
+    	$otherTitle = $this->titles[$otherLanguage];
+    	if (empty($otherTitle)) return $title;
+    	return $title.' ('.$otherTitle.')';
     }
     
     public function getTitles() : array {
@@ -321,11 +361,6 @@ class Resource implements iViewRender, JsonSerializable {
     		$material[] = $key;
     		$material[] = self::ART_MEDIA[$key];
     	}
-    	$dateCreated = implode('-', array_map(function($x) {
-    		return sprintf('%02d', $x);
-    	}, array_filter(Search::dateParse($this->date))));
-    	if (strpos($this->date, '?') > 0) $dateCreated = null;
-    	$visart = $this->getParent()->getParentByNature('var');
     	$additionalTypes = [];
     	foreach ($this->sdAdditionalTypes as $value) {
     		$additionalTypes[] = $value;
@@ -333,7 +368,7 @@ class Resource implements iViewRender, JsonSerializable {
     	}
     	return array_filter([
     			"@type"=>"VisualArtwork",
-    			"@id"=>'https://gitzw.art/'.$this->getLongId(),
+    			"@id"=>$this->getFullId(),
     			"additionalType"=>$additionalTypes,
     			"url"=>'https://gitzw.art'.$this->getResourcePath(),
     			"name"=>$names,
@@ -341,8 +376,8 @@ class Resource implements iViewRender, JsonSerializable {
     			"material"=>$material,
     			"width"=>$this->getWidth().' cm',
     			"height"=>$this->getHeight().' cm',
-    			"dateCreated"=>$dateCreated,
-    			"creator"=>$visart->getStructuredData()
+    			"dateCreated"=>$this->getDateCreated(),
+    			"creator"=>$this->getCreator()->getSdShort()
     	]);
     }
     
@@ -354,15 +389,68 @@ class Resource implements iViewRender, JsonSerializable {
     	$this->sdAdditionalTypes = $sdAdditionalTypes;
     }
     
+    public function getAdditionalTypeCodes() {
+    	$additionalTypes = [];
+    	foreach ($this->sdAdditionalTypes as $value) {
+    		$additionalTypes[] = self::ADDITIONAL_TYPES[$value];
+    	}
+    	return $additionalTypes;
+    }
+    
     public function getSdMaterial() : array {
     	return array_values(array_intersect(array_map('trim', 
     			explode(' ', str_replace(',', ' ', strtolower($this->media)))), array_keys(self::ART_MEDIA)));
     }
-
+    
+    public function getArtMedium() : array {
+    	return array_values(array_intersect(array_map('trim',
+    			explode(' ', str_replace(',', ' ', strtolower($this->media)))), array_keys(self::ART_MEDIUM)));
+    }
+    
+    public function getArtworkSurface() : array {
+    	return array_values(array_intersect(array_map('trim',
+    			explode(' ', str_replace(',', ' ', strtolower($this->media)))), array_keys(self::ART_SURFACE)));
+    }
+    
+    public function getMaterialTypeCodes() {
+    	$materialTypes = [];
+    	foreach ($this->getSdMaterial() as $value) {
+    		$materialTypes[] = self::ART_MEDIA[$value];
+    	}
+    	return $materialTypes;
+    }
+    
+    public function getArtMediumCodes() {
+    	$codes = [];
+    	foreach ($this->getArtMedium() as $value) {
+    		$codes[] = self::ART_MEDIUM[$value];
+    	}
+    	return $codes;
+    }
+    
+    public function getArtworkSurfaceCodes() {
+    	$codes = [];
+    	foreach ($this->getArtworkSurface() as $value) {
+    		$codes[] = self::ART_SURFACE[$value];
+    	}
+    	return $codes;
+    }
+    
+    public function getDateCreated() : ?string {
+    	$dateCreated = implode('-', array_map(function($x) {
+    		return sprintf('%02d', $x);
+    	}, array_filter(Search::dateParse($this->date))));
+    	if (strpos($this->date, '?') > 0) $dateCreated = null;
+    	return $dateCreated;
+    }
+    
+    public function getCreator() {
+    	return $this->getParent()->getParentByNature('var');
+    }
+    
     public function render($template, array $args=NULL) {
         require($template);
     }
-    
     
 
 }

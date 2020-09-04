@@ -48,6 +48,8 @@ abstract class GZ {
 	const VERSION = 'RC_0.0.4';
 	
 	const VERSION_DATE = '2020-08-30';
+	
+	const SD_PREFIX = 'http://gitzw.art/';
     
     /**
      * Root of the site.

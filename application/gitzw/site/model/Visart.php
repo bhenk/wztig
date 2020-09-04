@@ -3,6 +3,8 @@
 namespace gitzw\site\model;
 
 
+use gitzw\GZ;
+
 class Visart extends Path {
 	
 	const PROP_KEY_IMAGE_FRONT = 'img_front';
@@ -37,13 +39,26 @@ class Visart extends Path {
 		return $this->props[self::PROP_KEY_COPYRIGHT_START];
 	}
 	
+	public function getFullId() {
+		return GZ::SD_PREFIX.$this->name;
+	}
+	
 	public function getStructuredData() {
 		return [
 				"@type"=>"Person",
-				"@id"=>"http://gitzw.art/".$this->name,
+				"@id"=>$this->getFullId(),
 				"url"=>"https://gitzw.art".$this->getResourcePath(),
 				"name"=>$this->fullName,
 				"sameAs"=>$this->props[self::PROP_KEY_SAME_AS_URLS]
+		];
+	}
+	
+	public function getSdShort() {
+		return [
+				"@type"=>"Person",
+				"@id"=>$this->getFullId(),
+				"url"=>"https://gitzw.art".$this->getResourcePath(),
+				"name"=>$this->fullName,
 		];
 	}
 }
