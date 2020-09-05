@@ -8,11 +8,12 @@ use gitzw\site\control\admin\AdminMenuManager;
 use gitzw\site\control\admin\EditResourcePageControl;
 use gitzw\site\control\admin\ForcedExceptionPage;
 use gitzw\site\control\admin\LocateImagePageControl;
+use gitzw\site\control\admin\MoveResourcePageControl;
+use gitzw\site\control\admin\SitemapGenerator;
 use gitzw\site\control\visar\FrontPageControl;
 use gitzw\site\logging\Log;
-use gitzw\site\model\SiteResources;
-use gitzw\site\control\admin\MoveResourcePageControl;
 use gitzw\site\model\ImageInspector;
+use gitzw\site\model\SiteResources;
 
 class AdminHandler {
     
@@ -50,6 +51,14 @@ class AdminHandler {
     		case 'list-images':
     			(new ImageInspector())->listImages();
     			Log::log()->info('end request handling admin/list-images');
+    			return;
+    		case 'create-sitemap':
+    			(new SitemapGenerator())->generateSitemap();
+    			Log::log()->info('end request handling admin/create-sitemap');
+    			return;
+    		case 'check-sitemap':
+    			(new SitemapGenerator())->checkSitemap();
+    			Log::log()->info('end request handling admin/check-sitemap');
     			return;
     		case 'scan-images':
     			$control = new DefaultPageControl(GZ::TEMPLATES.'/admin/scan-images.php');

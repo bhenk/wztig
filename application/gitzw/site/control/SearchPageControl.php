@@ -47,7 +47,7 @@ class SearchPageControl extends DefaultPageControl {
 	}
 	
 	public function renderPage() {
-		if (Site::get()->requestMethod() == 'GET') {
+		if (Site::get()->requestMethod() == 'GET' or Site::get()->requestMethod() == 'HEAD') {
 			$this->setContentFile(GZ::TEMPLATES.'/frame/search-form.php');
 			parent::renderPage();
 		} else {

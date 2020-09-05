@@ -98,12 +98,20 @@ class ResourcePageControl extends VisartPageControl {
 	protected function renderStructuredData() {}
 	
 	public function getStructuredData() {
+		$imgId = $this->resource->getRepresentation()->getFullId();
 		$imgURL = Site::get()->hostName().$this->imgData['location'];
-		$sdResource = $this->resource->getStructuredData($imgURL);
+		$sdResource = $this->resource->getStructuredData($imgId);
+		$sdImage = [
+				"@type"=>"ImageObject",
+				"@id"=>$imgId,
+				"url"=>$imgURL,
+				"copyrightHolder"=>$this->visart->getFullId()
+		];
 		return [
 				"@context"=>["http://schema.org", 
 						['aat'=>'http://vocab.getty.edu/aat/']],
 				"@graph"=>[$sdResource,
+						$sdImage,
 						$this->getWebPageSD()
 				]
 		];
@@ -180,17 +188,20 @@ class ResourcePageControl extends VisartPageControl {
 			$res->add('rdf:type', new \EasyRdf\Resource($type));
 		}
 		$res->add('schema:url', new \EasyRdf\Resource($this->resource->getFullUrl()));
+		$res->add('schema:image', new \EasyRdf\Resource($this->resource->getRepresentation()->getFullId()));
 		$res->addLiteral('rdfs:label', $this->resource->getTitles()['nl'], 'nl');
 		$res->addLiteral('rdfs:label', $this->resource->getTitles()['en'], 'en');
 		
-		$bn = $g->newBNode();
-		$bn->add('rdf:value', Literal::create($this->resource->getWidth(), null, 'xsd:decimal'));
-		$bn->addResource('qudt:unit', new \EasyRdf\Resource('unit:CentiM'));
-		$res->addResource('qudt:width', $bn);
-		$bn = $g->newBNode();
-		$bn->add('rdf:value', Literal::create($this->resource->getHeight(), null, 'xsd:decimal'));
-		$bn->addResource('qudt:unit', new \EasyRdf\Resource('unit:CentiM'));
-		$res->addResource('qudt:height', $bn);
+		if ($this->resource->getWidth() > 0 and $this->resource->getHeight() > 0) {
+			$bn = $g->newBNode();
+			$bn->add('rdf:value', Literal::create($this->resource->getWidth(), null, 'xsd:decimal'));
+			$bn->addResource('qudt:unit', new \EasyRdf\Resource('unit:CentiM'));
+			$res->addResource('qudt:width', $bn);
+			$bn = $g->newBNode();
+			$bn->add('rdf:value', Literal::create($this->resource->getHeight(), null, 'xsd:decimal'));
+			$bn->addResource('qudt:unit', new \EasyRdf\Resource('unit:CentiM'));
+			$res->addResource('qudt:height', $bn);
+		}
 		
 		foreach ($this->resource->getArtMediumCodes() as $medium) {
 			$res->add('schema:artMedium', new \EasyRdf\Resource($medium));
@@ -199,9 +210,18 @@ class ResourcePageControl extends VisartPageControl {
 		foreach ($this->resource->getArtworkSurfaceCodes() as $surface) {
 			$res->add('schema:artworkSurface', new \EasyRdf\Resource($surface));
 		}
-		
-		$res->add('dct:created', Literal::create($this->resource->getDateCreated(), null, 'xsd:dateTime'));
+		$dateCreated = $this->resource->getDateCreated();
+		if (isset($dateCreated)) {
+			$res->add('dct:created', Literal::create($this->resource->getDateCreated(), null, 'xsd:dateTime'));
+		}
 		$res->add('dct:creator', new \EasyRdf\Resource($this->visart->getFullId()));
+		$res->add('schema:copyrightHolder', new \EasyRdf\Resource($this->visart->getFullId()));
+		$res->add('schema:license', new \EasyRdf\Resource('https://creativecommons.org/licenses/by-nc-nd/4.0/'));
+		
+		$img = $g->resource($this->resource->getRepresentation()->getFullId(), 'rdf:Description');
+		$img->addResource('rdf:type', new \EasyRdf\Resource('schema:ImageObject'));
+		$img->add('schema:url', new \EasyRdf\Resource($this->resource->getRepresentation()->getDefaultURL()));
+		$img->add('schema:copyrightHolder', new \EasyRdf\Resource($this->visart->getFullId()));
 		return $g;
 	}
 	

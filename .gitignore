@@ -7,6 +7,8 @@ vendor/
 application/data
 application/logs
 application/public_html/img/derived
+application/public_html/sitemap.xml
+application/public_html/robots.txt
 application/test-data
 application/test-dump
 composer.phar

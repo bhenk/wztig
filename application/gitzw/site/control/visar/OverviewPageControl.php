@@ -5,7 +5,6 @@ use gitzw\GZ;
 use gitzw\site\control\menu\Pager;
 use gitzw\site\data\Site;
 use gitzw\site\logging\Log;
-use gitzw\site\model\ResourceContainer;
 use gitzw\site\model\Visart;
 use gitzw\site\data\Security;
 
@@ -14,12 +13,12 @@ class OverviewPageControl extends VisartPageControl {
 	const ITEMS_PER_PAGE = 15;
     
     //private array $path;
-    private ResourceContainer $year;
-    private int $start;
-    private ?string $seedString;
-    private int $itemsPerPage;
-    private array $resources;
-    private Pager $pager;
+    private $year;
+    private $start;
+    private $seedString;
+    private $itemsPerPage;
+    private $resources;
+    private $pager;
     
     protected $state = 'normal';
     

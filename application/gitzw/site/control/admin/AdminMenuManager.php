@@ -14,7 +14,9 @@ class AdminMenuManager extends MenuManager {
 					['list images', 'admin/list-images']
 			],
 			'edit'=>[
-					['scan images', '/admin/scan-images']
+					['scan images', '/admin/scan-images'],
+					['create sitemap', '/admin/create-sitemap'],
+					['check sitemap', 'admin/check-sitemap']
 			],
 			'misc'=>[
 					['raise exception', '/admin/raise-exception']

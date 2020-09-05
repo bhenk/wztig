@@ -4,6 +4,7 @@ namespace gitzw\site\model;
 
 use JsonSerializable;
 use gitzw\site\data\Site;
+use gitzw\GZ;
 
 class Representation implements JsonSerializable, iViewRender {
 	
@@ -39,6 +40,10 @@ class Representation implements JsonSerializable, iViewRender {
 
 	public function getLocation() : string {
 		return $this->location;
+	}
+	
+	public function getFullId() : string {
+		return GZ::SD_PREFIX.'#img.'.str_replace('/', '.', $this->getLocation());
 	}
 	
 	public function getDefaultURL(): string {

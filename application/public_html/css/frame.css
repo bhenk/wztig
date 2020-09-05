@@ -733,4 +733,11 @@ div.table-data > div > div:first-child {
     color: white;
 }
 
+.license {
+	position: absolute;
+	bottom: 5px;
+	right: 15px;
+	z-index: 100
+}
+
 

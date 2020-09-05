@@ -1,6 +1,7 @@
 <?php
 namespace gitzw\templates\views;
 
+use gitzw\site\data\Site;
 use gitzw\site\data\ImageData;
 use gitzw\site\data\Security;
 use gitzw\site\data\Aat;
@@ -83,6 +84,11 @@ use gitzw\site\data\Aat;
 				<?php echo $this->resource->getFullUrl(); ?></a>
 			</div>
 		</div>
+		<!-- div>
+			<div>image:</div>
+			<div><a class="incognito" href="<?php echo $this->imgData['location']; ?>">
+				<?php echo Site::get()->hostName().$this->imgData['location']; ?></a></div>
+		</div -->
 		<div>
 			<div>title (nl):</div>
 			<div><?php echo $this->resource->getTitles()['nl']; ?></div>
@@ -135,9 +141,13 @@ use gitzw\site\data\Aat;
 		<div>
 			<?php $creatorId = $this->resource->getCreator()->getFullId(); ?>
 			<div>creator:</div>
-			<div><a class="ld-link" href="<?php echo $creatorId; ?>"><?php echo $creatorId; ?></a></div>
+			<div>
+				<a class="ld-link" href="<?php echo $creatorId; ?>"><?php echo $creatorId; ?></a>
+			</div>
 		</div>
 	</div>
+	
+	
 	
 	<div class="ld-panel">
 		<a href="<?php echo $this->resource->getResourcePath().'.json'?>"><button class="small-button">json-ld</button></a>
@@ -147,6 +157,13 @@ use gitzw\site\data\Aat;
 		<a href="<?php echo $this->resource->getResourcePath().'.ttl'?>"><button class="small-button">n3/turtle</button></a>
 		<span> </span>
 		<a href="<?php echo $this->resource->getResourcePath().'.nt'?>"><button class="small-button">ntriples</button></a>
+		
+	</div>
+	
+	<div class="license">
+		<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">
+			<img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" />
+		</a>
 	</div>
 	
 </div>

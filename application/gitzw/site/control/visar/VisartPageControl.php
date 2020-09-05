@@ -12,7 +12,7 @@ class VisartPageControl extends DefaultPageControl {
 	const IMG_WIDTH = 1200;
 	const IMG_HEIGHT = 1000;
 	
-	protected ?Visart $visart;
+	protected $visart;
 	
 	function __construct(?Visart $visart=null, array $path=[]) {
 		if (is_null($visart)) {

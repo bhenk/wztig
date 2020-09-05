@@ -310,6 +310,14 @@ class Resource implements iViewRender, JsonSerializable {
     	}
     }
     
+    public function getPublicRepresentationsOrdered() : array {
+    	$arr = [];
+    	foreach ($this->getRepresentations('ordinal') as $rep) {
+    		$arr[] = $rep;
+    	}
+    	return $arr;
+    }
+    
     public function addRepresentation(string $location) {
     	$this->representations[$location] = new Representation($this, $location);
     	$this->parent->persist();
@@ -350,11 +358,11 @@ class Resource implements iViewRender, JsonSerializable {
         return $this->parent;
     }
     
-    public function getStructuredData(string $imageURL = null) { 
+    public function getStructuredData(string $imageId = null) { 
     	$names = array_values(array_diff($this->titles, ['']));
     	if (count($names) <= 1) $names = $names[0];
-    	if (is_null($imageURL)) {
-    		$imageURL = $this->getRepresentation()->getDefaultURL();
+    	if (is_null($imageId)) {
+    		$imageId = $this->getRepresentation()->getFullId();
     	}
     	$material = [];
     	foreach ($this->getSdMaterial() as $key) {
@@ -366,18 +374,21 @@ class Resource implements iViewRender, JsonSerializable {
     		$additionalTypes[] = $value;
     		$additionalTypes[] = self::ADDITIONAL_TYPES[$value];
     	}
+    	$creator = $this->getCreator();
     	return array_filter([
     			"@type"=>"VisualArtwork",
     			"@id"=>$this->getFullId(),
     			"additionalType"=>$additionalTypes,
     			"url"=>'https://gitzw.art'.$this->getResourcePath(),
     			"name"=>$names,
-    			"image"=>$imageURL,
+    			"image"=>$imageId,
     			"material"=>$material,
     			"width"=>$this->getWidth().' cm',
     			"height"=>$this->getHeight().' cm',
     			"dateCreated"=>$this->getDateCreated(),
-    			"creator"=>$this->getCreator()->getSdShort()
+    			"creator"=>$creator->getSdShort(),
+    			"copyrightHolder"=>$creator->getFullId(),
+    			"license"=>'https://creativecommons.org/licenses/by-nc-nd/4.0/'
     	]);
     }
     

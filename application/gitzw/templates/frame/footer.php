@@ -10,6 +10,10 @@ namespace gitzw\templates\frame;
 		<?php echo $this->getActiveUser(); ?>
 		<?php echo $this->getUserLink(); ?>
 		<?php echo $this->getAdminLink(); ?>
+		
 	</p>
 	
+	
 </div>
+
+
