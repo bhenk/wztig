@@ -107,7 +107,7 @@ class SitemapGenerator {
  		$xw->endElement();
  		
  		$xw->startElement('changefreq');
- 		$xw->text('allways');
+ 		$xw->text('always');
  		$xw->endElement();
  		
  		$xw->endElement();
