@@ -43,6 +43,11 @@ class ResourcePageControl extends VisartPageControl {
 		
 		$this->setTitle($this->resource->getHtmlTitle().' - '.$visart->getFullName().' - '
 				.$this->resource->getLongId());
+		
+		$this->setMetaDescription(implode(' and ', $this->resource->getSdAdditionalTypes())
+				.'. '.$this->resource->getMedia()
+				.', ('.$this->resource->getDimensions()
+				.') Gitzwart, fine art.');
 		$this->setContentFile(GZ::TEMPLATES.'/views/resource-view.php');
 		$this->constructMenu();
 	}
@@ -220,7 +225,7 @@ class ResourcePageControl extends VisartPageControl {
 		
 		$img = $g->resource($this->resource->getRepresentation()->getFullId(), 'rdf:Description');
 		$img->addResource('rdf:type', new \EasyRdf\Resource('schema:ImageObject'));
-		$img->add('schema:url', new \EasyRdf\Resource($this->resource->getRepresentation()->getDefaultURL()));
+		$img->add('schema:url', new \EasyRdf\Resource($this->resource->getRepresentation()->getDefaultFullURL()));
 		$img->add('schema:copyrightHolder', new \EasyRdf\Resource($this->visart->getFullId()));
 		return $g;
 	}

@@ -18,6 +18,7 @@ class DefaultPageControl implements iPageControl {
 	private $template;
 	protected $path;
     private $title = 'gitzw.art';
+    private $metaDescription;
     private $stylesheets = array();
     private $scriptLinks = array();
     private $navigation = array();
@@ -54,6 +55,10 @@ class DefaultPageControl implements iPageControl {
     	$this->title = $title;
     }
     
+    public function setMetaDescription(string $metaDescription) {
+    	$this->metaDescription = $metaDescription;
+    }
+    
     public function addStylesheet($styleSheet) {
         $this->stylesheets[] = $styleSheet;
     }
@@ -72,7 +77,6 @@ class DefaultPageControl implements iPageControl {
     
     public function setMenuManager(MenuManager $manager) {
     	$this->addStylesheet($manager->getStylesheet());
-    	//$this->addScript($manager->getScript());
     	$this->menuManager = $manager;
     }
     
@@ -127,6 +131,12 @@ class DefaultPageControl implements iPageControl {
     
     protected function renderTitle() {
         echo $this->title;
+    }
+    
+    protected function renderMetaDescription() {
+    	if (isset($this->metaDescription)) {
+    		echo '<meta name="description" content="'.$this->metaDescription.'"/>';
+    	}
     }
     
     protected function renderStylesheets() {

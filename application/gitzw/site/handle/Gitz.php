@@ -81,6 +81,9 @@ class Gitz {
                     echo Site::get()->clientIp();
                     Log::log()->info('end request handling gendan');
                     return;
+                case 'sitemap':
+                	require_once GZ::TEMPLATES.'/test/sitemap.php';
+                	return;
             }
             
             /////// redirect? //////

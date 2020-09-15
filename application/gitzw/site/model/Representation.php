@@ -47,9 +47,14 @@ class Representation implements JsonSerializable, iViewRender {
 	}
 	
 	public function getDefaultURL(): string {
-		// http://localhost:8080/img/derived/hnq/2020/_DSC0735_01_1200_1000_d.jpg
+		// /img/derived/hnq/2020/_DSC0735_01_1200_1000_d.jpg
 		$pi = pathinfo($this->location);
-		return Site::get()->hostName().'/img/derived/'.$pi['dirname'].'/'.$pi['filename'].'_1200_1000_d.'.$pi['extension'];
+		return '/img/derived/'.$pi['dirname'].'/'.$pi['filename'].'_1200_1000_d.'.$pi['extension'];
+	}
+	
+	public function getDefaultFullURL(): string {
+		// http://localhost:8080/img/derived/hnq/2020/_DSC0735_01_1200_1000_d.jpg
+		return Site::get()->hostName().$this->getDefaultURL();
 	}
 
 	public function getOrdinal() : int {
