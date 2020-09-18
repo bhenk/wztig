@@ -124,14 +124,18 @@ use gitzw\site\data\Aat;
 		</div>
 		<?php } ?>
 		
-		<div>
-			<div>width:</div>
-			<div><?php echo $this->resource->getWidth(); ?> cm.</div>
-		</div>
-		<div>
-			<div>height:</div>
-			<div><?php echo $this->resource->getHeight(); ?> cm.</div>
-		</div>
+		<?php if ($this->resource->getWidth() > 0) { ?>
+			<div>
+				<div>width:</div>
+				<div><?php echo $this->resource->getWidth(); ?> cm.</div>
+			</div>
+		<?php } ?>
+		<?php if ($this->resource->getHeight() > 0) { ?>
+			<div>
+				<div>height:</div>
+				<div><?php echo $this->resource->getHeight(); ?> cm.</div>
+			</div>
+		<?php } ?>
 		
 		<div>
 			<div>date:</div>

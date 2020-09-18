@@ -22,6 +22,8 @@ class HomePageControl extends DefaultPageControl
     public function __construct()
     {
         $this->setContentFile(GZ::TEMPLATES.'/home.php');
+        $vars = implode(', ', SiteResources::get()->getVisartFullNames());
+        $this->setMetaDescription('Gitzw.art, online art gallery showing work of '.$vars);
         Log::log()->info(__METHOD__);
     }
     

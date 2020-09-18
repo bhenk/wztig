@@ -21,6 +21,7 @@ class FrontPageControl extends VisartPageControl {
             $this->setCanonicalURI(Site::get()->
                 redirectLocation($this->visart->getFullNamePath()));
         }
+        $this->setMetaDescription($this->visart->getMetaDescription());
         $this->constructMenu(false);
         Log::log()->info(__METHOD__);
     }

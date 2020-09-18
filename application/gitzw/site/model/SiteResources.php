@@ -68,6 +68,8 @@ class SiteResources extends Path {
         return null;
     }
     
+    
+    
     /**
      * Get the path segment (visart) that corresponds to the string in $path[1] or null.
      * 
@@ -106,6 +108,14 @@ class SiteResources extends Path {
     	$names = array();
     	foreach($this->getChildByName('var')->getChildren() as $visart) {
     		$names[] = $visart->getName();
+    	}
+    	return array_unique($names, SORT_STRING);
+    }
+    
+    public function getVisartFullNames() : array {
+    	$names = array();
+    	foreach($this->getChildByName('var')->getChildren() as $visart) {
+    		$names[] = $visart->getFullName();
     	}
     	return array_unique($names, SORT_STRING);
     }

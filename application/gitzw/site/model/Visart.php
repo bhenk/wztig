@@ -49,6 +49,7 @@ class Visart extends Path {
 				"@id"=>$this->getFullId(),
 				"url"=>"https://gitzw.art".$this->getResourcePath(),
 				"name"=>$this->fullName,
+				"description"=>$this->getMetaDescription(),
 				"sameAs"=>$this->props[self::PROP_KEY_SAME_AS_URLS]
 		];
 	}
@@ -60,6 +61,22 @@ class Visart extends Path {
 				"url"=>"https://gitzw.art".$this->getResourcePath(),
 				"name"=>$this->fullName,
 		];
+	}
+	
+	public function getActivityFullNames() : array {
+		$names = [];
+		foreach ($this->getChildByName('work')->getChildren() as $activity) {
+			$names[] = $activity->getFullName();
+		}
+		return $names;
+	}
+	
+	public function getMetaDescription() {
+		$activities = implode(', ', $this->getActivityFullNames());
+		$last = strrpos($activities, ', ');
+		$activities = substr_replace($activities, ' and ', $last, 2);
+		$start = $this->getProps()[self::PROP_KEY_COPYRIGHT_START];
+		return $this->fullName.' works with '.$activities.' and is showing works from the period '.$start.' to '.date('Y').' on gitzw.art fine art.';
 	}
 }
 
