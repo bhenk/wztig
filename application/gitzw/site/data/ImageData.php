@@ -47,10 +47,11 @@ class ImageData {
     	} else {
         	$this->imgFile =$imgFile;
     	}
-        if (!file_exists($this->imgFile)) {
-        	$this->imgExists = false;
-        	$this->imgFile = GZ::DATA.'/images/no_image/Broken-image-01.jpg';
-        }
+    	// removed 21-10-2020
+//         if (!file_exists($this->imgFile)) {
+//         	$this->imgExists = false;
+//         	$this->imgFile = GZ::DATA.'/images/no_image/Broken-image-01.jpg';
+//         }
     }
     
     /**
@@ -174,7 +175,7 @@ class ImageData {
         // specifying width and height in tag will cause distortion of size when changing
         // orientation of device (with current css props).
         $tag = '<img src="'.
-            $data['location'].'" alt="'.$alt.'">';
+            $data['location'].'" alt="'.$alt.'" loading="lazy">';
         return $tag;
     }
 }

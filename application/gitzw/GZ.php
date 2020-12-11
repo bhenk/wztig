@@ -45,9 +45,9 @@ set_error_handler(function ($severity, $message, $file, $line) {
  */
 abstract class GZ {
 	
-	const VERSION = 'RC_0.1.0';
+	const VERSION = '1.0.0';
 	
-	const VERSION_DATE = '2020-09-06';
+	const VERSION_DATE = '2020-12-10';
 	
 	const SD_PREFIX = 'http://gitzw.art/';
     
@@ -118,7 +118,7 @@ abstract class GZ {
      * 
      * FALSE on production!
      */
-    const SHOW_TRACE = TRUE;
+    const SHOW_TRACE = FALSE;
     
     /**
      * The log level.
