@@ -45,9 +45,9 @@ set_error_handler(function ($severity, $message, $file, $line) {
  */
 abstract class GZ {
 	
-	const VERSION = '1.0.0';
+	const VERSION = '1.0.1';
 	
-	const VERSION_DATE = '2020-12-10';
+	const VERSION_DATE = '2020-12-23';
 	
 	const SD_PREFIX = 'http://gitzw.art/';
     

@@ -114,7 +114,7 @@ class SitemapGenerator {
 		$this->xw->writeAttributeNs('xmlns', 'image', null, 'http://www.google.com/schemas/sitemap-image/1.1');
  		
  		// homepage
-		$this->writeEntry('', ['changefreq'=>'monthly']);
+		$this->writeEntry('');
  		// searchpage
 		// $this->writeEntry('/search', ['changefreq'=>'always']);
 		
