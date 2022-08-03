@@ -4,7 +4,7 @@ namespace gitzw\site\control\admin;
 
 use gitzw\GZ;
 use gitzw\site\control\DefaultPageControl;
-use gitzw\site\data\Security;
+#use gitzw\site\data\Security;
 use gitzw\site\data\Site;
 use gitzw\site\model\NotFoundException;
 use gitzw\site\model\SiteResources;
@@ -44,7 +44,7 @@ class EditResourcePageControl extends DefaultPageControl {
 	}
 	
 	private function handlePost() {
-		$data = Security::cleanInput($_POST);
+		$data = $_POST; #Security::cleanInput($_POST);
 		$this->resource->setTitle($data['title_nl'], 'nl');
 		$this->resource->setTitle($data['title_en'], 'en');
 		$this->resource->setPreferredLanguage($data['preferred_language']);
